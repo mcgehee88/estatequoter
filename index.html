@@ -344,7 +344,7 @@ input[type="range"]{
       <label for="full">How full is it?</label>
       <input type="range" min="1" max="4" value="2" step="1" id="full">
       <div class="range-label" id="full-text">Average</div>
-      <p class="small-note">From “lightly furnished” to “very full / hoarder-level.” No judgment.</p>
+      <p class="small-note">From “lightly furnished” to “very full!” No judgment.</p>
 
       <!-- Next button -->
       <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Next →</button>
@@ -544,7 +544,7 @@ document.getElementById('sqft').addEventListener('input', e => {
 
 document.getElementById('full').addEventListener('input', e => {
   const v = parseInt(e.target.value, 10);
-  const labels = {1:'Light',2:'Average',3:'Very full',4:'Packed / hoarder-level'};
+  const labels = {1:'Light',2:'Average',3:'Very full',4:'Packed!'};
   document.getElementById('full-text').textContent = labels[v] || 'Average';
 });
 
