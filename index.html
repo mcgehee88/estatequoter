@@ -136,7 +136,7 @@ h1 span{color:var(--p)}
   background:var(--p);
   border-radius:5px;
   width:0;
-  transition:width .4s ease;
+  transition:width .4s.ease;
 }
 .q{
   display:none;
@@ -334,6 +334,9 @@ input[type="range"]{
       <input type="range" min="600" max="8000" value="2400" id="sqft">
       <div class="range-label" id="sqft-show">2,400 sq ft</div>
       <p class="small-note">Just an estimate is fine.</p>
+
+      <!-- Next button -->
+      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Next →</button>
     </div>
 
     <!-- Q2 -->
@@ -342,6 +345,9 @@ input[type="range"]{
       <input type="range" min="1" max="4" value="2" step="1" id="full">
       <div class="range-label" id="full-text">Average</div>
       <p class="small-note">From “lightly furnished” to “very full / hoarder-level.” No judgment.</p>
+
+      <!-- Next button -->
+      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Next →</button>
     </div>
 
     <!-- Q3 -->
@@ -352,6 +358,7 @@ input[type="range"]{
         <button type="button" class="btn-choice" data-highval="yes">Yes – antiques, art, jewelry, vehicles, collections</button>
       </div>
       <p class="small-note">This helps us decide whether to involve appraisal-driven specialists.</p>
+      <!-- no Next button; choices auto-advance -->
     </div>
 
     <!-- Q4 -->
@@ -362,6 +369,7 @@ input[type="range"]{
         <button type="button" class="btn-choice" data-clean="full">Full empty-out (everything gone)</button>
       </div>
       <p class="small-note">We’ll match you with teams that can handle as much (or as little) as you need.</p>
+      <!-- no Next button; choices auto-advance -->
     </div>
 
     <!-- Q5 -->
@@ -372,7 +380,8 @@ input[type="range"]{
       </div>
       <input type="file" id="vid" accept="video/*,image/*" multiple style="display:none">
       <p class="small-note">No need to tidy. This just helps us route you accurately.</p>
-      <button type="button" class="btn-choice" style="margin-top:20px;text-align:center;" onclick="next()">Skip for now</button>
+
+      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Skip for now →</button>
     </div>
 
     <!-- Q6 -->
@@ -485,7 +494,6 @@ function next(){
 }
 
 function finish(){
-  // Basic front-end validation
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
 
@@ -505,7 +513,7 @@ function finish(){
   data.email = email;
   data.phone = document.getElementById('phone').value.trim();
 
-  // TODO: send `data` to your backend / form handler here (fetch / XHR)
+  // TODO: send `data` to your backend / form handler here
 
   form.style.display = 'none';
   if (isLocal){
@@ -514,7 +522,6 @@ function finish(){
     document.getElementById('national-result').style.display = 'block';
   }
 
-  // hide mobile footer CTA after completion
   const footer = document.getElementById('footer-cta');
   if (footer) footer.style.display = 'none';
 }
