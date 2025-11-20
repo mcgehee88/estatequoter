@@ -2,146 +2,169 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EstateQuoter – Instant 95% Accurate Estate Liquidation Quote (60 Seconds)</title>
+<title>EstateQuoter – Get Your Estate Liquidation Quote Today</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Same-day exact quotes in our direct areas • Within 48 hours nationwide with 3–5 top local pros. Takes under 3 minutes.">
 <style>
-:root{--p:#2153ff;--g:#0d9d6a;--bg:#f8fafc;--t:#0f172a;--m:#64748b;--r:20px;--sh:0 10px 30px rgba(0,0,0,.1)}
-* {margin:0;padding:0;box-sizing:border-box}
-body {font-family:system-ui,sans-serif;background:var(--bg);color:var(--t);line-height:1.5}
-.page {max-width:1100px;margin:0 auto;padding:20px}
-h1 {font-size:38px;text-align:center;margin:40px auto;max-width:900px}
-h1 span {color:var(--p)}
-.btn {border:none;border-radius:999px;padding:18px 32px;font-size:18px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-p {background:linear-gradient(135deg,var(--p),#1641cc);color:#fff;box-shadow:0 10px 30px rgba(33,83,255,.3)}
-.btn-p:hover {transform:translateY(-3px);box-shadow:0 15px 35px rgba(33,83,255,.4)}
-.form {background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:32px;max-width:600px;margin:40px auto}
-.input,select,textarea {width:100%;padding:16px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px;margin:12px 0}
-.slider {width:100%;height:8px;border-radius:4px;background:#e2e8f0;outline:none;margin:20px 0}
-.multi {display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
-.multi label {background:#f1f5f9;padding:12px;border-radius:12px;font-size:14px;text-align:center;cursor:pointer;border:1px solid #e2e8f0}
-.multi input:checked + label {background:var(--p);color:#fff;border-color:var(--p)}
-.result {display:none;background:#ecfdf5;border:2px solid #86efac;border-radius:var(--r);padding:32px;margin:32px auto;max-width:600px;text-align:center}
-.video-cta {background:var(--g);color:#fff;padding:20px;border-radius:16px;margin:24px 0;text-align:center;cursor:pointer;font-size:18px;font-weight:600}
-.mobile-cta {position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px;box-shadow:0 -4px 20px rgba(0,0,0,.1);display:none;z-index:100}
-@media(max-width:767px){.mobile-cta{display:block}.page{padding-bottom:90px}h1{font-size:32px}}
+:root{--p:#2153ff;--g:#0d9d6a;--bg:#f8fafc;--t:#0f172a;--m:#64748b;--r:24px;--sh:0 12px 40px rgba(0,0,0,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--t);line-height:1.6}
+.page{max-width:1100px;margin:0 auto;padding:20px 20px 100px}
+header{padding:16px 0;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:800;display:flex;align-items:center;gap:12px}
+.logo-mark{width:48px;height:48px;background:radial-gradient(#a0f8d8,#0d9d6a,#2153ff);border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px}
+h1{font-size:44px;text-align:center;margin:20px auto 16px;font-weight:800;max-width:900px}
+h1 span{color:var(--p)}
+.sub{font-size:21px;text-align:center;max-width:800px;margin:0 auto 48px;color:#475569}
+.sub strong{color:var(--g)}
+.btn-p{background:linear-gradient(135deg,var(--p),#1641cc);color:#fff;border:none;border-radius:999px;padding:20px 36px;font-size:19px;font-weight:600;cursor:pointer;box-shadow:0 12px 30px rgba(33,83,255,.3);transition:all .2s}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(33,83,255,.4)}
+.form{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:40px;max-width:640px;margin:0 auto}
+.input,select{margin:14px 0;width:100%;padding:16px;border:1px solid #cbd5e1;border-radius:12px;font-size:16px}
+.slider{width:100%;height:10px;border-radius:5px;background:#e2e8f0;outline:none;margin:20px 0}
+.multi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0}
+.multi label{background:#f8fafc;padding:14px;border-radius:12px;text-align:center;cursor:pointer;border:1px solid #e2e8f0;font-size:14px}
+.multi input:checked + label{background:var(--p);color:#fff;border-color:var(--p)}
+.video-cta{background:var(--g);color:#fff;padding:24px;border-radius:16px;text-align:center;cursor:pointer;font-size:18px;font-weight:600;margin:20px 0}
+.result{display:none;background:#ecfdf5;border:2px solid #86efac;border-radius:var(--r);padding:40px;margin:32px auto;max-width:640px;text-align:center}
+.mobile-cta{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:16px;box-shadow:0 -6px 30px rgba(0,0,0,.1);z-index:100;display:none}
+@media(max-width:767px){
+  h1{font-size:36px}
+  .sub{font-size:19px}
+  .mobile-cta{display:block}
+}
 </style>
 </head>
 <body>
 
 <div class="page">
-  <h1>Get Your <span>95% Accurate Instant Quote</span> in 60 Seconds</h1>
-  <p style="text-align:center;font-size:20px;color:#475569;max-width:800px;margin:0 auto 40px;">
-    No obligation • Takes one minute • Most families save $8,000–$25,000
+  <header>
+    <div class="logo"><div class="logo-mark">EQ</div>EstateQuoter</div>
+  </header>
+
+  <h1>Get Your Estate Liquidation Quote <span>Today</span></h1>
+  <p class="sub">
+    Takes under 3 minutes • No obligation • Most families save $8,000–$25,000<br><br>
+    <strong>In our direct service areas → your exact quote today<br>
+    Everywhere else nationwide → within 48 hours from 3–5 top local pros</strong>
   </p>
 
   <div class="form">
     <div id="intake">
-      <progress value="0" max="100" style="width:100%;height:8px;border-radius:4px;" id="prog"></progress>
+      <progress value="0" max="100" style="width:100%;height:10px;border-radius:5px;" id="prog"></progress>
+      <p style="margin:20px 0 0;text-align:center;color:#64748b" id="step-counter">Step 1 of 8</p>
 
-      <!-- Step 1 – ZIP -->
+      <!-- Steps -->
       <div class="step active" data-s="1">
-        <p style="font-weight:600;margin-bottom:16px;">1. Where is the property?</p>
-        <input type="text" id="zip" class="input" placeholder="ZIP code" maxlength="5">
-        <div id="zip-msg" style="margin:16px 0;font-weight:600;"></div>
+        <p style="font-weight:600;font-size:18px;margin-bottom:12px">1. Where is the property located?</p>
+        <input type="text" id="zip" class="input" placeholder="Enter ZIP code" maxlength="5">
+        <div id="zip-msg" style="margin:16px 0;font-weight:600;min-height:24px"></div>
       </div>
 
-      <!-- Subsequent steps hidden until ZIP entered -->
-      <div class="step" data-s="2" style="display:none;">
-        <p style="font-weight:600;">2. Property type & size</p>
-        <select id="type" class="input"><option value="">Select type</option><option>House</option><option>Condo/Townhouse</option><option>Apartment</option><option>Mobile Home</option><option>Estate / Large property</option><option>Storage unit only</option></select>
-        <input type="range" min="400" max="8000" value="2500" class="slider" id="sqft"><span style="float:right" id="sqft-val">2,500 sqft</span>
-        <div class="multi"><label><input type="checkbox" value="attic"> Attic</label><label><input type="checkbox" value="basement"> Basement</label><label><input type="checkbox" value="garage"> Garage</label><label><input type="checkbox" value="shed"> Shed</label></div>
+      <div class="step" data-s="2"><p style="font-weight:600;font-size:18px;margin-bottom:12px">2. Property type & size</p>
+        <select id="type" class="input"><option value="">Property type</option><option>House</option><option>Condo / Townhouse</option><option>Apartment</option><option>Mobile Home</option><option>Estate / Large property</option><option>Storage unit only</option></select>
+        <input type="range" min="400" max="10000" value="2500" class="slider" id="sqft"><span style="float:right;font-weight:600" id="sqft-val">2,500 sqft</span>
+        <p style="margin-top:20px;font-weight:600">Extra spaces?</p>
+        <div class="multi">
+          <label><input type="checkbox" value="attic"> Attic</label>
+          <label><input type="checkbox" value="basement"> Basement</label>
+          <label><input type="checkbox" value="garage"> Garage</label>
+          <label><input type="checkbox" value="shed"> Shed</label>
+        </div>
       </div>
 
-      <div class="step" data-s="3" style="display:none;">
-        <p style="font-weight:600;">3. How full is it?</p>
-        <div style="display:flex;justify-content:space-between;margin:20px 0;font-size:14px;">
+      <div class="step" data-s="3"><p style="font-weight:600;font-size:18px;margin-bottom:12px">3. How full is the property?</p>
+        <div style="display:flex;justify-content:space-between;margin:20px 0;font-size:15px">
           <span>🧹 Light</span><span>Average</span><span>Packed</span><span>🏠 Hoarder</span>
         </div>
         <input type="range" min="1" max="4" value="2" class="slider" id="fullness">
       </div>
 
-      <div class="step" data-s="4" style="display:none;">
-        <p style="font-weight:600;">4. Any high-value items? (check all)</p>
+      <div class="step" data-s="4"><p style="font-weight:600;font-size:18px;margin-bottom:12px">4. Any high-value items? (check all that apply)</p>
         <div class="multi">
           <label><input type="checkbox"> Jewelry</label>
-          <label><input type="checkbox"> Antiques/Art</label>
+          <label><input type="checkbox"> Antiques / Art</label>
           <label><input type="checkbox"> Firearms</label>
-          <label><input type="checkbox"> Vehicles</label>
-          <label><input type="checkbox"> Coins/Gold</label>
-          <label><input type="checkbox"> Designer pieces</label>
+          <label><input type="checkbox"> Vehicles / Boats</label>
+          <label><input type="checkbox"> Coins / Gold</label>
+          <label><input type="checkbox"> Designer furniture</label>
         </div>
       </div>
 
-      <div class="step" data-s="5" style="display:none;">
-        <p style="font-weight:600;">5. Clean-out & timeline</p>
-        <select id="cleanout" class="input"><option>Select clean-out level</option><option>Broom-swept (remove sold + trash)</option><option>Full haul-away (empty everything)</option><option>Leave non-trash items</option></select>
-        <select id="timeline" class="input"><option>How soon?</option><option>ASAP (0–30 days)</option><option>1–3 months</option><option>3–6 months</option><option>Planning ahead</option></select>
+      <div class="step" data-s="5"><p style="font-weight:600;font-size:18px;margin-bottom:12px">5. Clean-out & timeline</p>
+        <select id="cleanout" class="input"><option>Clean-out required?</option><option>Broom-swept (remove sold + trash)</option><option>Full haul-away (empty everything)</option><option>Leave non-trash items</option></select>
+        <select id="timeline" class="input"><option>How soon do you need help?</option><option>ASAP (0–30 days)</option><option>1–3 months</option><option>3–6 months</option><option>Planning ahead (6+ months)</option></select>
       </div>
 
-      <div class="step" data-s="6" style="display:none;">
-        <p style="font-weight:600;">6. Any hazards or access issues?</p>
+      <div class="step" data-s="6"><p style="font-weight:600;font-size:18px;margin-bottom:12px">6. Any hazards or access issues?</p>
         <div class="multi">
           <label><input type="checkbox"> Grand piano</label>
-          <label><input type="checkbox"> Gun safe</label>
+          <label><input type="checkbox"> Gun safe (>500lb)</label>
           <label><input type="checkbox"> Stairs (no elevator)</label>
-          <label><input type="checkbox"> Long carry</label>
-          <label><input type="checkbox"> Biohazard/chemicals</label>
-          <label><input type="checkbox"> None</label>
+          <label><input type="checkbox"> Long carry (>75ft)</label>
+          <label><input type="checkbox"> Biohazard / chemicals</label>
+          <label><input type="checkbox"> None of the above</label>
         </div>
       </div>
 
-      <div class="step" data-s="7" style="display:none;">
-        <p style="font-weight:600;">7. Quick 30–60 sec video walkthrough? (this gets us to 95–98% accuracy)</p>
+      <div class="step" data-s="7"><p style="font-weight:600;font-size:18px;margin-bottom:12px">7. Quick video walkthrough? (gets us to 95–98% accuracy)</p>
         <div class="video-cta" onclick="document.getElementById('video').click()">
-          ❤️ Ready – no need to tidy, we’ve seen everything!<br>Record or upload a quick walk-through
+          ❤️ Ready to record? No need to tidy – we’ve seen it all!<br>30–60 second walk-through (optional but huge help)
         </div>
         <input type="file" id="video" accept="video/*,image/*" multiple style="display:none">
-        <p style="font-size:14px;color:#64748b;margin-top:12px;">Completely private – only our senior estimator sees it</p>
+        <p style="font-size:14px;color:#64748b;margin-top:12px">100% private – only our senior estimator sees it</p>
       </div>
 
-      <button class="btn btn-p" id="next-btn" style="width:100%;margin-top:24px;padding:20px;font-size:20px;" onclick="nextStep()">
-        Show My Instant Quote →
+      <div class="step" data-s="8"><p style="font-weight:600;font-size:18px;margin-bottom:12px">8. Where should we send your quote?</p>
+        <input type="text" id="name" class="input" placeholder="Your name">
+        <input type="email" id="email" class="input" placeholder="Email (required)" required>
+        <input type="tel" id="phone" class="input" placeholder="Phone (optional – gets faster responses)">
+      </div>
+
+      <button class="btn-p" id="next-btn" style="width:100%;margin-top:32px;padding:22px;font-size:21px" onclick="nextStep()">
+        Get My Quote →
       </button>
     </div>
 
-    <!-- Result screens -->
+    <!-- Result Screens -->
     <div id="result-innetwork" class="result">
-      <h3 style="color:var(--g);">Your 95% Accurate Quote</h3>
-      <div style="font-size:42px;font-weight:800;color:var(--g);margin:16px 0;" id="price-range">$6,200 – $11,400</div>
-      <p>total commission + full clean-out</p>
-      <a href="https://calendly.com/yourhandle/30min" target="_blank" class="btn btn-p" style="background:var(--g);margin:24px 0;padding:20px;font-size:20px;display:inline-block;width:100%;text-decoration:none;">
-        Yes – Lock in This Quote (Free 15-min call or on-site)
+      <h3 style="color:var(--g);font-size:28px">Your Exact Quote is Ready Today!</h3>
+      <div style="font-size:48px;font-weight:800;color:var(--g);margin:20px 0" id="in-price">$6,200 – $11,400</div>
+      <p style="font-size:20px;margin:20px 0">total commission + clean-out</p>
+      <a href="https://calendly.com/your-calendly-handle/30min" target="_blank" class="btn-p" style="background:var(--g);padding:22px 40px;font-size:21px;display:inline-block;text-decoration:none;margin:20px 0">
+        Lock In This Quote – Free 15-Min Call or On-Site Visit
       </a>
+      <p style="color:#047857;font-weight:600">95% of these quotes end up within 5% after we visit</p>
     </div>
 
     <div id="result-referral" class="result">
-      <h3 style="color:var(--p);">Your Instant Quote Range</h3>
-      <div style="font-size:38px;font-weight:800;color:var(--p);margin:16px 0;" id="refer-range">$5,800 – $13,100</div>
-      <p>We’ll have 3–5 top local pros contact you with exact bids in 24–48 hrs</p>
-      <button class="btn btn-p" onclick="document.getElementById('contact').style.display='block'" style="width:100%;margin:24px 0;padding:20px;font-size:20px;">
-        Send My Details to Local Pros →
+      <h3 style="color:var(--p);font-size:28px">You’ll Have Quotes Within 48 Hours</h3>
+      <div style="font-size:44px;font-weight:800;color:var(--p);margin:20px 0">3–5 Top Local Pros</div>
+      <p style="font-size:20px">will review your details and send you exact quotes (most respond same or next day)</p>
+      <button class="btn-p" style="width:100%;margin:24px 0;padding:22px;font-size:21px" onclick="alert('Thank you! You’ll hear from local pros within 48 hours.')">
+        Yes – Send My Details →
       </button>
-    </div>
-
-    <div id="contact" style="display:none;margin-top:24px;">
-      <input type="text" placeholder="Your name" class="input">
-      <input type="email" placeholder="Email" class="input">
-      <input type="tel" placeholder="Phone (optional)" class="input">
-      <button class="btn btn-p" style="width:100%;margin-top:12px;">Get My Quotes →</button>
     </div>
   </div>
 </div>
 
 <div class="mobile-cta">
-  <button class="btn btn-p" onclick="document.querySelector('.form').scrollIntoView()" style="width:100%;padding:20px;font-size:19px;">
-    Get Instant Quote (60 sec) →
+  <button class="btn-p" onclick="document.querySelector('.form').scrollIntoView({behavior:'smooth'})">
+    Get My Quote Today →
   </button>
 </div>
 
 <script>
-// Same localZips Set as previous version
-const localZips = new Set(["23451","23452","23453","23454","23455","23456","23457","23462","23464","23320","23321","23322","23323","23324","23503","23507","23508","23509","23510","23518", /* etc – full list from before */ ]);
+// Full Hampton Roads ZIP list (add/remove as needed)
+const localZips = new Set([
+  "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
+  "23320","23321","23322","23323","23324","23325","23326","23327","23328",
+  "23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523",
+  "23701","23702","23703","23704","23707","23708","23709",
+  "23432","23433","23434","23435","23436","23437","23438","23439",
+  "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681",
+  "23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"
+]);
 
 let step = 1;
 let isLocal = false;
@@ -151,40 +174,44 @@ document.getElementById('zip').addEventListener('input', e => {
   if (z.length === 5 && /^\d+$/.test(z)) {
     isLocal = localZips.has(z);
     document.getElementById('zip-msg').innerHTML = isLocal 
-      ? `✅ <span style="color:#0d9d6a">Instant exact quote available in your area</span>`
-      : `✅ Instant quote + we’ll connect you with top local pros`;
+      ? `✅ <span style="color:#0d9d6a;font-weight:600">Same-day exact quote from us!</span>`
+      : `✅ We’ll connect you with 3–5 top local pros (within 48 hours)`;
     showStep(2);
   }
 });
 
 function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
-  document.querySelector(`.step[data-s="${n}"]`).style.display = 'block';
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.step[data-s="${n}"]`).classList.add('active');
   step = n;
   document.getElementById('prog').value = (n / 8) * 100;
+  document.getElementById('step-counter').textContent = `Step ${n} of 8`;
+  window.scrollTo(0, document.querySelector('.form').offsetTop - 20);
 }
 
 function nextStep() {
   if (step < 8) { showStep(step + 1); return; }
 
-  // Dummy calculation – replace with your real matrix
-  const base = 8000;
-  const range = isLocal ? [base * 0.9, base * 1.1] : [base * 0.8, base * 1.3];
+  // Dummy pricing – replace with your real calculator later
+  const base = 8200;
+  const range = isLocal ? [base * 0.88, base * 1.12] : [base * 0.82, base * 1.22];
 
   document.getElementById('intake').style.display = 'none';
   if (isLocal) {
-    document.getElementById('price-range').textContent = `$${Math.round(range[0]/100)*100} – $${Math.round(range[1]/100)*100}`;
+    document.getElementById('in-price').textContent = `$${Math.round(range[0]/100)*100} – $${Math.round(range[1]/100)*100}`;
     document.getElementById('result-innetwork').style.display = 'block';
   } else {
-    document.getElementById('refer-range').textContent = `$${Math.round(range[0]/100)*100} – $${Math.round(range[1]/100)*100}`;
     document.getElementById('result-referral').style.display = 'block';
   }
 }
 
-// Update sqft display
-document.getElementById('sqft').addEventListener('input', e => {
-  document.getElementById('sqft-val').textContent = e.target.value + " sqft";
-});
+// Sqft display
+document.getElementById('sqft').addEventListener('input', e => 
+  document.getElementById('sqft-val').textContent = Number(e.target.value).toLocaleString() + " sqft"
+);
+
+// Start on ZIP focus
+document.getElementById('zip').focus();
 </script>
 </body>
 </html>
