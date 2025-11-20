@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EstateQuoter – Fast, Trusted Estate Liquidation & Planning Quotes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="EstateQuoter connects families, executors, and advisors with trusted estate liquidators and planners. Share a few details and get multiple quotes quickly and easily."
+  />
+  <style>
+    :root {
+      --bg-light: #f5f7fa;
+      --bg-white: #ffffff;
+      --primary: #2153ff;
+      --primary-dark: #1636b5;
+      --accent: #1f9d6a;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --danger: #b91c1c;
+      --success: #15803d;
+      --shadow-soft: 0 10px 25px rgba(15, 23, 42, 0.08);
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text-main);
+      background: var(--bg-light);
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Layout */
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 16px 16px 40px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 20%, #c7f9e9 0, #1f9d6a 40%, #2153ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.25);
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 20px;
+      margin-bottom: 32px;
+    }
+
+    .hero-copy {
+      padding: 16px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(31, 157, 106, 0.08);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 18px;
+      max-width: 34rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .btn-primary {
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 10px 18px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4);
+      opacity: 0.96;
+    }
+
+    .btn-secondary {
+      border-radius: var(--radius-full);
+      padding: 9px 16px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #ffffff;
+      border-color: #cbd5f5;
+    }
+
+    .hero-footnote {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .hero-footnote strong {
+      color: var(--accent);
+    }
+
+    .hero-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 16px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      font-size: 13px;
+    }
+
+    .hero-card-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 9px;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #f9fafb;
+    }
+
+    .hero-card-highlight {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #eff6ff;
+      font-size: 11px;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Section shell */
+
+    section {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      margin-bottom: 12px;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 38rem;
+    }
+
+    /* How it works */
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .step-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 12px 12px 12px;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .step-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background: #eff6ff;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .step-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Form */
+
+    .quote-shell {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 16px 16px 18px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-weight: 500;
+    }
+
+    .label-note {
+      font-weight: 400;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    input,
+    select,
+    textarea {
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      padding: 8px 9px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      background: #ffffff;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease;
+      width: 100%;
+      min-width: 0;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #93c5fd;
+      box-shadow: 0 0 0 1px #bfdbfe;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .inline-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .inline-options label {
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      background: #f9fafb;
+    }
+
+    .inline-options input[type="radio"] {
+      width: 14px;
+      height: 14px;
+    }
+
+    .form-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .form-footnote {
+      font-size: 11px;
+      color: var(--text-muted);
+      max-width: 230px;
+    }
+
+    .status-msg {
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .status-msg.error {
+      color: var(--danger);
+    }
+
+    .status-msg.success {
+      color: var(--success);
+    }
+
+    /* Personas */
+
+    .persona-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .persona-card {
+      background: #f9fafb;
+      border-radius: var(--radius-lg);
+      padding: 12px 12px;
+      border: 1px dashed var(--border-subtle);
+      font-size: 13px;
+    }
+
+    .persona-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .persona-list {
+      margin-top: 4px;
+      padding-left: 16px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* FAQ */
+
+    .faq-list {
+      margin-top: 8px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-white);
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .faq-item + .faq-item {
+      border-top: 1px solid #e5e7eb;
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .faq-a {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    /* Footer */
+
+    footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    footer a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+    }
+
+    /* Desktop */
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 24px 24px 48px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: center;
+        gap: 32px;
+      }
+
+      .hero-title {
+        font-size: 34px;
+      }
+
+      .hero-subtitle {
+        font-size: 15px;
+      }
+
+      .nav-cta {
+        display: inline-flex;
+      }
+
+      .how-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .form-grid .field-full {
+        grid-column: 1 / -1;
+      }
+
+      .persona-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <div class="logo-mark">EQ</div>
+        <div>
+          <div class="logo-text-main">EstateQuoter</div>
+          <div class="logo-text-sub">Estate planning & liquidation made easy</div>
+        </div>
+      </div>
+      <button class="btn-secondary nav-cta" onclick="scrollToForm()">
+        Get quotes
+        <span aria-hidden="true">↘</span>
+      </button>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="badge">
+          <span aria-hidden="true">⚡</span>
+          Fast, trusted estate quotes
+        </div>
+        <h1 id="hero-title" class="hero-title">
+          Get estate <span>liquidation & planning</span> quotes in days, not weeks.
+        </h1>
+        <p class="hero-subtitle">
+          EstateQuoter connects families, executors, and advisors with vetted estate liquidators and
+          planning professionals. Share a few details once—get multiple quotes, clearly laid out.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="scrollToForm()">
+            Start my estate quote
+            <span aria-hidden="true">→</span>
+          </button>
+          <button class="btn-secondary" onclick="scrollToHow()">
+            See how it works
+          </button>
+        </div>
+        <p class="hero-footnote">
+          <strong>No obligation.</strong> One short form. We match you with trusted local pros.
+        </p>
+      </div>
+
+      <aside class="hero-card" aria-label="Example comparison">
+        <div class="hero-card-title">
+          <span aria-hidden="true">📊</span>
+          Example: 3 liquidation quotes for a 3-bedroom home
+        </div>
+        <p>
+          EstateQuoter doesn’t just send names—we line up the key details side by side so you can
+          choose quickly and confidently.
+        </p>
+        <div class="hero-pill-row" aria-label="Sample quote summary">
+          <span class="pill">Company A · 35% commission · 10 days</span>
+          <span class="pill">Company B · 40% commission · includes clean-out</span>
+          <span class="pill">Company C · Flat fee · online auction only</span>
+        </div>
+        <div class="hero-card-highlight">
+          <span aria-hidden="true">✅</span>
+          You see fees, timelines, and services in one view. No endless phone tag.
+        </div>
+      </aside>
+    </section>
+
+    <!-- How it works -->
+    <section id="how" aria-labelledby="how-title">
+      <div class="section-header">
+        <div class="section-kicker">How EstateQuoter works</div>
+        <h2 id="how-title" class="section-title">One simple form. Clear quotes. Faster decisions.</h2>
+        <p class="section-subtitle">
+          Whether you’re settling an estate, downsizing, or planning ahead, we help you compare
+          estate liquidators and planning support in a clear, apples-to-apples way.
+        </p>
+      </div>
+
+      <div class="how-grid">
+        <div class="step-card">
+          <div class="step-icon" aria-hidden="true">1</div>
+          <div>
+            <div class="step-title">Tell us about the estate</div>
+            <p>
+              Basic details: location, home size, timeline, and whether you need help with
+              liquidation, planning, or both.
+            </p>
+            <div class="step-meta">Takes about 2–3 minutes.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon" aria-hidden="true">2</div>
+          <div>
+            <div class="step-title">We match you with vetted pros</div>
+            <p>
+              Estate liquidators and planning professionals in our network review your request and
+              prepare simple, transparent quotes.
+            </p>
+            <div class="step-meta">Typically see first responses within 1–2 business days.</div>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon" aria-hidden="true">3</div>
+          <div>
+            <div class="step-title">Compare and choose, with confidence</div>
+            <p>
+              See commission rates, fees, timelines, and what’s included in one place—then decide
+              what works best for your situation.
+            </p>
+            <div class="step-meta">No obligation to hire anyone.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote form -->
+    <section id="quote" aria-labelledby="quote-title">
+      <div class="section-header">
+        <div class="section-kicker">Start your quote</div>
+        <h2 id="quote-title" class="section-title">
+          Share a few details to get estate quotes started.
+        </h2>
+        <p class="section-subtitle">
+          Complete the secure form below and we’ll match you with trusted providers in the estate’s
+          area. There’s no cost and no obligation.
+        </p>
+      </div>
+
+      <div class="quote-shell">
+        <!-- NOTE:
+             For now this is a front-end-only form.
+             To receive submissions, you (or your dev) can:
+             - Connect it to Netlify Forms, Formspree, or your own backend
+             - Or add a "mailto:" action if you want direct emails.
+        -->
+        <form id="estate-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="fullName">Your name</label>
+              <input id="fullName" name="fullName" autocomplete="name" required />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+
+            <div class="field">
+              <label for="phone">
+                Phone
+                <span class="label-note">(optional, but helpful for time-sensitive estates)</span>
+              </label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" />
+            </div>
+            <div class="field">
+              <label for="role">You are…</label>
+              <select id="role" name="role" required>
+                <option value="">Select one</option>
+                <option value="executor">Executor / Personal representative</option>
+                <option value="family">Family member / Heir</option>
+                <option value="advisor">Attorney / Financial advisor</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="estateLocation">Estate ZIP / city &amp; state</label>
+              <input
+                id="estateLocation"
+                name="estateLocation"
+                placeholder="e.g., 23455 or Virginia Beach, VA"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="homeSize">Approximate home size</label>
+              <select id="homeSize" name="homeSize">
+                <option value="">Select one</option>
+                <option value="apt">Apartment / condo</option>
+                <option value="small">Up to 2 bedrooms</option>
+                <option value="medium">3–4 bedrooms</option>
+                <option value="large">5+ bedrooms or multi-unit</option>
+              </select>
+            </div>
+
+            <div class="field field-full">
+              <label>What do you need help with?</label>
+              <div class="inline-options">
+                <label>
+                  <input type="radio" name="needType" value="liquidation" required />
+                  Estate liquidation / sale
+                </label>
+                <label>
+                  <input type="radio" name="needType" value="planning" />
+                  Estate planning documents
+                </label>
+                <label>
+                  <input type="radio" name="needType" value="both" />
+                  Both liquidation and planning
+                </label>
+              </div>
+            </div>
+
+            <div class="field field-full">
+              <label for="timing">How soon do you need help?</label>
+              <select id="timing" name="timing">
+                <option value="">Select one</option>
+                <option value="asap">As soon as possible</option>
+                <option value="30days">Within the next 30 days</option>
+                <option value="90days">Within the next 3 months</option>
+                <option value="planning-ahead">Just planning ahead</option>
+              </select>
+            </div>
+
+            <div class="field field-full">
+              <label for="notes">
+                Tell us anything else that would help
+                <span class="label-note">(optional)</span>
+              </label>
+              <textarea
+                id="notes"
+                name="notes"
+                placeholder="For example: 'Full house plus garage and attic,' 'heirlooms and collectibles,' 'coordinating with attorney,' or other details."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="form-footer">
+            <div>
+              <button type="submit" class="btn-primary">
+                Submit my quote request
+                <span aria-hidden="true">→</span>
+              </button>
+              <div id="form-status" class="status-msg"></div>
+            </div>
+            <p class="form-footnote">
+              We’ll review your request, match you with trusted providers in your area, and email
+              you with next steps. No spam, ever.
+            </p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Personas -->
+    <section aria-labelledby="who-title">
+      <div class="section-header">
+        <div class="section-kicker">Who EstateQuoter is for</div>
+        <h2 id="who-title" class="section-title">Built for families, executors, and advisors.</h2>
+        <p class="section-subtitle">
+          EstateQuoter is designed to help real people make clear decisions during stressful
+          moments—without needing to become an expert in estate liquidation or planning.
+        </p>
+      </div>
+
+      <div class="persona-grid">
+        <article class="persona-card">
+          <div class="persona-title">
+            <span aria-hidden="true">👨‍👩‍👧</span>
+            Families & heirs
+          </div>
+          <p>
+            When you’re dealing with grief, logistics, and deadlines at the same time, the last
+            thing you need is a dozen cold calls and confusing quotes.
+          </p>
+          <ul class="persona-list">
+            <li>Understand options without pressure</li>
+            <li>See fees and services laid out clearly</li>
+            <li>Choose the pace and level of help you want</li>
+          </ul>
+        </article>
+
+        <article class="persona-card">
+          <div class="persona-title">
+            <span aria-hidden="true">⚖️</span>
+            Executors & advisors
+          </div>
+          <p>
+            Estate attorneys, planners, and financial advisors use EstateQuoter to coordinate
+            liquidation and planning support for their clients, all in one place.
+          </p>
+          <ul class="persona-list">
+            <li>Request quotes on behalf of clients</li>
+            <li>Keep communication organized</li>
+            <li>Document who was contacted and when</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section aria-labelledby="faq-title">
+      <div class="section-header">
+        <div class="section-kicker">Questions</div>
+        <h2 id="faq-title" class="section-title">Common questions about EstateQuoter.</h2>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">Does EstateQuoter charge me for using the service?</div>
+          <div class="faq-a">
+            No. Submitting a quote request is free for families, executors, and advisors. If a
+            provider charges fees or commission, those details are shown clearly in their quote.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Am I required to hire anyone after I submit the form?</div>
+          <div class="faq-a">
+            No. Your request simply lets vetted providers review your situation and respond with
+            options. You decide if, when, and whom to hire.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Do you handle both estate liquidation and estate planning?</div>
+          <div class="faq-a">
+            Yes. Many people need help on both sides: selling or clearing the contents of a home and
+            making sure future plans are in place. EstateQuoter is designed to help you understand
+            the options available in your area for each need.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Is my information shared with anyone?</div>
+          <div class="faq-a">
+            We only share the details necessary for trusted providers to understand your request and
+            respond. You stay in control of the conversation and can ask us to remove your
+            information at any time.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>© <span id="year"></span> EstateQuoter. All rights reserved.</div>
+      <div>
+        <a href="#quote">Get estate quotes</a>
+        ·
+        <a href="#how">How it works</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function scrollToForm() {
+      const el = document.getElementById("quote");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function scrollToHow() {
+      const el = document.getElementById("how");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // Simple fake submit handler (front-end only)
+    const form = document.getElementById("estate-form");
+    const statusEl = document.getElementById("form-status");
+    const yearEl = document.getElementById("year");
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear().toString();
+    }
+
+    if (form && statusEl) {
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        // Minimal validation
+        const requiredIds = ["fullName", "email", "estateLocation"];
+        let missing = false;
+        requiredIds.forEach((id) => {
+          const input = document.getElementById(id);
+          if (input && !input.value.trim()) {
+            input.style.borderColor = "#fca5a5";
+            missing = true;
+          } else if (input) {
+            input.style.borderColor = "#e5e7eb";
+          }
+        });
+
+        const needType = form.querySelector('input[name="needType"]:checked');
+        if (!needType) {
+          missing = true;
+        }
+
+        statusEl.style.display = "block";
+
+        if (missing) {
+          statusEl.textContent = "Please fill in the required fields before submitting.";
+          statusEl.className = "status-msg error";
+          return;
+        }
+
+        // In production: send to your backend/Formspree/Netlify/etc.
+        statusEl.textContent =
+          "Thanks for submitting your details. We’ll review your request and follow up with next steps.";
+        statusEl.className = "status-msg success";
+        form.reset();
+      });
+    }
+  </script>
+</body>
+</html>
