@@ -364,6 +364,27 @@ button,
 #logo-home:hover {
   text-decoration:none;
 }
+  
+/* -------------------------------------- */
+/* REQUIRED VIDEO CONSENT HIGHLIGHT STYLE */
+/* -------------------------------------- */
+#tc-label.required {
+  display:block !important;
+  background:#fff0f0;
+  border:1px solid #dc2626;
+  padding:12px;
+  border-radius:10px;
+}
+
+#tc-label.required::after {
+  content:" *";
+  color:#dc2626;
+  font-weight:900;
+  margin-left:4px;
+}
+/* -------------------------------------- */
+</style>
+
 </style>
 </head>
 <body>
@@ -1149,7 +1170,8 @@ document.getElementById('video-upload').onchange = e => {
   prev.style.display = 'block';
 
   document.getElementById('video-box').classList.add('ready');
-  document.getElementById('tc-label').style.display = 'block';
+  document.getElementById('tc-label').classList.add('required');
+
 
   // make sure consent starts unchecked and must be checked on this step
   document.getElementById('tc-check').checked = false;
