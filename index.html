@@ -1223,16 +1223,17 @@ async function sendLeadToMake(leadData) {
       const formData = new FormData();
       formData.append('file', videoFile);
 
-      // gofile.io = free, no account, links last forever (as long as someone opens it once)
-      const uploadRes = await fetch('https://store1.gofile.io/contents/uploadfile', {
+      // UPDATED GOFILE ENDPOINT
+      const uploadRes = await fetch('https://api.gofile.io/uploadFile', {
         method: 'POST',
         body: formData
       });
 
       const result = await uploadRes.json();
 
-      if (result.status === 'ok' && result.data && result.data.directLink) {
-        leadData.videoUrl = result.data.directLink;   // ← this is the magic clickable link
+      // gofile now returns downloadPage instead of directLink
+      if (result.status === 'ok' && result.data && result.data.downloadPage) {
+        leadData.videoUrl = result.data.downloadPage;   // clickable link
         leadData.videoProvided = "Yes";
       } else {
         leadData.videoUrl = "Upload failed – will contact user";
@@ -1258,6 +1259,7 @@ async function sendLeadToMake(leadData) {
   mainBtn.textContent = "Submit request";
   mainBtn.disabled = false;
 }
+
 </script>
 
 </body>
