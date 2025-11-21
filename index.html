@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EstateQuoter – Simple Estate Liquidation Quotes in 48 Hours or Less</title>
+<title>EstateQuoter – Fast, Free Estate Liquidation Quotes</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
   --p:#2153ff;
@@ -11,275 +12,176 @@
   --bg:#f8fafc;
   --t:#0f172a;
   --m:#64748b;
-  --r:28px;
-  --sh:0 16px 50px rgba(0,0,0,.12);
+  --r:24px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
   font-family:system-ui,-apple-system,sans-serif;
   background:var(--bg);
   color:var(--t);
   line-height:1.6;
-  padding-bottom:120px;
+  min-height:100dvh;
 }
-.page{
-  max-width:1100px;
-  margin:0 auto;
-  padding:40px 20px;
-  text-align:center;
-}
-.logo{
-  font-size:32px;
-  font-weight:800;
-  display:inline-flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:30px;
-}
-.logo-mark{
-  width:52px;height:52px;
-  background:radial-gradient(#a0f8d8,#0d9d6a,#2153ff);
-  border-radius:18px;
-  display:grid;
-  place-items:center;
-  color:#fff;
-  font-weight:900;
-  font-size:24px;
-}
-h1{
-  font-size:46px;
-  font-weight:800;
-  margin:0 auto 18px;
-  max-width:800px;
-}
-h1 span{color:var(--p)}
-.sub{
-  font-size:20px;
-  max-width:720px;
-  margin:0 auto 30px;
-  color:#475569;
-}
-.sub strong{
-  color:var(--g);
-  font-weight:600;
-}
-.trust{
-  font-size:15px;
-  color:var(--m);
-  margin-top:6px;
-}
-.btn{
-  background:linear-gradient(135deg,var(--p),#1641cc);
-  color:#fff;
-  border:none;
-  border-radius:999px;
-  padding:18px 44px;
-  font-size:20px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 16px 40px rgba(33,83,255,.4);
-  transition:all .25s;
-}
-.btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 20px 55px rgba(33,83,255,.5);
-}
-.btn-g{
-  background:var(--g);
-  box-shadow:0 16px 40px rgba(13,157,106,.4);
-}
-.zip-box{
-  max-width:480px;
-  margin:20px auto 40px;
+.page { padding:32px 16px 120px; max-width:640px; margin:0 auto; text-align:center; }
+.logo { font-size:32px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:24px; }
+.logo-mark { width:48px; height:48px; background:radial-gradient(#a0f8d8,#0d9d6a,#2153ff); border-radius:16px; display:grid; place-items:center; color:#fff; font-weight:900; font-size:22px; }
+h1 { font-size:36px; font-weight:800; margin-bottom:16px; }
+h1 span { color:var(--p); }
+.sub { font-size:19px; color:#475569; margin-bottom:30px; }
+.sub strong { color:var(--g); }
+
+.form-container {
   background:#fff;
   border-radius:var(--r);
-  box-shadow:var(--sh);
-  padding:32px 28px;
-}
-.zip-box input{
-  width:100%;
-  padding:16px;
-  font-size:20px;
-  border:1px solid #cbd5e1;
-  border-radius:16px;
-  text-align:center;
-  margin:18px 0 8px;
-}
-#zip-msg{
-  min-height:32px;
-  font-size:17px;
-}
-.form{
-  max-width:620px;
+  box-shadow:0 16px 50px rgba(0,0,0,.1);
+  padding:32px 24px;
+  text-align:left;
   margin:0 auto;
-  background:#fff;
-  border-radius:var(--r);
-  box-shadow:var(--sh);
-  padding:40px 32px 36px;
-  position:relative;
-  display:none; /* hide until ZIP entered */
-  text-align:left;
+  display:none;
 }
-.form h2{
-  font-size:24px;
-  margin-bottom:8px;
-  text-align:left;
-}
-.progress{
-  height:8px;
+.progress {
+  height:10px;
   background:#e2e8f0;
   border-radius:5px;
-  margin-bottom:30px;
+  overflow:hidden;
+  margin-bottom:32px;
 }
-.bar{
-  height:100%;
-  background:var(--p);
-  border-radius:5px;
-  width:0;
-  transition:width .4s.ease;
-}
-.q{
-  display:none;
-  animation:fade .4s;
-}
-.q.active{display:block}
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:none}
-}
-label{
-  display:block;
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:10px;
-}
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea{
+.bar { height:100%; background:var(--p); width:0; transition:width .5s ease; }
+.step-title { font-size:24px; font-weight:700; margin-bottom:8px; }
+.q { display:none; animation:fade .4s; }
+.q.active { display:block; }
+@keyframes fade { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+label { display:block; font-weight:600; margin:20px 0 8px; font-size:17px; }
+input[type=text], input[type=number], input[type=email], input[type=tel], select, textarea {
   width:100%;
   padding:14px 16px;
   border:1px solid #cbd5e1;
   border-radius:14px;
-  font-size:16px;
-  margin-top:4px;
+  font-size:17px;
 }
-.range-label{
-  font-size:24px;
-  font-weight:700;
-  margin:20px 0 10px;
-  text-align:center;
-}
-input[type="range"]{
+.range-wrap { position:relative; margin:20px 0; }
+input[type=range] {
   width:100%;
+  height:8px;
+  border-radius:8px;
+  background:#e2e8f0;
+  outline:none;
+  -webkit-appearance:none;
 }
-.btn-choice{
-  display:block;
-  width:100%;
-  padding:14px 16px;
-  border-radius:999px;
-  border:1px solid #cbd5e1;
-  background:#f8fafc;
-  font-size:16px;
-  font-weight:600;
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:28px; height:28px;
+  border-radius:50%;
+  background:var(--p);
   cursor:pointer;
 }
-.btn-choice.active{
+.range-value {
+  position:absolute;
+  top:-50px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--p);
+  color:#fff;
+  padding:8px 16px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:20px;
+  white-space:nowrap;
+}
+.range-value::after {
+  content:"";
+  position:absolute;
+  bottom:-6px; left:50%;
+  margin-left:-6px;
+  border-width:6px;
+  border-style:solid;
+  border-color:var(--p) transparent transparent transparent;
+}
+.input-with-unit {
+  position:relative;
+}
+.input-with-unit::after {
+  content:"sq ft";
+  position:absolute;
+  right:16px; top:50%;
+  transform:translateY(-50%);
+  color:#64748b;
+  pointer-events:none;
+}
+.chips {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:12px 0;
+}
+.chip {
+  padding:10px 18px;
+  border:2px solid #cbd5e1;
+  border-radius:999px;
+  background:#fff;
+  cursor:pointer;
+  transition:all .2s;
+}
+.chip.active {
   border-color:var(--p);
   background:#e0ebff;
+  color:var(--p);
 }
-.choice-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-  margin:22px 0 10px;
-}
-.small-note{
-  font-size:13px;
-  color:var(--m);
-  margin-top:8px;
-}
-.big-btn{
-  font-size:20px;
-  padding:18px 26px;
-  margin-top:32px;
-  width:100%;
-}
-.video{
-  background:var(--g);
-  color:#fff;
-  padding:16px;
-  border-radius:18px;
-  cursor:pointer;
-  margin:20px 0 10px;
-  font-size:16px;
-  font-weight:600;
+.video-box {
+  border:3px dashed #94a3b8;
+  border-radius:16px;
+  padding:32px 20px;
   text-align:center;
+  background:#f8fafc;
+  cursor:pointer;
 }
-.result{
-  display:none;
+.video-box.ready {
+  border-color:var(--g);
   background:#ecfdf5;
-  border:2px solid #86efac;
-  border-radius:var(--r);
-  padding:40px 32px;
-  max-width:620px;
-  margin:40px auto 0;
-  text-align:left;
 }
-.result h3{
-  font-size:26px;
-  margin-bottom:10px;
-  color:#047857;
-}
-.result p{
-  font-size:16px;
-  margin-bottom:14px;
-}
-.result .btn{
-  width:100%;
-  margin-top:14px;
-}
-.footer-cta{
+#video-preview { max-width:100%; border-radius:12px; margin-top:12px; display:none; }
+
+.fixed-btn {
   position:fixed;
-  bottom:0;left:0;right:0;
+  bottom:0; left:0; right:0;
+  padding:16px;
   background:#fff;
-  padding:12px 16px;
-  box-shadow:0 -8px 40px rgba(0,0,0,.12);
+ 0 -8px 40px rgba(0,0,0,.1);
   z-index:100;
-  display:none;
 }
-.footer-cta .btn{
+.fixed-btn button {
   width:100%;
-  padding:14px;
-  font-size:18px;
-  box-shadow:none;
+  padding:18px;
+  font-size:19px;
+  font-weight:700;
+  background:linear-gradient(135deg,var(--p),#1641cc);
+  color:#fff;
+  border:none;
+  border-radius:999px;
+  box-shadow:0 10px 30px rgba(33,83,255,.3);
 }
-.how{
-  max-width:900px;
-  margin:40px auto 10px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  text-align:left;
+@media(min-width:768px) {
+  .fixed-btn { position:static; padding:0; margin-top:40px; }
+  .fixed-btn button { width:auto; padding:18px 50px; }
 }
-.how-item h3{
-  font-size:17px;
-  margin-bottom:4px;
+.modal {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
 }
-.how-item p{
-  font-size:14px;
-  color:var(--m);
-}
-@media(max-width:767px){
-  h1{font-size:32px}
-  .sub{font-size:18px}
-  .page{padding:28px 16px}
-  .form{padding:28px 20px}
-  .how{
-    grid-template-columns:1fr;
-    text-align:left;
-  }
-  .footer-cta{display:block;}
+.modal.active { display:flex; }
+.modal-content {
+  background:#fff;
+  border-radius:var(--r);
+  padding:32px;
+  text-align:center;
+  max-width:420px;
 }
 </style>
 </head>
@@ -290,300 +192,318 @@ input[type="range"]{
     <div class="logo-mark">EQ</div>
     EstateQuoter
   </div>
-
-  <h1>Estate liquidation quotes,<br><span>without the runaround.</span></h1>
+  <h1>Estate liquidation quotes,<br><span>without the hassle.</span></h1>
   <p class="sub">
-    Answer 6 quick questions and get connected with trusted estate liquidators in your area.
-    <br>
-    <strong>Free, no pressure, no pushy salespeople.</strong>
+    Answer a few quick questions and get accurate quotes from trusted local pros — <strong>free & no pressure.</strong>
   </p>
-  <p class="trust">We only share your details with the professionals we match you with: no random marketers.</p>
 
-  <div class="zip-box" id="zipbox">
-    <p style="font-size:18px;font-weight:600;">Start with the property ZIP code</p>
-    <input type="text" id="zip" placeholder="e.g., 23451" maxlength="5" inputmode="numeric">
-    <div id="zip-msg"></div>
-    <button class="btn" id="zip-btn">Start my quote →</button>
+  <!-- ZIP Code First -->
+  <div id="zip-section" class="form-container" style="display:block;max-width:500px;">
+    <label for="zip">Property ZIP Code</label>
+    <input type="text" id="zip" placeholder="e.g. 23451" maxlength="5" inputmode="numeric" autocomplete="postal-code">
+    <div class="fixed-btn"><button id="zip-submit">Continue →</button></div>
   </div>
 
-  <div class="how">
-    <div class="how-item">
-      <h3>1. Tell us about the home</h3>
-      <p>Size, how full it is, and whether you need a clean-out or just sale help.</p>
-    </div>
-    <div class="how-item">
-      <h3>2. We review & match</h3>
-      <p>If you’re in our direct area, our team reviews it. Otherwise we match you to vetted local pros.</p>
-    </div>
-    <div class="how-item">
-      <h3>3. You compare quotes</h3>
-      <p>Get a clear ballpark and next steps within 48 hours so you can move forward confidently.</p>
-    </div>
-  </div>
-
-  <!-- 6-Question Flow -->
-  <div class="form" id="form">
-    <h2>About the property</h2>
-    <p style="font-size:14px;color:var(--m);margin-bottom:18px;">This takes about one minute. There’s no obligation and you can always say no.</p>
+  <!-- Main Form -->
+  <div id="main-form" class="form-container">
 
     <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="step-title" id="step-title">1. Property type</div>
 
-    <!-- Q1 -->
-    <div class="q active">
-      <label for="sqft">Rough size of the home</label>
-      <input type="range" min="600" max="8000" value="2400" id="sqft">
-      <div class="range-label" id="sqft-show">2,400 sq ft</div>
-      <p class="small-note">Just an estimate is fine.</p>
-
-      <!-- Next button -->
-      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Next →</button>
-    </div>
-
-    <!-- Q2 -->
-    <div class="q">
-      <label for="full">How full is it?</label>
-      <input type="range" min="1" max="4" value="2" step="1" id="full">
-      <div class="range-label" id="full-text">Average</div>
-      <p class="small-note">From “lightly furnished” to “very full!” No judgment.</p>
-
-      <!-- Next button -->
-      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Next →</button>
-    </div>
-
-    <!-- Q3 -->
-    <div class="q">
-      <label>Any noticeably high-value items?</label>
-      <div class="choice-grid">
-        <button type="button" class="btn-choice" data-highval="no">Mostly normal household items</button>
-        <button type="button" class="btn-choice" data-highval="yes">Yes – antiques, art, jewelry, vehicles, collections</button>
+    <!-- 1. Property Type -->
+    -->
+    <div class="q active" data-step="0">
+      <label>What type of property is it?</label>
+      <div class="chips">
+        <div class="chip active" data-val="House">House</div>
+        <div class="chip" data-val="Condo/Townhouse">Condo / Townhouse</div>
+        <div class="chip" data-val="Apartment">Apartment</div>
+        <div class="chip" data-val="Estate">Large Estate</div>
       </div>
-      <p class="small-note">This helps us decide whether to involve appraisal-driven specialists.</p>
-      <!-- no Next button; choices auto-advance -->
+      <input type="hidden" id="prop-type">
     </div>
 
-    <!-- Q4 -->
-    <div class="q">
-      <label>Do you also need a clean-out?</label>
-      <div class="choice-grid">
-        <button type="button" class="btn-choice" data-clean="broom">Just broom-swept after the sale</button>
-        <button type="button" class="btn-choice" data-clean="full">Full empty-out (everything gone)</button>
+    <!-- 2. Square Footage -->
+    <div class="q" data-step="1">
+      <label>Square footage (estimate is fine)</label>
+      <div class="range-wrap">
+        <input type="range" min="400" max="10000" step="100" value="2500">
+        <div class="range-value">2,500 sq ft</div>
       </div>
-      <p class="small-note">We’ll match you with teams that can handle as much (or as little) as you need.</p>
-      <!-- no Next button; choices auto-advance -->
-    </div>
-
-    <!-- Q5 -->
-    <div class="q">
-      <label>30-second video walk-through? <span style="font-weight:400">(optional but helpful)</span></label>
-      <div class="video" onclick="document.getElementById('vid').click()">
-        Tap to upload or record a quick walk-through
+      <div class="input-with-unit">
+        <input type="number" id="sqft-manual" placeholder="Or type exact number" style="margin-top:12px;">
       </div>
-      <input type="file" id="vid" accept="video/*,image/*" multiple style="display:none">
-      <p class="small-note">No need to tidy. This just helps us route you accurately.</p>
-
-      <button type="button" class="btn big-btn" style="margin-top:20px;" onclick="next()">Skip for now →</button>
     </div>
 
-    <!-- Q6 -->
-    <div class="q">
-      <label for="notes">Anything else we should know?</label>
-      <textarea id="notes" rows="3" placeholder="e.g., grand piano, tight timeline, working with an attorney, locked rooms, etc."></textarea>
+    <!-- 3. Beds & Baths -->
+    <div class="q" data-step="2">
+      <label>Bedrooms</label>
+      <select id="beds">
+        <option value="">Select</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+      </select>
+      <label style="margin-top:20px">Bathrooms (including half baths)</label>
+      <select id="baths">
+        <option value="">Select</option>
+        <option>1</option><option>1.5</option><option>2</option><option>2.5</option><option>3</option><option>3.5</option><option>4+</option>
+      </select>
+    </div>
 
-      <label style="margin-top:20px" for="name">Your name</label>
-      <input type="text" id="name" placeholder="First and last name">
+    <!-- 4. Extra Rooms -->
+    <div class="q" data-step="3">
+      <label>Any of these? (optional)</label>
+      <div class="chips">
+        <div class="chip" data-val="Attic">Attic</div>
+        <div class="chip" data-val="Basement">Basement</div>
+        <div class="chip" data-val="Garage">Garage</div>
+        <div class="chip" data-val="Shed/Outbuilding">Shed</div>
+        <div class="chip" data-val="Pool house">Pool house</div>
+      </div>
+      <input type="text" placeholder="Other (e.g. workshop, carriage house)" style="margin-top:16px;">
+    </div>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Where we’ll send the quotes">
+    <!-- 5. Fullness Level -->
+    <div class="q" data-step="4">
+      <label>How full is the property?</label>
+      <div class="range-wrap">
+        <input type="range" min="1" max="5" value="3">
+        <div class="range-value" id="fullness-text">Moderately Full</div>
+      </div>
+    </div>
 
-      <label for="phone">Phone <span style="font-weight:400">(optional)</span></label>
-      <input type="tel" id="phone" placeholder="Only used by your matched pros">
+    <!-- 6. High-Value Items -->
+    <div class="q" data-step="5">
+      <label>Any high-value or specialty items?</label>
+      <div class="chips">
+        <div class="chip" data-val="Antiques">Antiques</div>
+        <div class="chip" data-val="Fine Art">Fine Art</div>
+        <div class="chip" data-val="Jewelry">Jewelry</div>
+        <div class="chip" data-val="Collector Cars">Collector Cars</div>
+        <div class="chip" data-val="Firearms">Firearms</div>
+        <div class="chip" data-val="Coin/Gold">Coins or Gold</div>
+      </div>
+      <input type="text" placeholder="Other high-value items…" style="margin-top:16px;">
+    </div>
 
-      <p class="small-note">By submitting, you agree we may share this info only with the estate professionals we match you with.</p>
+    <!-- 7. Clean-out Needs -->
+    <div class="q" data-step="6">
+      <label>Clean-out requirements</label>
+      <div class="chips">
+        <div class="chip active" data-val="broom">Broom-swept (we keep what doesn't sell)</div>
+        <div class="chip" data-val="partial">Leave some trash / donate</div>
+        <div class="chip" data-val="full">Full haul-away – everything gone</div>
+      </div>
+    </div>
 
-      <button class="btn big-btn" id="finish-btn">Get my quotes →</button>
+    <!-- 8. Timeline -->
+    <div class="q" data-step="7">
+      <label>How urgent is the timeline?</label>
+      <div class="chips">
+        <div class="chip active" data-val="flexible">Flexible (30–90 days)</div>
+        <div class="chip" data-val="medium">Somewhat urgent (2–4 weeks)</div>
+        <div class="chip" data-val="urgent">Very urgent (< 2 weeks)</div>
+      </div>
+    </div>
+
+    <!-- 9. Oversized / Hazardous -->
+    <div class="q" data-step="8">
+      <label>Oversized or difficult items?</label>
+      <div class="chips">
+        <div class="chip" data-val="Grand piano">Grand piano</div>
+        <div class="chip" data-val="Gun safe">Gun safe / large safe</div>
+        <div class="chip" data-val="Hot tub">Hot tub</div>
+        <div class="chip" data-val="Hazardous">Chemicals / paint / propane</div>
+      </div>
+      <input type="text" placeholder="Other (e.g. 10ft statue, hoard conditions)" style="margin-top:16px;">
+    </div>
+
+    <!-- 10. Access Difficulty -->
+    <div class="q" data-step="9">
+      <label>Access challenges?</label>
+      <div class="chips">
+        <div class="chip active" data-val="none">Easy ground-level access</div>
+        <div class="chip" data-val="stairs">Multiple flights of stairs</div>
+        <div class="chip" data-val="elevator">Elevator (may be small)</div>
+        <div class="chip" data-val="long">Long carry / gravel driveway</div>
+        <div class="chip" data-val="gated">Gated community</div>
+      </div>
+    </div>
+
+    <!-- 11. Video Walk-through (required for best quote) -->
+    <div class="q" data-step="10">
+      <label>Quick video walk-through <span style="font-weight:400;color:var(--g);">(most accurate quotes come from this)</span></label>
+      <div class="video-box" id="video-box" onclick="document.getElementById('video-upload').click()">
+        <i class="fas fa-video fa-3x" style="color:#94a3b8;margin-bottom:12px;"></i>
+        <div style="font-size:18px;font-weight:600;">Tap to record or upload a quick walk-through</div>
+        <div style="font-size:14px;color:#64748b;margin-top:8px;">No need to tidy — really! Takes 30–60 seconds.</div>
+      </div>
+      <video id="video-preview" controls></video>
+      <input type="file" id="video-upload" accept="video/*;capture=camcorder" style="display:none">
+      <label style="margin-top:20px;display:none;" id="tc-label">
+        <input type="checkbox" id="tc-check"> I understand this video is private, will only be viewed by licensed estate professionals to generate my quote, and will be deleted after 30 days.
+      </label>
+    </div>
+
+    <!-- 12. Estimated Home Value -->
+    <div class="q" data-step="11">
+      <label>Estimated current home value (as-is, estimate OK)</label>
+      <div class="range-wrap">
+        <input type="range" min="50000" max="3000000" step="25000" value="450000">
+        <div class="range-value">$450,000</div>
+      </div>
+      <input type="number" id="value-manual" placeholder="Or type exact amount" style="margin-top:12px;">
+    </div>
+
+    <!-- 13. Contact Info (final step) -->
+    <div class="q" data-step="12">
+      <label>Your Name</label>
+      <input type="text" id="name" placeholder="First & Last" required>
+      <label style="margin-top:16px">Email</label>
+      <input type="email" id="email" placeholder="We'll send quotes here" required>
+      <label style="margin-top:16px">Phone <span style="font-weight:400">(optional but helps)</span></label>
+      <input type="tel" id="phone">
+      <label style="margin-top:20px">Anything else we should know?</label>
+      <textarea rows="3" placeholder="Timeline notes, attorney involvement, locked areas, etc."></textarea>
     </div>
   </div>
 
-  <!-- Local Result -->
-  <div id="local-result" class="result">
-    <h3>You’re in our direct service area.</h3>
-    <p>Our team will review your details and send a ballpark estimate today, then confirm with a quick call or on-site visit.</p>
-    <p>Nothing is locked in until you talk with us. You can always say no.</p>
-    <a href="https://calendly.com/your-calendly-handle/30min" target="_blank" class="btn btn-g">
-      Schedule a free call or visit →
-    </a>
-    <p class="small-note">Most families tell us that having one clear number makes everything else easier to plan.</p>
-  </div>
-
-  <!-- National Result -->
-  <div id="national-result" class="result">
-    <h3>Your request has been sent to vetted local pros.</h3>
-    <p>We’ll match you with <strong>3–5 reputable estate liquidators</strong> near the property who handle your type of situation.</p>
-    <p>You’ll typically hear from them within 24–48 hours with ballpark numbers and next steps.</p>
-    <p class="small-note">You’re never obligated to hire anyone. Use the quotes to compare, ask questions, and choose what feels right.</p>
+  <!-- Single Fixed Button -->
+  <div class="fixed-btn">
+    <button id="main-btn">Next →</button>
   </div>
 </div>
 
-<!-- Fixed bottom CTA for mobile -->
-<div class="footer-cta" id="footer-cta">
-  <button class="btn" id="footer-next">Continue →</button>
+<!-- Hampton Roads Modal -->
+<div class="modal" id="hr-modal">
+  <div class="modal-content">
+    <i class="fas fa-check-circle fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g);">Great news!</h2>
+    <p style="font-size:18px;margin:margin:16px 0;">
+      You’re in the Hampton Roads area — we have in-network partners and can get you a detailed quote within 24 hours!
+    </p>
+    <button class="btn" style="background:var(--g);margin-top:20px;padding:14px 40px;" onclick="closeModal()">Awesome, continue →</button>
+  </div>
 </div>
 
 <script>
-const localZips = new Set([
-  "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460",
-  "23461","23462","23463","23464","23465","23466","23467","23471","23479",
-  "23320","23321","23322","23323","23324","23325","23326","23327","23328",
-  "23502","23503","23504","23505","23507","23508","23509","23510","23511",
-  "23513","23517","23518","23523",
-  "23701","23702","23703","23704","23707","23708","23709",
-  "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670",
-  "23681","23601","23602","23603","23604","23605","23606","23607","23608","23609",
-  "23612","23628","23630"
-]);
+const hamptonRoadsZips = new Set(["23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479","23320","23321","23322","23323","23324","23325","23326","23327","23328","23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523","23701","23702","23703","23704","23707","23708","23709","23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681","23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"]);
+let currentStep = 0;
+const totalSteps = 13;
+const qs = document.querySelectorAll('#main-form .q');
+const bar = document.getElementById('bar');
+const stepTitle = document.getElementById('step-title');
+const titles = [
+  "Property type","Square footage","Bedrooms & baths","Extra rooms","How full is it?",
+  "High-value items","Clean-out needs","Timeline","Oversized items","Access difficulty",
+  "Video walk-through","Home value","Final details"
+];
 
-let step = 0;
-let isLocal = false;
-let data = {
-  zip: null,
-  sqft: null,
-  full: null,
-  highval: null,
-  clean: null,
-  notes: null,
-  name: null,
-  email: null,
-  phone: null
+function updateProgress() {
+  const percent = ((currentStep + 1) / totalSteps) * 100;
+  bar.style.width = percent + '%';
+  stepTitle.textContent = titles[currentStep];
+  window.scrollTo(0,0);
+}
+
+function nextStep() {
+  if (currentStep < totalSteps - 1) {
+    qs[currentStep].classList.remove('active');
+    currentStep++;
+    qs[currentStep].classList.add('active');
+    updateProgress();
+  }
+}
+
+// ZIP submit
+document.getElementById('zip-submit').onclick = () => {
+  const zip = document.getElementById('zip').value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    alert('Please enter a valid 5-digit ZIP code');
+    return;
+  }
+  if (hamptonRoadsZips.has(zip)) {
+    document.getElementById('hr-modal').classList.add('active');
+  }
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  updateProgress();
 };
 
-const qs = document.querySelectorAll('.q');
-const bar = document.getElementById('bar');
-const form = document.getElementById('form');
-const zipBox = document.getElementById('zipbox');
-const zipInput = document.getElementById('zip');
-const zipMsg = document.getElementById('zip-msg');
-
-function showStep(i){
-  qs.forEach(q => q.classList.remove('active'));
-  qs[i].classList.add('active');
-  bar.style.width = ((i+1)/qs.length)*100 + '%';
-  step = i;
+// Close Hampton Roads modal
+function closeModal() {
+  document.getElementById('hr-modal').classList.remove('active');
 }
 
-function begin(){
-  const zip = zipInput.value.trim();
-  if (!/^\d{5}$/.test(zip)){
-    alert('Please enter a valid 5-digit ZIP code.');
+// Sliders live update
+document.querySelectorAll('input[type=range]').forEach(slider => {
+  const output = slider.parentNode.querySelector('.range-value');
+  const update = () => {
+    let val = slider.value;
+    if (slider.min == 400) val = Number(val).toLocaleString() + ' sq ft';
+    if (slider.min == 50000) val = '$' + Number(val).toLocaleString();
+    output.textContent = val;
+    output.style.left = (slider.value - slider.min) / (slider.max - slider.min) * 100 + '%';
+  };
+  slider.addEventListener('input', update);
+  update();
+});
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.onclick = () => {
+    if (chip.parentNode.children.length > 2) { // allow multiple
+      chip.classList.toggle('active');
+    } else {
+      [...chip.parentNode.children].forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+  };
+});
+
+// Video upload preview + checkbox
+document.getElementById('video-upload').onchange = e => {
+  const file = e.target.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    const prev = document.getElementById('video-preview');
+    prev.src = url;
+    prev.style.display = 'block';
+    document.getElementById('video-box').classList.add('ready');
+    document.getElementById('tc-label').style.display = 'block';
+  }
+};
+
+// Manual sqft / value sync
+document.getElementById('sqft-manual').oninput = e => {
+  const val = e.target.value.replace(/\D/g,'');
+  if (val) {
+    document.querySelector('#main-form input[type=range]').value = val;
+    document.querySelector('.range-value').textContent = Number(val).toLocaleString() + ' sq ft';
+  }
+};
+document.getElementById('value-manual').oninput = e => {
+  let val = e.target.value.replace(/\D/g,'');
+  if (val) {
+    document.querySelectorAll('#main-form input[type=range]')[1].value = val;
+    document.querySelectorAll('.range-value')[1].textContent = '$' + Number(val).toLocaleString();
+  }
+};
+
+// Single button logic
+document.getElementById('main-btn').onclick = () => {
+  // Special handling for video step
+  if (currentStep === 10) {
+    if (!document.getElementById('video-preview').src && !document.getElementById('tc-check')?.checked) {
+      alert('Please upload a short video walk-through and check the box — it gives you the most accurate quote possible.');
+      return;
+    }
+  }
+  // Final submit
+  if (currentStep === totalSteps - 1) {
+    // TODO: collect all data & send to your backend
+    alert('Thank you! Your request has been sent. You’ll hear from us within 24–48 hours.');
     return;
   }
-  data.zip = zip;
-  isLocal = localZips.has(zip);
-  zipMsg.style.color = isLocal ? '#0d9d6a' : '#0f172a';
-  zipMsg.textContent = isLocal
-    ? 'You’re in our direct service area. We’ll review this personally.'
-    : 'We’ll match you with 3–5 vetted estate liquidators near this property.';
-  zipBox.style.display = 'none';
-  form.style.display = 'block';
-  showStep(0);
-}
-
-function next(){
-  if (step < qs.length - 1){
-    showStep(step + 1);
-  }
-}
-
-function finish(){
-  const name = document.getElementById('name').value.trim();
-  const email = document.getElementById('email').value.trim();
-
-  if (!name){
-    alert('Please add your name so we know who to contact.');
-    return;
-  }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-    alert('Please enter a valid email so we can send your quotes.');
-    return;
-  }
-
-  data.sqft = document.getElementById('sqft').value;
-  data.full = document.getElementById('full').value;
-  data.notes = document.getElementById('notes').value.trim();
-  data.name = name;
-  data.email = email;
-  data.phone = document.getElementById('phone').value.trim();
-
-  // TODO: send `data` to your backend / form handler here
-
-  form.style.display = 'none';
-  if (isLocal){
-    document.getElementById('local-result').style.display = 'block';
-  } else {
-    document.getElementById('national-result').style.display = 'block';
-  }
-
-  const footer = document.getElementById('footer-cta');
-  if (footer) footer.style.display = 'none';
-}
-
-// Event wiring
-document.getElementById('zip-btn').addEventListener('click', begin);
-
-zipInput.addEventListener('keypress', e => {
-  if (e.key === 'Enter'){
-    e.preventDefault();
-    begin();
-  }
-});
-
-// Sliders
-document.getElementById('sqft').addEventListener('input', e => {
-  document.getElementById('sqft-show').textContent =
-    Number(e.target.value).toLocaleString() + ' sq ft';
-});
-
-document.getElementById('full').addEventListener('input', e => {
-  const v = parseInt(e.target.value, 10);
-  const labels = {1:'Light',2:'Average',3:'Very full',4:'Packed!'};
-  document.getElementById('full-text').textContent = labels[v] || 'Average';
-});
-
-// Choices (high value / clean-out)
-document.querySelectorAll('[data-highval]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-highval]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    data.highval = btn.getAttribute('data-highval');
-    next();
-  });
-});
-
-document.querySelectorAll('[data-clean]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-clean]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    data.clean = btn.getAttribute('data-clean');
-    next();
-  });
-});
-
-// Finish button
-document.getElementById('finish-btn').addEventListener('click', e => {
-  e.preventDefault();
-  finish();
-});
-
-// Footer CTA (mobile)
-document.getElementById('footer-next').addEventListener('click', () => {
-  if (zipBox.style.display !== 'none'){
-    zipBox.scrollIntoView({behavior:'smooth'});
-    return;
-  }
-  if (form.style.display === 'block'){
-    next();
-    form.scrollIntoView({behavior:'smooth'});
-  }
-});
+  nextStep();
+};
 </script>
 </body>
 </html>
