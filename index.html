@@ -610,10 +610,8 @@ button,
   </div>
 </div>
 
+<!-- Capture visitor metadata (IP, geo, device, referrer, etc.) -->
 <script>
-
-  <script>
-// Capture visitor metadata (IP, geo, device, referrer, etc.)
 window._eqMeta = {};
 
 (async function () {
@@ -645,7 +643,6 @@ window._eqMeta = {};
 </script>
 
 <script>
-  
 const hamptonRoadsZips = new Set([
   "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
   "23320","23321","23322","23323","23324","23325","23326","23327","23328",
@@ -720,7 +717,7 @@ function validateStep(stepIndex) {
   if (!required) return true;
 
   switch(stepIndex) {
-    case 0: { // property type
+    case 0: {
       const activeChip = step.querySelector('.chip.active');
       if (!activeChip) {
         alert('Please select the property type.');
@@ -728,7 +725,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 1: { // sqft
+    case 1: {
       const val = parseInt(document.getElementById('sqft-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please set an approximate square footage.');
@@ -736,7 +733,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 2: { // beds and baths
+    case 2: {
       const beds = document.getElementById('beds').value;
       const baths = document.getElementById('baths').value;
       if (!beds || !baths) {
@@ -745,15 +742,15 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 3: { // extra rooms
+    case 3: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
-        alert('Please select if there are extra spaces, or choose "None of these".');
+        alert('Please select if there are extra spaces, or choose \"None of these\".");
         return false;
       }
       return true;
     }
-    case 4: { // fullness
+    case 4: {
       const val = parseInt(document.getElementById('fullness-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please tell us roughly how full the property is.');
@@ -761,15 +758,15 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 5: { // high value
+    case 5: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
-        alert('Please select any high value items, or choose "None or not sure".');
+        alert('Please select any high value items, or choose \"None or not sure\".");
         return false;
       }
       return true;
     }
-    case 6: { // clear-out
+    case 6: {
       const chip = step.querySelector('.chip.active');
       if (!chip) {
         alert('Please tell us what kind of clear out you need.');
@@ -777,7 +774,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 7: { // timeline
+    case 7: {
       const chip = step.querySelector('.chip.active');
       if (!chip) {
         alert('Please select a timeline.');
@@ -785,21 +782,21 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 8: { // oversized
+    case 8: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
-        alert('Please tell us if there are any oversized items, or choose "None of these".');
+        alert('Please tell us if there are any oversized items, or choose \"None of these\".");
         return false;
       }
       return true;
     }
-    case 9: { // access difficulty
+    case 9: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please tell us about access difficulty.');
         return false;
       }
-      const otherChip = step.querySelector('.chip.active[data-val="Other"]');
+      const otherChip = step.querySelector('.chip.active[data-val=\"Other\"]');
       if (otherChip) {
         const txt = document.getElementById('access-other').value.trim();
         if (!txt) {
@@ -809,7 +806,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 11: { // home value
+    case 11: {
       const val = parseInt(document.getElementById('value-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please set an estimated home value.');
@@ -817,7 +814,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 12: { // contact info
+    case 12: {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -849,18 +846,14 @@ function collectData() {
   const data = {};
   data.zip = document.getElementById('zip').value.trim();
 
-  // Step 0 property type
   const step0Chip = qs[0].querySelector('.chip.active');
   data.propertyType = step0Chip ? (step0Chip.dataset.val || step0Chip.textContent.trim()) : '';
 
-  // Step 1 sqft
   data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10);
 
-  // Step 2 beds baths
   data.bedrooms = document.getElementById('beds').value;
   data.bathrooms = document.getElementById('baths').value;
 
-  // Step 3 extra rooms
   const step3 = qs[3];
   const extraChips = step3.querySelectorAll('.chip.active');
   data.extraRooms = extraChips.length
@@ -868,7 +861,6 @@ function collectData() {
     : 'None';
   data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
 
-  // Step 4 fullness
   const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
   let fullnessLabel = 'Medium';
   if (fullnessVal === 1) fullnessLabel = 'Light';
@@ -877,7 +869,6 @@ function collectData() {
   if (fullnessVal === 4) fullnessLabel = 'Really full';
   data.fullness = fullnessLabel;
 
-  // Step 5 high value
   const step5 = qs[5];
   const hvChips = step5.querySelectorAll('.chip.active');
   data.highValue = hvChips.length
@@ -885,15 +876,12 @@ function collectData() {
     : 'None or not sure';
   data.highValueOther = document.getElementById('highvalue-other').value.trim();
 
-  // Step 6 clear out
   const step6Chip = qs[6].querySelector('.chip.active');
   data.clearOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
 
-  // Step 7 timeline
   const step7Chip = qs[7].querySelector('.chip.active');
   data.timeline = step7Chip ? (step7Chip.dataset.val || step7Chip.textContent.trim()) : '';
 
-  // Step 8 oversized
   const step8 = qs[8];
   const osChips = step8.querySelectorAll('.chip.active');
   data.oversized = osChips.length
@@ -901,7 +889,6 @@ function collectData() {
     : 'None';
   data.oversizedOther = document.getElementById('oversized-other').value.trim();
 
-  // Step 9 access
   const step9 = qs[9];
   const accChips = step9.querySelectorAll('.chip.active');
   data.access = accChips.length
@@ -909,15 +896,12 @@ function collectData() {
     : '';
   data.accessOther = document.getElementById('access-other').value.trim();
 
-  // Step 10 video
   const videoPreview = document.getElementById('video-preview');
   data.hasVideo = !!videoPreview.src;
   data.videoConsentChecked = document.getElementById('tc-check').checked;
 
-    // Step 11 home value
   data.homeValue = parseInt(document.getElementById('value-range').value, 10);
 
-  // Step 12 contact
   data.name = document.getElementById('name').value.trim();
   data.email = document.getElementById('email').value.trim();
   data.phone = document.getElementById('phone').value.trim();
@@ -929,7 +913,7 @@ function collectData() {
   data.ip = meta.ip || "";
   data.city = meta.city || "";
   data.region = meta.region || "";
-  data.country = meta.country || "";
+  data.country = meta.country || meta.country_name || "";
   data.postal = meta.postal || "";
   data.latitude = meta.latitude || "";
   data.longitude = meta.longitude || "";
@@ -939,7 +923,6 @@ function collectData() {
   data.referrer = meta.referrer || "";
   data.pageUrl = meta.pageUrl || "";
 
-  // Simple VPN-ish flag based on ISP name (very rough)
   const ispLower = (meta.isp || "").toLowerCase();
   const vpnHints = [
     "vpn",
@@ -958,7 +941,6 @@ function collectData() {
 
   return data;
 }
-
 
 /* Render review page */
 function renderReview(data) {
@@ -1035,7 +1017,6 @@ document.querySelectorAll('.chips').forEach(group => {
     if (multi) {
       chip.classList.toggle('active');
 
-      // If a "None" type is selected, clear others
       const noneValues = ["None", "None of these", "None or not sure"];
       if (noneValues.includes(chip.dataset.val)) {
         if (chip.classList.contains('active')) {
@@ -1044,7 +1025,6 @@ document.querySelectorAll('.chips').forEach(group => {
           });
         }
       } else {
-        // Deselect "None" type if something else picked
         group.querySelectorAll('.chip').forEach(c => {
           if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
         });
@@ -1054,11 +1034,10 @@ document.querySelectorAll('.chips').forEach(group => {
       chip.classList.add('active');
     }
 
-    // Show or hide access "Other" field
     const parentStep = group.parentElement.getAttribute('data-step');
     if (parentStep === '9') {
       const otherInput = document.getElementById('access-other');
-      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
+      const anyOtherActive = group.querySelector('.chip.active[data-val=\"Other\"]');
       if (anyOtherActive) {
         otherInput.style.display = 'block';
       } else {
@@ -1147,8 +1126,7 @@ mainBtn.onclick = () => {
 
   if (currentStep === totalSteps - 1) {
     const data = collectData();
-        sendLeadToMake(data);
-    
+    sendLeadToMake(data);
     renderReview(data);
     document.getElementById('main-form').style.display = 'none';
     ctaBar.style.display = 'none';
@@ -1163,7 +1141,6 @@ backBtn.onclick = () => {
   showStep(currentStep - 1);
 };
 
-/* Edit after review */
 document.getElementById('edit-btn').onclick = () => {
   document.getElementById('review').style.display = 'none';
   document.getElementById('main-form').style.display = 'block';
@@ -1188,6 +1165,5 @@ async function sendLeadToMake(leadData) {
 }
 </script>
 
-  
 </body>
 </html>
