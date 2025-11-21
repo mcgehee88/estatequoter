@@ -467,13 +467,13 @@ button,
       <input type="text" id="highvalue-other" placeholder="Other high value items" style="margin-top:12px;">
     </div>
 
-    <!-- 7. Clean-out Needs (single) -->
+    <!-- 7. Clear-out Needs (single) -->
     <div class="q" data-step="6" data-required="true">
-      <label>Clean out needs</label>
+      <label>Clear out needs</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="Broom-swept">Broom swept - we keep what does not sell</div>
-        <div class="chip" data-val="Partial clean-out">Partial clean out - some trash or donations left</div>
-        <div class="chip" data-val="Full clean-out">Full clean out - everything gone</div>
+        <div class="chip" data-val="Partial clear-out">Partial clear out - some trash or donations left</div>
+        <div class="chip" data-val="Full clear-out">Full clear out - everything gone</div>
         <div class="chip" data-val="Not sure yet">Not sure yet</div>
       </div>
       <p class="helper">This helps liquidators understand how much hauling and disposal is needed.</p>
@@ -627,7 +627,7 @@ const titles = [
   "Extra rooms or spaces",
   "How full is it",
   "High value items",
-  "Clean out needs",
+  "Clear out needs",
   "Timeline",
   "Oversized items",
   "Access difficulty",
@@ -643,7 +643,7 @@ const encouragements = [
   "Extra spaces often add value. You are doing fine.",
   "Almost there. A sense of fullness goes a long way.",
   "This helps match you with the right kind of liquidator.",
-  "Clean out needs help avoid surprise costs later.",
+  "Clear out needs help avoid surprise costs later.",
   "Timeline helps everyone plan and stay calm.",
   "This keeps crews safe and prepared.",
   "Access is a big factor. You are almost done.",
@@ -724,10 +724,10 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 6: { // clean-out
+    case 6: { // clear-out
       const chip = step.querySelector('.chip.active');
       if (!chip) {
-        alert('Please tell us what kind of clean out you need.');
+        alert('Please tell us what kind of clear out you need.');
         return false;
       }
       return true;
@@ -840,9 +840,9 @@ function collectData() {
     : 'None or not sure';
   data.highValueOther = document.getElementById('highvalue-other').value.trim();
 
-  // Step 6 clean out
+  // Step 6 clear out
   const step6Chip = qs[6].querySelector('.chip.active');
-  data.cleanOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
+  data.clearOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
 
   // Step 7 timeline
   const step7Chip = qs[7].querySelector('.chip.active');
@@ -896,7 +896,7 @@ function renderReview(data) {
     { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(' | ') || '-' },
     { label: "How full it is", value: data.fullness || '-' },
     { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(' | ') || '-' },
-    { label: "Clean out needs", value: data.cleanOut || '-' },
+    { label: "Clear out needs", value: data.clearOut || '-' },
     { label: "Timeline", value: data.timeline || '-' },
     { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(' | ') || '-' },
     { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(' | ') || '-' },
