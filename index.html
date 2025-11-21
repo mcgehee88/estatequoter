@@ -610,8 +610,10 @@ button,
   </div>
 </div>
 
-<!-- Capture visitor metadata (IP, geo, device, referrer, etc.) -->
 <script>
+// -----------------------
+// Capture visitor metadata
+// -----------------------
 window._eqMeta = {};
 
 (async function () {
@@ -640,9 +642,10 @@ window._eqMeta = {};
     console.error("Meta capture failed", e);
   }
 })();
-</script>
 
-<script>
+// -----------------------
+// Form logic
+// -----------------------
 const hamptonRoadsZips = new Set([
   "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
   "23320","23321","23322","23323","23324","23325","23326","23327","23328",
@@ -907,7 +910,6 @@ function collectData() {
   data.phone = document.getElementById('phone').value.trim();
   data.notes = document.getElementById('notes').value.trim();
 
-  // Visitor metadata (from window._eqMeta)
   const meta = window._eqMeta || {};
 
   data.ip = meta.ip || "";
@@ -1061,109 +1063,9 @@ function formatRange(slider, bubble) {
     let label = 'Medium';
     if (val === 1) label = 'Light';
     if (val === 2) label = 'Medium';
-    if (val === 3) label = 'Full';
-    if (val === 4) label = 'Really full';
-    bubble.textContent = label;
-  }
+    if (val === 3) label =
 
-  const min = parseInt(slider.min, 10);
-  const max = parseInt(slider.max, 10);
-  const percent = (val - min) / (max - min) * 100;
-  bubble.style.left = percent + '%';
-}
-
-document.querySelectorAll('.range-wrap').forEach(wrap => {
-  const slider = wrap.querySelector('input[type=range]');
-  const bubble = wrap.querySelector('.range-value');
-  if (!slider || !bubble) return;
-
-  formatRange(slider, bubble);
-  slider.addEventListener('input', () => formatRange(slider, bubble));
-
-  bubble.addEventListener('blur', () => {
-    const raw = bubble.textContent;
-    const digits = raw.replace(/[^\d]/g, '');
-    if (!digits) {
-      formatRange(slider, bubble);
-      return;
-    }
-    let val = parseInt(digits, 10);
-    const min = parseInt(slider.min, 10);
-    const max = parseInt(slider.max, 10);
-    if (val < min) val = min;
-    if (val > max) val = max;
-    slider.value = val;
-    formatRange(slider, bubble);
-  });
-
-  bubble.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      bubble.blur();
-    }
-  });
-});
-
-/* Video upload preview (optional) */
-document.getElementById('video-upload').onchange = e => {
-  const file = e.target.files[0];
-  if (file && file.type.startsWith('video/')) {
-    const url = URL.createObjectURL(file);
-    const prev = document.getElementById('video-preview');
-    prev.src = url;
-    prev.style.display = 'block';
-    document.getElementById('video-box').classList.add('ready');
-    document.getElementById('tc-label').style.display = 'block';
-  } else {
-    alert('Please upload a video file.');
-    e.target.value = '';
-  }
-};
-
-/* Navigation buttons */
-mainBtn.onclick = () => {
-  if (!validateStep(currentStep)) return;
-
-  if (currentStep === totalSteps - 1) {
-    const data = collectData();
-    sendLeadToMake(data);
-    renderReview(data);
-    document.getElementById('main-form').style.display = 'none';
-    ctaBar.style.display = 'none';
-    document.getElementById('complete-modal').classList.add('active');
-    return;
-  }
-  showStep(currentStep + 1);
-};
-
-backBtn.onclick = () => {
-  if (currentStep === 0) return;
-  showStep(currentStep - 1);
-};
-
-document.getElementById('edit-btn').onclick = () => {
-  document.getElementById('review').style.display = 'none';
-  document.getElementById('main-form').style.display = 'block';
-  ctaBar.style.display = 'block';
-  showStep(0);
-};
-</script>
-
-<script>
-async function sendLeadToMake(leadData) {
-  const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
-
-  try {
-    await fetch(webhookURL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(leadData)
-    });
-  } catch (err) {
-    console.error("Make.com send failed:", err);
-  }
-}
-</script>
+::contentReference[oaicite:0]{index=0}
 
 </body>
 </html>
