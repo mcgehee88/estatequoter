@@ -1206,56 +1206,35 @@ document.getElementById('edit-btn').onclick = () => {
   showStep(0);
 };
 
-/* NEW: Send to Make.com + upload video to gofile.io → gives permanent clickable video link in Google Sheets */
+/* NEW: Send to Make.com with attached video file (no direct GoFile from browser) */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
-  
-  // Default values
-  leadData.videoUrl = "No video submitted";
-  leadData.videoProvided = "No";
 
+  // Grab the file if one was chosen
   const videoFile = document.getElementById('video-upload').files[0];
-  if (videoFile) {
-    try {
-      mainBtn.textContent = "Uploading video...";
-      mainBtn.disabled = true;
 
-      const formData = new FormData();
-      formData.append('file', videoFile);
+  // Mark in the payload whether a video was provided
+  leadData.videoProvided = videoFile ? "Yes" : "No";
+  leadData.videoUrl = videoFile ? "Handled via Make (file attached)" : "No video submitted";
 
-      // UPDATED GOFILE ENDPOINT
-      const uploadRes = await fetch('https://api.gofile.io/uploadFile', {
-        method: 'POST',
-        body: formData
-      });
+  // Build multipart/form-data for Make
+  const formData = new FormData();
+  formData.append("lead", JSON.stringify(leadData)); // All text data
+  if (videoFile) formData.append("video", videoFile); // Actual file
 
-      const result = await uploadRes.json();
+  // Button state
+  mainBtn.textContent = videoFile ? "Uploading video..." : "Submitting...";
+  mainBtn.disabled = true;
 
-      // gofile now returns downloadPage instead of directLink
-      if (result.status === 'ok' && result.data && result.data.downloadPage) {
-        leadData.videoUrl = result.data.downloadPage;   // clickable link
-        leadData.videoProvided = "Yes";
-      } else {
-        leadData.videoUrl = "Upload failed – will contact user";
-      }
-    } catch (e) {
-      console.error("Video upload error:", e);
-      leadData.videoUrl = "Upload error – will follow up";
-    }
-  }
-
-  // Send everything to Make.com → lands in your Google Sheet
   try {
     await fetch(webhookURL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(leadData)
+      body: formData // MUST NOT set Content-Type manually
     });
   } catch (err) {
     console.error("Make.com failed:", err);
   }
 
-  // Reset button
   mainBtn.textContent = "Submit request";
   mainBtn.disabled = false;
 }
