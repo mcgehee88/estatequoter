@@ -1078,6 +1078,8 @@ mainBtn.onclick = () => {
 
   if (currentStep === totalSteps - 1) {
     const data = collectData();
+        sendLeadToMake(data);
+    
     renderReview(data);
     document.getElementById('main-form').style.display = 'none';
     ctaBar.style.display = 'none';
@@ -1100,5 +1102,23 @@ document.getElementById('edit-btn').onclick = () => {
   showStep(0);
 };
 </script>
+
+<script>
+async function sendLeadToMake(leadData) {
+  const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+
+  try {
+    await fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(leadData)
+    });
+  } catch (err) {
+    console.error("Make.com send failed:", err);
+  }
+}
+</script>
+
+  
 </body>
 </html>
