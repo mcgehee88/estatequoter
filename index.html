@@ -53,12 +53,6 @@ h1 span { color:var(--p); }
 .sub { font-size:19px; color:#475569; margin-bottom:30px; }
 .sub strong { color:var(--g); }
 
-/* Compact header once form is active */
-body.form-active .page { padding-top:20px; padding-bottom:60px; }
-body.form-active h1 { font-size:28px; margin-bottom:8px; }
-body.form-active .sub { font-size:15px; margin-bottom:16px; }
-
-/* Form containers */
 .form-container {
   background:#fff;
   border-radius:var(--r);
@@ -75,7 +69,7 @@ body.form-active .sub { font-size:15px; margin-bottom:16px; }
   background:#e2e8f0;
   border-radius:5px;
   overflow:hidden;
-  margin-bottom:24px;
+  margin-bottom:32px;
 }
 .bar {
   height:100%;
@@ -83,9 +77,7 @@ body.form-active .sub { font-size:15px; margin-bottom:16px; }
   width:0;
   transition:width .3s ease;
 }
-.step-title { font-size:22px; font-weight:700; margin-bottom:4px; }
-.encourager { font-size:13px; color:var(--m); margin-bottom:16px; }
-
+.step-title { font-size:22px; font-weight:700; margin-bottom:8px; }
 .q {
   display:none;
   animation:fade .25s;
@@ -115,16 +107,10 @@ textarea {
   font-size:16px;
 }
 
-.helper {
-  font-size:13px;
-  color:var(--m);
-  margin-top:4px;
-}
-
 /* Range + editable bubble */
 .range-wrap {
   position:relative;
-  margin:24px 0 48px;
+  margin:20px 0 8px;
 }
 input[type=range] {
   width:100%;
@@ -144,7 +130,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 .range-value {
   position:absolute;
-  top:-60px;
+  top:-50px;
   left:50%;
   transform:translateX(-50%);
   background:var(--p);
@@ -155,7 +141,6 @@ input[type=range]::-webkit-slider-thumb {
   font-size:18px;
   white-space:nowrap;
   cursor:text;
-  z-index:2;
 }
 .range-value::after {
   content:"";
@@ -210,7 +195,7 @@ input[type=range]::-webkit-slider-thumb {
   display:none;
 }
 
-/* Fixed CTA bar */
+/* Fixed CTA */
 .fixed-btn {
   position:fixed;
   bottom:0;
@@ -233,7 +218,6 @@ input[type=range]::-webkit-slider-thumb {
   font-weight:700;
   border:none;
   border-radius:999px;
-  cursor:pointer;
 }
 #back-btn {
   flex:1;
@@ -251,18 +235,11 @@ input[type=range]::-webkit-slider-thumb {
   cursor:not-allowed;
 }
 
-/* On desktop, CTA bar sits under the card instead of fixed bottom */
 @media(min-width:768px) {
   .page { padding-bottom:40px; }
-  .fixed-btn {
-    position:static;
-    box-shadow:none;
-    padding:0;
-    margin-top:24px;
-  }
 }
 
-/* Modals */
+/* Modal */
 .modal {
   position:fixed;
   inset:0;
@@ -285,65 +262,18 @@ input[type=range]::-webkit-slider-thumb {
   padding:12px 32px;
   border-radius:999px;
   border:none;
-  background:#0d9d6a;
+  background:var(--g);
   color:#fff;
   font-weight:700;
   font-size:16px;
   cursor:pointer;
 }
 
-/* Review page */
-#review {
-  display:none;
-}
-.review-title {
-  font-size:24px;
-  font-weight:700;
-  margin-bottom:8px;
-}
-.review-sub {
-  font-size:14px;
-  color:var(--m);
-  margin-bottom:20px;
-}
-.review-grid {
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
-.review-item {
-  padding:10px 12px;
-  border-radius:12px;
-  background:#f8fafc;
-}
-.review-item dt {
+/* Helper text */
+.helper {
   font-size:13px;
-  font-weight:600;
-  color:#64748b;
-  margin-bottom:2px;
-}
-.review-item dd {
-  font-size:15px;
-  margin:0;
-  color:#0f172a;
-}
-#edit-btn {
-  margin-top:20px;
-  padding:14px 28px;
-  border-radius:999px;
-  border:none;
-  background:#e2e8f0;
-  color:#0f172a;
-  font-weight:700;
-  cursor:pointer;
-}
-
-/* Pointers on interactive elements */
-button,
-.video-box,
-.chip,
-#zip-submit {
-  cursor:pointer;
+  color:var(--m);
+  margin-top:4px;
 }
 </style>
 </head>
@@ -365,7 +295,7 @@ button,
     <input type="text" id="zip" placeholder="e.g. 23451" maxlength="5" inputmode="numeric" autocomplete="postal-code">
     <p class="helper">We use this to match you with nearby liquidators.</p>
     <div style="margin-top:20px; text-align:right;">
-      <button id="zip-submit" style="padding:14px 28px; border:none; border-radius:999px; background:linear-gradient(135deg,var(--p),#1641cc); color:#fff; font-weight:700; font-size:16px;">
+      <button id="zip-submit" style="padding:14px 28px; border:none; border-radius:999px; background:linear-gradient(135deg,var(--p),#1641cc); color:#fff; font-weight:700; font-size:16px; cursor:pointer;">
         Continue
       </button>
     </div>
@@ -373,9 +303,9 @@ button,
 
   <!-- Main Form -->
   <div id="main-form" class="form-container">
+
     <div class="progress"><div class="bar" id="bar"></div></div>
     <div class="step-title" id="step-title">Property type</div>
-    <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
 
     <!-- 1. Property Type (single) -->
     <div class="q active" data-step="0" data-required="true">
@@ -389,14 +319,14 @@ button,
       <p class="helper">Pick the closest option.</p>
     </div>
 
-    <!-- 2. Square Footage -->
+    <!-- 2. Square Footage (required, editable slider only) -->
     <div class="q" data-step="1" data-required="true">
       <label>Square footage (estimate is fine)</label>
       <div class="range-wrap">
-        <input type="range" id="sqft-range" min="400" max="6000" step="100" value="2500">
+        <input type="range" id="sqft-range" min="400" max="10000" step="100" value="2500">
         <div class="range-value" data-type="sqft" contenteditable="true">2,500 sq ft</div>
       </div>
-      <p class="helper">Drag the slider or click the bubble to type a number.</p>
+      <p class="helper">You can drag the slider or click the bubble to type a number.</p>
     </div>
 
     <!-- 3. Beds & Baths -->
@@ -427,7 +357,7 @@ button,
       <input type="text" id="extra-rooms-other" placeholder="Other (e.g. workshop, carriage house)" style="margin-top:12px;">
     </div>
 
-    <!-- 5. Fullness Level -->
+    <!-- 5. Fullness Level (light/medium/full/really full) -->
     <div class="q" data-step="4" data-required="true">
       <label>How full is the property?</label>
       <div class="range-wrap">
@@ -435,7 +365,8 @@ button,
         <div class="range-value" id="fullness-text" data-type="fullness">Medium</div>
       </div>
       <p class="helper">
-        1 = Light, 2 = Medium, 3 = Full, 4 = Really full. Drag or type in the bubble.
+        1 = Light, 2 = Medium, 3 = Full, 4 = Really full.
+        You can drag or type in the bubble.
       </p>
     </div>
 
@@ -449,7 +380,7 @@ button,
         <div class="chip" data-val="Collector cars">Collector cars</div>
         <div class="chip" data-val="Firearms">Firearms</div>
         <div class="chip" data-val="Coins or gold">Coins or gold</div>
-        <div class="chip" data-val="None or not sure">None or not sure</div>
+        <div class="chip" data-val="None">None or not sure</div>
       </div>
       <input type="text" id="highvalue-other" placeholder="Other high value items" style="margin-top:12px;">
     </div>
@@ -490,10 +421,10 @@ button,
       <input type="text" id="oversized-other" placeholder="Other (e.g. very heavy machinery, hoard conditions)" style="margin-top:12px;">
     </div>
 
-    <!-- 10. Access Difficulty (multi + other) -->
+    <!-- 10. Access Difficulty (single, with Other) -->
     <div class="q" data-step="9" data-required="true">
       <label>How easy is access for trucks and crews?</label>
-      <div class="chips" data-multi="true">
+      <div class="chips" data-multi="false">
         <div class="chip active" data-val="Easy ground-level access">Easy ground level access</div>
         <div class="chip" data-val="Multiple flights of stairs">Multiple flights of stairs</div>
         <div class="chip" data-val="Elevator">Elevator (may be small)</div>
@@ -525,8 +456,8 @@ button,
     <div class="q" data-step="11" data-required="true">
       <label>Estimated current home value (as-is, ballpark is fine)</label>
       <div class="range-wrap">
-        <input type="range" id="value-range" min="50000" max="1500000" step="25000" value="400000">
-        <div class="range-value" id="value-bubble" data-type="value" contenteditable="true">$400,000</div>
+        <input type="range" id="value-range" min="50000" max="3000000" step="25000" value="450000">
+        <div class="range-value" id="value-bubble" data-type="value" contenteditable="true">$450,000</div>
       </div>
       <p class="helper">Drag or type the amount in the bubble. This helps set expectations on overall sale potential.</p>
     </div>
@@ -537,21 +468,11 @@ button,
       <input type="text" id="name" placeholder="First and last name" required>
       <label style="margin-top:16px">Email</label>
       <input type="email" id="email" placeholder="We will send quotes here" required>
-      <label style="margin-top:16px">Phone</label>
-      <input type="tel" id="phone" placeholder="Mobile number" required>
+      <label style="margin-top:16px">Phone <span style="font-weight:400">(optional but helps coordinators)</span></label>
+      <input type="tel" id="phone" placeholder="Mobile number">
       <label style="margin-top:20px">Anything else we should know?</label>
       <textarea id="notes" rows="3" placeholder="Timeline, attorney involvement, locked areas, special requests, etc."></textarea>
     </div>
-  </div>
-
-  <!-- Review Page -->
-  <div id="review" class="form-container">
-    <div class="review-title">Review your request</div>
-    <div class="review-sub">
-      Here is a simple summary of what you shared. If something looks off you can go back and edit before this is sent to local pros.
-    </div>
-    <div class="review-grid" id="review-grid"></div>
-    <button id="edit-btn">Edit answers</button>
   </div>
 </div>
 
@@ -566,501 +487,348 @@ button,
 <!-- Hampton Roads Modal -->
 <div class="modal" id="hr-modal">
   <div class="modal-content">
-    <i class="fas fa-check-circle fa-4x" style="color:#0d9d6a;margin-bottom:16px;"></i>
-    <h2 style="color:#0d9d6a; margin-bottom:8px;">Great news</h2>
+    <i class="fas fa-check-circle fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">Great news</h2>
     <p style="font-size:16px; margin:8px 0 0;">
       You are in the Hampton Roads area. We have in-network partners and can usually get you a detailed quote within 24 hours.
     </p>
-    <button style="margin-top:24px;" onclick="closeHRModal()">Continue</button>
-  </div>
-</div>
-
-<!-- Completion Modal -->
-<div class="modal" id="complete-modal">
-  <div class="modal-content">
-    <i class="fas fa-thumbs-up fa-4x" style="color:#0d9d6a;margin-bottom:16px;"></i>
-    <h2 style="color:#0d9d6a; margin-bottom:8px;">You are all set</h2>
-    <p style="font-size:16px; margin:8px 0 0;">
-      Your answers are ready to review. On the next screen you will see everything in one place before it is shared with trusted local pros.
-    </p>
-    <button style="margin-top:24px;" onclick="closeCompleteModal()">Review my answers</button>
+    <button style="margin-top:24px;" onclick="closeModal()">Continue</button>
   </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const hamptonRoadsZips = new Set([
-    "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
-    "23320","23321","23322","23323","23324","23325","23326","23327","23328",
-    "23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523",
-    "23701","23702","23703","23704","23707","23708","23709",
-    "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681",
-    "23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"
-  ]);
+const hamptonRoadsZips = new Set([
+  "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
+  "23320","23321","23322","23323","23324","23325","23326","23327","23328",
+  "23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523",
+  "23701","23702","23703","23704","23707","23708","23709",
+  "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681",
+  "23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"
+]);
 
-  let currentStep = 0;
-  const qs = document.querySelectorAll('#main-form .q');
-  const totalSteps = qs.length;
-  const bar = document.getElementById('bar');
-  const stepTitle = document.getElementById('step-title');
-  const stepHelper = document.getElementById('step-helper');
-  const ctaBar = document.getElementById('cta-bar');
-  const backBtn = document.getElementById('back-btn');
-  const mainBtn = document.getElementById('main-btn');
+let currentStep = 0;
+const qs = document.querySelectorAll('#main-form .q');
+const totalSteps = qs.length;
+const bar = document.getElementById('bar');
+const stepTitle = document.getElementById('step-title');
+const ctaBar = document.getElementById('cta-bar');
+const backBtn = document.getElementById('back-btn');
+const mainBtn = document.getElementById('main-btn');
 
-  const titles = [
-    "Property type",
-    "Square footage",
-    "Bedrooms and baths",
-    "Extra rooms or spaces",
-    "How full is it",
-    "High value items",
-    "Clean out needs",
-    "Timeline",
-    "Oversized items",
-    "Access difficulty",
-    "Optional video",
-    "Estimated home value",
-    "Final details"
-  ];
+const titles = [
+  "Property type",
+  "Square footage",
+  "Bedrooms and baths",
+  "Extra rooms or spaces",
+  "How full is it",
+  "High value items",
+  "Clean out needs",
+  "Timeline",
+  "Oversized items",
+  "Access difficulty",
+  "Optional video",
+  "Estimated home value",
+  "Final details"
+];
 
-  const encouragements = [
-    "You are off to a great start.",
-    "Nice. This helps get realistic quotes.",
-    "Bedrooms and baths tell pros how many rooms to staff.",
-    "Extra spaces often add value. You are doing fine.",
-    "Almost there. A sense of fullness goes a long way.",
-    "This helps match you with the right kind of liquidator.",
-    "Clean out needs help avoid surprise costs later.",
-    "Timeline helps everyone plan and stay calm.",
-    "This keeps crews safe and prepared.",
-    "Access is a big factor. You are almost done.",
-    "Optional, but it really helps. No need to tidy.",
-    "This just sets expectations. Ballpark is enough.",
-    "Last step. Then you can review everything."
-  ];
+function updateProgress() {
+  const percent = ((currentStep + 1) / totalSteps) * 100;
+  bar.style.width = percent + '%';
+  stepTitle.textContent = titles[currentStep] || '';
+  backBtn.disabled = currentStep === 0;
+  mainBtn.textContent = currentStep === totalSteps - 1 ? "Submit request" : "Next";
+  window.scrollTo(0,0);
+}
 
-  function updateProgress() {
-    const percent = ((currentStep + 1) / totalSteps) * 100;
-    bar.style.width = percent + '%';
-    stepTitle.textContent = titles[currentStep] || '';
-    stepHelper.textContent = encouragements[currentStep] || "You are doing great. A few more details and you will be done.";
-    backBtn.disabled = currentStep === 0;
-    mainBtn.textContent = currentStep === totalSteps - 1 ? "Submit request" : "Next";
-    window.scrollTo(0,0);
-  }
+function showStep(step) {
+  qs[currentStep].classList.remove('active');
+  currentStep = step;
+  qs[currentStep].classList.add('active');
+  updateProgress();
+}
 
-  function showStep(step) {
-    qs[currentStep].classList.remove('active');
-    currentStep = step;
-    qs[currentStep].classList.add('active');
-    updateProgress();
-  }
+function validateStep(stepIndex) {
+  const step = qs[stepIndex];
+  const required = step.getAttribute('data-required') === 'true';
+  if (!required) return true;
 
-  function validateStep(stepIndex) {
-    const step = qs[stepIndex];
-    const required = step.getAttribute('data-required') === 'true';
-    if (!required) return true;
-
-    switch(stepIndex) {
-      case 0: {
-        const activeChip = step.querySelector('.chip.active');
-        if (!activeChip) {
-          alert('Please select the property type.');
-          return false;
-        }
-        return true;
+  switch(stepIndex) {
+    case 0: { // property type (single chips)
+      const activeChip = step.querySelector('.chip.active');
+      if (!activeChip) {
+        alert('Please select the property type.');
+        return false;
       }
-      case 1: {
-        const val = parseInt(document.getElementById('sqft-range').value, 10);
-        if (!val || isNaN(val)) {
-          alert('Please set an approximate square footage.');
-          return false;
-        }
-        return true;
-      }
-      case 2: {
-        const beds = document.getElementById('beds').value;
-        const baths = document.getElementById('baths').value;
-        if (!beds || !baths) {
-          alert('Please select both bedrooms and bathrooms.');
-          return false;
-        }
-        return true;
-      }
-      case 3: {
-        const chips = step.querySelectorAll('.chip.active');
-        if (chips.length === 0) {
-          alert('Please select if there are extra spaces, or choose "None of these".');
-          return false;
-        }
-        return true;
-      }
-      case 4: {
-        const val = parseInt(document.getElementById('fullness-range').value, 10);
-        if (!val || isNaN(val)) {
-          alert('Please tell us roughly how full the property is.');
-          return false;
-        }
-        return true;
-      }
-      case 5: {
-        const chips = step.querySelectorAll('.chip.active');
-        if (chips.length === 0) {
-          alert('Please select any high value items, or choose "None or not sure".');
-          return false;
-        }
-        return true;
-      }
-      case 6: {
-        const chip = step.querySelector('.chip.active');
-        if (!chip) {
-          alert('Please tell us what kind of clean out you need.');
-          return false;
-        }
-        return true;
-      }
-      case 7: {
-        const chip = step.querySelector('.chip.active');
-        if (!chip) {
-          alert('Please select a timeline.');
-          return false;
-        }
-        return true;
-      }
-      case 8: {
-        const chips = step.querySelectorAll('.chip.active');
-        if (chips.length === 0) {
-          alert('Please tell us if there are any oversized items, or choose "None of these".');
-          return false;
-        }
-        return true;
-      }
-      case 9: {
-        const chips = step.querySelectorAll('.chip.active');
-        if (chips.length === 0) {
-          alert('Please tell us about access difficulty.');
-          return false;
-        }
-        const otherChip = step.querySelector('.chip.active[data-val="Other"]');
-        if (otherChip) {
-          const txt = document.getElementById('access-other').value.trim();
-          if (!txt) {
-            alert('Please describe the access challenges.');
-            return false;
-          }
-        }
-        return true;
-      }
-      case 11: {
-        const val = parseInt(document.getElementById('value-range').value, 10);
-        if (!val || isNaN(val)) {
-          alert('Please set an estimated home value.');
-          return false;
-        }
-        return true;
-      }
-      case 12: {
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        if (!name) {
-          alert('Please enter your name.');
-          return false;
-        }
-        if (!email) {
-          alert('Please enter your email so we can send quotes.');
-          return false;
-        }
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
-          alert('Please enter a valid email address.');
-          return false;
-        }
-        if (!phone) {
-          alert('Please enter a phone number.');
-          return false;
-        }
-        return true;
-      }
-      default:
-        return true;
+      return true;
     }
-  }
-
-  function collectData() {
-    const data = {};
-    data.zip = document.getElementById('zip').value.trim();
-
-    const step0Chip = qs[0].querySelector('.chip.active');
-    data.propertyType = step0Chip ? (step0Chip.dataset.val || step0Chip.textContent.trim()) : '';
-
-    data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10);
-    data.bedrooms = document.getElementById('beds').value;
-    data.bathrooms = document.getElementById('baths').value;
-
-    const step3 = qs[3];
-    const extraChips = step3.querySelectorAll('.chip.active');
-    data.extraRooms = extraChips.length
-      ? Array.from(extraChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-      : 'None';
-    data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
-
-    const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
-    let fullnessLabel = 'Medium';
-    if (fullnessVal === 1) fullnessLabel = 'Light';
-    if (fullnessVal === 2) fullnessLabel = 'Medium';
-    if (fullnessVal === 3) fullnessLabel = 'Full';
-    if (fullnessVal === 4) fullnessLabel = 'Really full';
-    data.fullness = fullnessLabel;
-
-    const step5 = qs[5];
-    const hvChips = step5.querySelectorAll('.chip.active');
-    data.highValue = hvChips.length
-      ? Array.from(hvChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-      : 'None or not sure';
-    data.highValueOther = document.getElementById('highvalue-other').value.trim();
-
-    const step6Chip = qs[6].querySelector('.chip.active');
-    data.cleanOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
-
-    const step7Chip = qs[7].querySelector('.chip.active');
-    data.timeline = step7Chip ? (step7Chip.dataset.val || step7Chip.textContent.trim()) : '';
-
-    const step8 = qs[8];
-    const osChips = step8.querySelectorAll('.chip.active');
-    data.oversized = osChips.length
-      ? Array.from(osChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-      : 'None';
-    data.oversizedOther = document.getElementById('oversized-other').value.trim();
-
-    const step9 = qs[9];
-    const accChips = step9.querySelectorAll('.chip.active');
-    data.access = accChips.length
-      ? Array.from(accChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-      : '';
-    data.accessOther = document.getElementById('access-other').value.trim();
-
-    const videoPreview = document.getElementById('video-preview');
-    data.hasVideo = !!videoPreview.src;
-    data.videoConsentChecked = document.getElementById('tc-check').checked;
-
-    data.homeValue = parseInt(document.getElementById('value-range').value, 10);
-
-    data.name = document.getElementById('name').value.trim();
-    data.email = document.getElementById('email').value.trim();
-    data.phone = document.getElementById('phone').value.trim();
-    data.notes = document.getElementById('notes').value.trim();
-
-    return data;
-  }
-
-  function renderReview(data) {
-    const grid = document.getElementById('review-grid');
-    const fmtMoney = n => n ? '$' + n.toLocaleString() : '';
-    const fmtSqft = n => n ? n.toLocaleString() + ' sq ft' : '';
-
-    const items = [
-      { label: "ZIP code", value: data.zip || '-' },
-      { label: "Property type", value: data.propertyType || '-' },
-      { label: "Square footage", value: fmtSqft(data.squareFootage) || '-' },
-      { label: "Bedrooms", value: data.bedrooms || '-' },
-      { label: "Bathrooms", value: data.bathrooms || '-' },
-      { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(' | ') || '-' },
-      { label: "How full it is", value: data.fullness || '-' },
-      { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(' | ') || '-' },
-      { label: "Clean out needs", value: data.cleanOut || '-' },
-      { label: "Timeline", value: data.timeline || '-' },
-      { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(' | ') || '-' },
-      { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(' | ') || '-' },
-      { label: "Home value estimate", value: fmtMoney(data.homeValue) || '-' },
-      { label: "Name", value: data.name || '-' },
-      { label: "Email", value: data.email || '-' },
-      { label: "Phone", value: data.phone || '-' },
-      { label: "Notes", value: data.notes || 'None' },
-      { label: "Video provided", value: data.hasVideo ? "Yes" : "No" }
-    ];
-
-    grid.innerHTML = items.map(item => `
-      <div class="review-item">
-        <dl>
-          <dt>${item.label}</dt>
-          <dd>${item.value}</dd>
-        </dl>
-      </div>
-    `).join('');
-  }
-
-  // ZIP submit
-  const zipButton = document.getElementById('zip-submit');
-  zipButton.addEventListener('click', function() {
-    const zip = document.getElementById('zip').value.trim();
-    if (!/^\d{5}$/.test(zip)) {
-      alert('Please enter a valid 5 digit ZIP code.');
-      return;
+    case 1: { // sqft - slider always has a value
+      const val = parseInt(document.getElementById('sqft-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an approximate square footage.');
+        return false;
+      }
+      return true;
     }
-    if (hamptonRoadsZips.has(zip)) {
-      document.getElementById('hr-modal').classList.add('active');
+    case 2: { // beds and baths
+      const beds = document.getElementById('beds').value;
+      const baths = document.getElementById('baths').value;
+      if (!beds || !baths) {
+        alert('Please select both bedrooms and bathrooms.');
+        return false;
+      }
+      return true;
     }
-    document.getElementById('zip-section').style.display = 'none';
-    document.getElementById('main-form').style.display = 'block';
-    document.body.classList.add('form-active');
-    ctaBar.style.display = 'block';
-    qs[0].classList.add('active');
-    updateProgress();
-  });
-
-  // Expose modal closers for inline onclick
-  function closeHRModal() {
-    document.getElementById('hr-modal').classList.remove('active');
-  }
-  function closeCompleteModal() {
-    document.getElementById('complete-modal').classList.remove('active');
-    document.getElementById('review').style.display = 'block';
-  }
-  window.closeHRModal = closeHRModal;
-  window.closeCompleteModal = closeCompleteModal;
-
-  // Chips behavior
-  document.querySelectorAll('.chips').forEach(group => {
-    const multi = group.getAttribute('data-multi') === 'true';
-    group.addEventListener('click', e => {
-      const chip = e.target.closest('.chip');
-      if (!chip) return;
-
-      if (multi) {
-        chip.classList.toggle('active');
-
-        const noneValues = ["None", "None of these", "None or not sure"];
-        if (noneValues.includes(chip.dataset.val)) {
-          if (chip.classList.contains('active')) {
-            group.querySelectorAll('.chip').forEach(c => {
-              if (c !== chip) c.classList.remove('active');
-            });
-          }
-        } else {
-          group.querySelectorAll('.chip').forEach(c => {
-            if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
-          });
+    case 3: { // extra rooms
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select if there are extra spaces, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 4: { // fullness
+      const val = parseInt(document.getElementById('fullness-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please tell us roughly how full the property is.');
+        return false;
+      }
+      return true;
+    }
+    case 5: { // high value
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select any high value items, or choose "None or not sure".');
+        return false;
+      }
+      return true;
+    }
+    case 6: { // clean-out
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please tell us what kind of clean out you need.');
+        return false;
+      }
+      return true;
+    }
+    case 7: { // timeline
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please select a timeline.');
+        return false;
+      }
+      return true;
+    }
+    case 8: { // oversized
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us if there are any oversized items, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 9: { // access difficulty
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please tell us about access difficulty.');
+        return false;
+      }
+      if (chip.dataset.val === 'Other') {
+        const txt = document.getElementById('access-other').value.trim();
+        if (!txt) {
+          alert('Please describe the access challenges.');
+          return false;
         }
+      }
+      return true;
+    }
+    case 11: { // home value
+      const val = parseInt(document.getElementById('value-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an estimated home value.');
+        return false;
+      }
+      return true;
+    }
+    case 12: { // contact info
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      if (!name) {
+        alert('Please enter your name.');
+        return false;
+      }
+      if (!email) {
+        alert('Please enter your email so we can send quotes.');
+        return false;
+      }
+      // very light email check
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
+/* ZIP submit */
+document.getElementById('zip-submit').onclick = () => {
+  const zip = document.getElementById('zip').value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    alert('Please enter a valid 5 digit ZIP code.');
+    return;
+  }
+  if (hamptonRoadsZips.has(zip)) {
+    document.getElementById('hr-modal').classList.add('active');
+  }
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  ctaBar.style.display = 'block';
+  qs[0].classList.add('active');
+  updateProgress();
+};
+
+function closeModal() {
+  document.getElementById('hr-modal').classList.remove('active');
+}
+window.closeModal = closeModal;
+
+/* Chips behavior (single vs multi based on data-multi) */
+document.querySelectorAll('.chips').forEach(group => {
+  const multi = group.getAttribute('data-multi') === 'true';
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+
+    if (multi) {
+      // Multi select: toggle
+      chip.classList.toggle('active');
+      // If "None" selected, clear others
+      if (chip.dataset.val === 'None' || chip.dataset.val === 'None of these' || chip.dataset.val === 'None or not sure') {
+        group.querySelectorAll('.chip').forEach(c => {
+          if (c !== chip) c.classList.remove('active');
+        });
       } else {
-        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
+        // Deselect "None" if something else picked
+        group.querySelectorAll('.chip').forEach(c => {
+          if (c.dataset.val === 'None' || c.dataset.val === 'None of these' || c.dataset.val === 'None or not sure') {
+            c.classList.remove('active');
+          }
+        });
       }
-
-      const parentStep = group.parentElement.getAttribute('data-step');
-      if (parentStep === '9') {
-        const otherInput = document.getElementById('access-other');
-        const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
-        if (anyOtherActive) {
-          otherInput.style.display = 'block';
-        } else {
-          otherInput.style.display = 'none';
-          otherInput.value = '';
-        }
-      }
-    });
-  });
-
-  // Range sliders + editable bubbles
-  function formatRange(slider, bubble) {
-    const val = parseInt(slider.value, 10);
-    const type = bubble.getAttribute('data-type');
-
-    if (type === 'sqft') {
-      bubble.textContent = val.toLocaleString() + ' sq ft';
-    } else if (type === 'value') {
-      bubble.textContent = '$' + val.toLocaleString();
-    } else if (type === 'fullness') {
-      let label = 'Medium';
-      if (val === 1) label = 'Light';
-      if (val === 2) label = 'Medium';
-      if (val === 3) label = 'Full';
-      if (val === 4) label = 'Really full';
-      bubble.textContent = label;
-    }
-
-    const min = parseInt(slider.min, 10);
-    const max = parseInt(slider.max, 10);
-    const percent = (val - min) / (max - min) * 100;
-    bubble.style.left = percent + '%';
-  }
-
-  document.querySelectorAll('.range-wrap').forEach(wrap => {
-    const slider = wrap.querySelector('input[type=range]');
-    const bubble = wrap.querySelector('.range-value');
-    if (!slider || !bubble) return;
-
-    formatRange(slider, bubble);
-    slider.addEventListener('input', () => formatRange(slider, bubble));
-
-    bubble.addEventListener('blur', () => {
-      const raw = bubble.textContent;
-      const digits = raw.replace(/[^\d]/g, '');
-      if (!digits) {
-        formatRange(slider, bubble);
-        return;
-      }
-      let val = parseInt(digits, 10);
-      const min = parseInt(slider.min, 10);
-      const max = parseInt(slider.max, 10);
-      if (val < min) val = min;
-      if (val > max) val = max;
-      slider.value = val;
-      formatRange(slider, bubble);
-    });
-
-    bubble.addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        bubble.blur();
-      }
-    });
-  });
-
-  // Video upload preview
-  document.getElementById('video-upload').onchange = e => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('video/')) {
-      const url = URL.createObjectURL(file);
-      const prev = document.getElementById('video-preview');
-      prev.src = url;
-      prev.style.display = 'block';
-      document.getElementById('video-box').classList.add('ready');
-      document.getElementById('tc-label').style.display = 'block';
     } else {
-      alert('Please upload a video file.');
-      e.target.value = '';
+      // Single select
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
     }
-  };
 
-  // Navigation buttons
-  mainBtn.addEventListener('click', function() {
-    if (!validateStep(currentStep)) return;
-
-    if (currentStep === totalSteps - 1) {
-      const data = collectData();
-      renderReview(data);
-      document.getElementById('main-form').style.display = 'none';
-      ctaBar.style.display = 'none';
-      document.getElementById('complete-modal').classList.add('active');
-      return;
+    // Show or hide access "Other" field
+    if (group.parentElement.getAttribute('data-step') === '9') {
+      const otherInput = document.getElementById('access-other');
+      const activeChip = group.querySelector('.chip.active');
+      if (activeChip && activeChip.dataset.val === 'Other') {
+        otherInput.style.display = 'block';
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.value = '';
+      }
     }
-    showStep(currentStep + 1);
-  });
-
-  backBtn.addEventListener('click', function() {
-    if (currentStep === 0) return;
-    showStep(currentStep - 1);
-  });
-
-  // Edit after review
-  document.getElementById('edit-btn').addEventListener('click', function() {
-    document.getElementById('review').style.display = 'none';
-    document.getElementById('main-form').style.display = 'block';
-    ctaBar.style.display = 'block';
-    showStep(0);
   });
 });
+
+/* Range sliders + editable bubbles */
+function formatRange(slider, bubble) {
+  const val = parseInt(slider.value, 10);
+  const type = bubble.getAttribute('data-type');
+
+  if (type === 'sqft') {
+    bubble.textContent = val.toLocaleString() + ' sq ft';
+  } else if (type === 'value') {
+    bubble.textContent = '$' + val.toLocaleString();
+  } else if (type === 'fullness') {
+    // 1-4 -> labels
+    let label = 'Medium';
+    if (val === 1) label = 'Light';
+    if (val === 2) label = 'Medium';
+    if (val === 3) label = 'Full';
+    if (val === 4) label = 'Really full';
+    bubble.textContent = label;
+  }
+
+  const min = parseInt(slider.min, 10);
+  const max = parseInt(slider.max, 10);
+  const percent = (val - min) / (max - min) * 100;
+  bubble.style.left = percent + '%';
+}
+
+document.querySelectorAll('.range-wrap').forEach(wrap => {
+  const slider = wrap.querySelector('input[type=range]');
+  const bubble = wrap.querySelector('.range-value');
+  if (!slider || !bubble) return;
+
+  formatRange(slider, bubble);
+  slider.addEventListener('input', () => formatRange(slider, bubble));
+
+  // Handle manual editing when user types into bubble
+  bubble.addEventListener('blur', () => {
+    const raw = bubble.textContent;
+    const digits = raw.replace(/[^\d]/g, '');
+    if (!digits) {
+      formatRange(slider, bubble);
+      return;
+    }
+    let val = parseInt(digits, 10);
+    const min = parseInt(slider.min, 10);
+    const max = parseInt(slider.max, 10);
+    if (val < min) val = min;
+    if (val > max) val = max;
+    slider.value = val;
+    formatRange(slider, bubble);
+  });
+
+  // Enter key commits value instead of adding new line
+  bubble.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      bubble.blur();
+    }
+  });
+});
+
+/* Video upload preview + checkbox show (optional) */
+document.getElementById('video-upload').onchange = e => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith('video/')) {
+    const url = URL.createObjectURL(file);
+    const prev = document.getElementById('video-preview');
+    prev.src = url;
+    prev.style.display = 'block';
+    document.getElementById('video-box').classList.add('ready');
+    document.getElementById('tc-label').style.display = 'block';
+  } else {
+    alert('Please upload a video file.');
+    e.target.value = '';
+  }
+};
+
+/* Navigation buttons */
+mainBtn.onclick = () => {
+  // validate current step before moving forward
+  if (!validateStep(currentStep)) return;
+
+  if (currentStep === totalSteps - 1) {
+    // Final submit: collect and send; placeholder for now
+    alert('Thank you. Your request has been sent. You will hear from us within about 24-48 hours.');
+    return;
+  }
+  showStep(currentStep + 1);
+};
+
+backBtn.onclick = () => {
+  if (currentStep === 0) return;
+  showStep(currentStep - 1);
+};
 </script>
 </body>
 </html>
