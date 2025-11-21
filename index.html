@@ -7,12 +7,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 :root{
-  --p:#4361ee;
+  --p:#2153ff;
   --g:#0d9d6a;
   --bg:#f8fafc;
   --t:#0f172a;
   --m:#64748b;
-  --r:28px;
+  --r:24px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -22,105 +22,113 @@ body {
   line-height:1.6;
   min-height:100dvh;
 }
-.page { padding:20px 16px 100px; max-width:640px; margin:0 auto; text-align:center; transition:all .4s; }
-.page.condensed { padding-top:12px; }
-
-/* Modern Logo */
+.page {
+  padding:32px 16px 120px;
+  max-width:640px;
+  margin:0 auto;
+  text-align:center;
+}
 .logo {
-  font-size:28px;
-  font-weight:900;
+  font-size:32px;
+  font-weight:800;
   display:flex;
   align-items:center;
   justify-content:center;
   gap:12px;
-  margin-bottom:16px;
-  transition:transform .2s;
+  margin-bottom:24px;
 }
-.logo:hover { transform:scale(1.03); }
 .logo-mark {
-  width:52px;
-  height:52px;
-  background:linear-gradient(135deg, #4361ee, #3f37c9);
-  border-radius:18px;
+  width:48px;
+  height:48px;
+  background:radial-gradient(#a0f8d8,#0d9d6a,#2153ff);
+  border-radius:16px;
   display:grid;
   place-items:center;
   color:#fff;
   font-weight:900;
-  font-size:24px;
-  box-shadow:0 8px 20px rgba(67,97,238,.3);
+  font-size:22px;
 }
-
-/* Header when condensed */
-.header-condensed {
-  font-size:28px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-.encouragement {
-  font-size:18px;
-  color:var(--g);
-  font-weight:600;
-  margin-bottom:20px;
-  opacity:0;
-  transition:opacity .4s;
-}
-.encouragement.show { opacity:1; }
-
-h1 { font-size:36px; font-weight:800; margin-bottom:16px; transition:font-size .4s; }
+h1 { font-size:36px; font-weight:800; margin-bottom:16px; }
 h1 span { color:var(--p); }
 .sub { font-size:19px; color:#475569; margin-bottom:30px; }
 .sub strong { color:var(--g); }
 
+/* Compact header once form is active */
+body.form-active .page { padding-top:20px; padding-bottom:60px; }
+body.form-active h1 { font-size:28px; margin-bottom:8px; }
+body.form-active .sub { font-size:15px; margin-bottom:16px; }
+
+/* Form containers */
 .form-container {
   background:#fff;
   border-radius:var(--r);
-  box-shadow:0 20px 60px rgba(0,0,0,.1);
-  padding:32px 28px;
+  box-shadow:0 16px 50px rgba(0,0,0,.1);
+  padding:32px 24px;
   text-align:left;
   margin:0 auto;
 }
+
+/* Progress / steps */
+#main-form { display:none; }
 .progress {
   height:10px;
   background:#e2e8f0;
   border-radius:5px;
   overflow:hidden;
-  margin-bottom:32px;
+  margin-bottom:24px;
 }
 .bar {
   height:100%;
-  background:linear-gradient(90deg,var(--p),#3f37c9);
+  background:var(--p);
   width:0;
-  transition:width .4s ease;
+  transition:width .3s ease;
 }
-.step-title { font-size:24px; font-weight:700; margin-bottom:12px; }
+.step-title { font-size:22px; font-weight:700; margin-bottom:4px; }
+.encourager { font-size:13px; color:var(--m); margin-bottom:16px; }
 
-.q { display:none; animation:fade .35s; }
+.q {
+  display:none;
+  animation:fade .25s;
+}
 .q.active { display:block; }
 @keyframes fade {
-  from{opacity:0;transform:translateY(15px)}
+  from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:none}
 }
 
 label {
   display:block;
   font-weight:600;
-  margin:24px 0 10px;
+  margin:20px 0 8px;
   font-size:16px;
 }
-input[type=text], input[type=number], input[type=email], input[type=tel], select, textarea {
+input[type=text],
+input[type=number],
+input[type=email],
+input[type=tel],
+select,
+textarea {
   width:100%;
   padding:14px 16px;
   border:1px solid #cbd5e1;
   border-radius:14px;
   font-size:16px;
 }
+
+.helper {
+  font-size:13px;
+  color:var(--m);
+  margin-top:4px;
+}
+
+/* Range + editable bubble */
 .range-wrap {
   position:relative;
-  margin:24px 0 10px;
+  margin:24px 0 48px;
 }
 input[type=range] {
   width:100%;
-  height:10px;
+  height:8px;
   border-radius:8px;
   background:#e2e8f0;
   outline:none;
@@ -128,39 +136,39 @@ input[type=range] {
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance:none;
-  width:32px;
-  height:32px;
+  width:28px;
+  height:28px;
   border-radius:50%;
   background:var(--p);
   cursor:pointer;
-  box-shadow:0 4px 12px rgba(67,97,238,.4);
 }
 .range-value {
   position:absolute;
-  top:-56px;
+  top:-60px;
   left:50%;
   transform:translateX(-50%);
   background:var(--p);
   color:#fff;
-  padding:10px 18px;
-  border-radius:16px;
+  padding:8px 16px;
+  border-radius:12px;
   font-weight:700;
   font-size:18px;
   white-space:nowrap;
-  z-index:10;
-  pointer-events:all;
+  cursor:text;
+  z-index:2;
 }
 .range-value::after {
   content:"";
   position:absolute;
-  bottom:-8px;
+  bottom:-6px;
   left:50%;
-  margin-left:-8px;
-  border-width:8px;
+  margin-left:-6px;
+  border-width:6px;
   border-style:solid;
   border-color:var(--p) transparent transparent transparent;
 }
 
+/* Chips */
 .chips {
   display:flex;
   flex-wrap:wrap;
@@ -168,25 +176,41 @@ input[type=range]::-webkit-slider-thumb {
   margin:12px 0;
 }
 .chip {
-  padding:11px 20px;
+  padding:10px 18px;
   border:2px solid #cbd5e1;
   border-radius:999px;
   background:#fff;
   cursor:pointer;
-  transition:all .2s;
+  transition:all .15s;
   font-size:15px;
 }
 .chip.active {
   border-color:var(--p);
-  background:#ebf0ff;
+  background:#e0ebff;
   color:var(--p);
-  font-weight:600;
 }
-.chip:hover { border-color:var(--p); }
 
-/* Buttons */
-button, .chip, .video-box { cursor:pointer !important; }
+/* Video box */
+.video-box {
+  border:3px dashed #94a3b8;
+  border-radius:16px;
+  padding:32px 20px;
+  text-align:center;
+  background:#f8fafc;
+  cursor:pointer;
+}
+.video-box.ready {
+  border-color:var(--g);
+  background:#ecfdf5;
+}
+#video-preview {
+  max-width:100%;
+  border-radius:12px;
+  margin-top:12px;
+  display:none;
+}
 
+/* Fixed CTA bar */
 .fixed-btn {
   position:fixed;
   bottom:0;
@@ -194,13 +218,12 @@ button, .chip, .video-box { cursor:pointer !important; }
   right:0;
   padding:12px 16px;
   background:#fff;
-  box-shadow:0 -8px 40px rgba(0,0,0,.15);
+  box-shadow:0 -8px 40px rgba(0,0,0,.12);
   z-index:100;
-  display:none;
 }
 .btn-row {
   display:flex;
-  gap:12px;
+  gap:10px;
   max-width:640px;
   margin:0 auto;
 }
@@ -210,6 +233,7 @@ button, .chip, .video-box { cursor:pointer !important; }
   font-weight:700;
   border:none;
   border-radius:999px;
+  cursor:pointer;
 }
 #back-btn {
   flex:1;
@@ -218,42 +242,31 @@ button, .chip, .video-box { cursor:pointer !important; }
 }
 #main-btn {
   flex:2;
-  background:linear-gradient(135deg,var(--p),#3f37c9);
+  background:linear-gradient(135deg,var(--p),#1641cc);
   color:#fff;
-  box-shadow:0 10px 30px rgba(67,97,238,.3);
+  box-shadow:0 10px 30px rgba(33,83,255,.3);
 }
-#back-btn[disabled] { opacity:.4; cursor:not-allowed !important; }
+#back-btn[disabled] {
+  opacity:.4;
+  cursor:not-allowed;
+}
 
+/* On desktop, CTA bar sits under the card instead of fixed bottom */
 @media(min-width:768px) {
-  .fixed-btn { display:none !important; }
-  .desktop-btns {
-    margin-top:40px;
-    text-align:right;
+  .page { padding-bottom:40px; }
+  .fixed-btn {
+    position:static;
+    box-shadow:none;
+    padding:0;
+    margin-top:24px;
   }
 }
 
-/* Summary page */
-#summary-page { display:none; }
-.summary-item {
-  background:#f1f5f9;
-  padding:16px;
-  border-radius:16px;
-  margin-bottom:16px;
-  text-align:left;
-}
-.summary-item strong { color:var(--p); }
-.edit-btn {
-  margin-left:12px;
-  color:var(--p);
-  text-decoration:underline;
-  cursor:pointer;
-}
-
-/* Modal */
+/* Modals */
 .modal {
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.5);
   display:none;
   align-items:center;
   justify-content:center;
@@ -264,57 +277,108 @@ button, .chip, .video-box { cursor:pointer !important; }
 .modal-content {
   background:#fff;
   border-radius:var(--r);
-  padding:40px 32px;
+  padding:32px;
   text-align:center;
   max-width:420px;
 }
 .modal-content button {
-  margin-top:24px;
-  padding:14px 36px;
-  border:none;
+  padding:12px 32px;
   border-radius:999px;
+  border:none;
   background:var(--g);
   color:#fff;
   font-weight:700;
   font-size:16px;
   cursor:pointer;
 }
+
+/* Review page */
+#review {
+  display:none;
+}
+.review-title {
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.review-sub {
+  font-size:14px;
+  color:var(--m);
+  margin-bottom:20px;
+}
+.review-grid {
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.review-item {
+  padding:10px 12px;
+  border-radius:12px;
+  background:#f8fafc;
+}
+.review-item dt {
+  font-size:13px;
+  font-weight:600;
+  color:#64748b;
+  margin-bottom:2px;
+}
+.review-item dd {
+  font-size:15px;
+  margin:0;
+  color:#0f172a;
+}
+#edit-btn {
+  margin-top:20px;
+  padding:14px 28px;
+  border-radius:999px;
+  border:none;
+  background:#e2e8f0;
+  color:#0f172a;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* Pointers on primary interactive elements */
+button,
+.video-box,
+.chip,
+#zip-submit {
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
 
-<div class="page" id="page">
+<div class="page">
   <div class="logo">
     <div class="logo-mark">EQ</div>
     EstateQuoter
   </div>
-
-  <h1 id="main-header">Estate liquidation quotes,<br><span>without the hassle.</span></h1>
-  <p class="sub" id="main-sub">
-    Answer a few quick questions and get accurate quotes from trusted local pros — <strong>free and no pressure.</strong>
+  <h1>Estate liquidation quotes,<br><span>without the hassle.</span></h1>
+  <p class="sub">
+    Answer a few quick questions and get accurate quotes from trusted local pros - <strong>free and no pressure.</strong>
   </p>
-  <div class="encouragement" id="encouragement"></div>
 
-  <!-- ZIP -->
+  <!-- ZIP Code First -->
   <div id="zip-section" class="form-container" style="max-width:500px;">
     <label for="zip">Property ZIP code</label>
-    <input type="text" id="zip" placeholder="e.g. 23451" maxlength="5" inputmode="numeric">
+    <input type="text" id="zip" placeholder="e.g. 23451" maxlength="5" inputmode="numeric" autocomplete="postal-code">
     <p class="helper">We use this to match you with nearby liquidators.</p>
-    <div style="margin-top:24px; text-align:right;">
-      <button id="zip-submit" style="padding:14px 32px; border:none; border-radius:999px; background:linear-gradient(135deg,var(--p),#3f37c9); color:#fff; font-weight:700; font-size:17px;">
-        Continue →
+    <div style="margin-top:20px; text-align:right;">
+      <button id="zip-submit" style="padding:14px 28px; border:none; border-radius:999px; background:linear-gradient(135deg,var(--p),#1641cc); color:#fff; font-weight:700; font-size:16px;">
+        Continue
       </button>
     </div>
   </div>
 
   <!-- Main Form -->
-  <div id="main-form" class="form-container" style="display:none;">
+  <div id="main-form" class="form-container">
     <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="step-title" id="step-title"></div>
+    <div class="step-title" id="step-title">Property type</div>
+    <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
 
-    <!-- All questions here (same as before but with small fixes) -->
-    <!-- 0 Property Type -->
-    <div class="q active" data-step="0">
+    <!-- 1. Property Type (single) -->
+    <div class="q active" data-step="0" data-required="true">
       <label>What type of property is it?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="House">House</div>
@@ -322,25 +386,35 @@ button, .chip, .video-box { cursor:pointer !important; }
         <div class="chip" data-val="Apartment">Apartment</div>
         <div class="chip" data-val="Large estate">Large estate</div>
       </div>
+      <p class="helper">Pick the closest option.</p>
     </div>
 
-    <!-- 1 Sqft -->
-    <div class="q" data-step="1">
+    <!-- 2. Square Footage -->
+    <div class="q" data-step="1" data-required="true">
       <label>Square footage (estimate is fine)</label>
       <div class="range-wrap">
-        <input type="range" id="sqft-range" min="400" max="10000" step="100" value="2500">
+        <input type="range" id="sqft-range" min="400" max="6000" step="100" value="2500">
         <div class="range-value" data-type="sqft" contenteditable="true">2,500 sq ft</div>
       </div>
+      <p class="helper">Drag the slider or click the bubble to type a number.</p>
     </div>
 
-    <!-- 2 Beds/Baths -->
-    <div class="q" data-step="2">
-      <label>Bedrooms</label><select id="beds"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
-      <label style="margin-top:20px">Bathrooms</label><select id="baths"><option value="">Select</option><option>1</option><option>1.5</option><option>2</option><option>2.5</option><option>3</option><option>3.5</option><option>4+</option></select>
+    <!-- 3. Beds & Baths -->
+    <div class="q" data-step="2" data-required="true">
+      <label>Bedrooms</label>
+      <select id="beds">
+        <option value="">Select</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+      </select>
+      <label style="margin-top:20px">Bathrooms (including half baths)</label>
+      <select id="baths">
+        <option value="">Select</option>
+        <option>1</option><option>1.5</option><option>2</option><option>2.5</option><option>3</option><option>3.5</option><option>4+</option>
+      </select>
     </div>
 
-    <!-- 3 Extra rooms (multi) -->
-    <div class="q" data-step="3">
+    <!-- 4. Extra Rooms -->
+    <div class="q" data-step="3" data-required="true">
       <label>Any of these spaces?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Attic">Attic</div>
@@ -350,20 +424,23 @@ button, .chip, .video-box { cursor:pointer !important; }
         <div class="chip" data-val="Pool house">Pool house</div>
         <div class="chip" data-val="None">None of these</div>
       </div>
-      <input type="text" id="extra-rooms-other" placeholder="Other (e.g. workshop)" style="margin-top:12px;">
+      <input type="text" id="extra-rooms-other" placeholder="Other (e.g. workshop, carriage house)" style="margin-top:12px;">
     </div>
 
-    <!-- 4 Fullness -->
-    <div class="q" data-step="4">
+    <!-- 5. Fullness Level -->
+    <div class="q" data-step="4" data-required="true">
       <label>How full is the property?</label>
       <div class="range-wrap">
         <input type="range" id="fullness-range" min="1" max="4" value="2">
         <div class="range-value" id="fullness-text" data-type="fullness">Medium</div>
       </div>
+      <p class="helper">
+        1 = Light, 2 = Medium, 3 = Full, 4 = Really full. Drag or type in the bubble.
+      </p>
     </div>
 
-    <!-- 5 High-value -->
-    <div class="q" data-step="5">
+    <!-- 6. High-Value Items -->
+    <div class="q" data-step="5" data-required="true">
       <label>Any high value or specialty items?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Antiques">Antiques</div>
@@ -372,35 +449,36 @@ button, .chip, .video-box { cursor:pointer !important; }
         <div class="chip" data-val="Collector cars">Collector cars</div>
         <div class="chip" data-val="Firearms">Firearms</div>
         <div class="chip" data-val="Coins or gold">Coins or gold</div>
-        <div class="chip" data-val="None">None or not sure</div>
+        <div class="chip" data-val="None or not sure">None or not sure</div>
       </div>
       <input type="text" id="highvalue-other" placeholder="Other high value items" style="margin-top:12px;">
     </div>
 
-    <!-- 6 Clean-out -->
-    <div class="q" data-step="6">
+    <!-- 7. Clean-out Needs (single) -->
+    <div class="q" data-step="6" data-required="true">
       <label>Clean out needs</label>
       <div class="chips" data-multi="false">
-        <div class="chip active" data-val="Broom-swept">Broom swept</div>
-        <div class="chip" data-val="Partial clean-out">Partial clean out</div>
-        <div class="chip" data-val="Full clean-out">Full clean out</div>
+        <div class="chip active" data-val="Broom-swept">Broom swept - we keep what does not sell</div>
+        <div class="chip" data-val="Partial clean-out">Partial clean out - some trash or donations left</div>
+        <div class="chip" data-val="Full clean-out">Full clean out - everything gone</div>
         <div class="chip" data-val="Not sure yet">Not sure yet</div>
       </div>
+      <p class="helper">This helps liquidators understand how much hauling and disposal is needed.</p>
     </div>
 
-    <!-- 7 Timeline -->
-    <div class="q" data-step="7">
+    <!-- 8. Timeline (single) -->
+    <div class="q" data-step="7" data-required="true">
       <label>How urgent is the timeline?</label>
       <div class="chips" data-multi="false">
-        <div class="chip active" data-val="Flexible (30-90 days)">Flexible (30-90 days)</div>
-        <div class="chip" data-val="2-4 weeks">2-4 weeks</div>
-        <div class="chip" data-val="Under 2 weeks">Under 2 weeks</div>
+        <div class="chip active" data-val="Flexible (30-90 days)">Flexible (about 30-90 days)</div>
+        <div class="chip" data-val="2-4 weeks">Somewhat urgent (around 2-4 weeks)</div>
+        <div class="chip" data-val="Under 2 weeks">Very urgent (under 2 weeks)</div>
         <div class="chip" data-val="No set deadline">No set deadline</div>
       </div>
     </div>
 
-    <!-- 8 Oversized -->
-    <div class="q" data-step="8">
+    <!-- 9. Oversized / Hazardous -->
+    <div class="q" data-step="8" data-required="true">
       <label>Oversized or difficult items?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Grand piano">Grand piano</div>
@@ -409,269 +487,595 @@ button, .chip, .video-box { cursor:pointer !important; }
         <div class="chip" data-val="Chemicals / paint / propane">Chemicals / paint / propane</div>
         <div class="chip" data-val="None">None of these</div>
       </div>
-      <input type="text" id="oversized-other" placeholder="Other difficult items" style="margin-top:12px;">
+      <input type="text" id="oversized-other" placeholder="Other (e.g. very heavy machinery, hoard conditions)" style="margin-top:12px;">
     </div>
 
-    <!-- 9 Access difficulty – now MULTI -->
-    <div class="q" data-step="9">
+    <!-- 10. Access Difficulty (multi + other) -->
+    <div class="q" data-step="9" data-required="true">
       <label>How easy is access for trucks and crews?</label>
       <div class="chips" data-multi="true">
-        <div class="chip active" data-val="Easy ground-level access">Easy ground-level access</div>
+        <div class="chip active" data-val="Easy ground-level access">Easy ground level access</div>
         <div class="chip" data-val="Multiple flights of stairs">Multiple flights of stairs</div>
-        <div class="chip" data-val="Elevator">Elevator</div>
-        <div class="chip" data-val="Long carry / narrow driveway">Long carry / narrow driveway</div>
+        <div class="chip" data-val="Elevator">Elevator (may be small)</div>
+        <div class="chip" data-val="Long carry / narrow driveway">Long carry or narrow/gravel driveway</div>
         <div class="chip" data-val="Gated community">Gated community</div>
         <div class="chip" data-val="Other">Other</div>
       </div>
       <input type="text" id="access-other" placeholder="Describe access challenges" style="margin-top:12px; display:none;">
     </div>
 
-    <!-- 10 Video (optional) -->
-    <div class="q" data-step="10">
+    <!-- 11. Video Walk-through (optional) -->
+    <div class="q" data-step="10" data-required="false">
       <label>Optional quick video walk-through</label>
-      <p class="helper">Helps get the most accurate quotes.</p>
+      <p class="helper">This is optional but helps liquidators give the most accurate quote.</p>
       <div class="video-box" id="video-box" onclick="document.getElementById('video-upload').click()">
-        <i class="fas fa-video fa-3x" style="color:#94a3b8;"></i>
-        <div style="font-size:18px;font-weight:600;margin:12px 0;">Tap to record or upload</div>
+        <i class="fas fa-video fa-3x" style="color:#94a3b8;margin-bottom:12px;"></i>
+        <div style="font-size:18px;font-weight:600;">Tap to record or upload a quick walk-through</div>
+        <div style="font-size:14px;color:#64748b;margin-top:8px;">No need to tidy. A simple 30-60 second pass through the rooms is enough.</div>
       </div>
-      <video id="video-preview" controls style="display:none; width:100%; border-radius:12px; margin-top:12px;"></video>
+      <video id="video-preview" controls></video>
       <input type="file" id="video-upload" accept="video/*" style="display:none">
+      <label style="margin-top:20px;display:none;" id="tc-label">
+        <input type="checkbox" id="tc-check">
+        I understand this video is private, only used for my quote, and deleted within 30 days.
+      </label>
     </div>
 
-    <!-- 11 Home Value – realistic scale -->
-    <div class="q" data-step="11">
-      <label>Estimated current home value (ballpark)</label>
+    <!-- 12. Estimated Home Value -->
+    <div class="q" data-step="11" data-required="true">
+      <label>Estimated current home value (as-is, ballpark is fine)</label>
       <div class="range-wrap">
-        <input type="range" id="value-range" min="50000" max="2000000" step="25000" value="400000">
-        <div class="range-value" data-type="value" contenteditable="true">$400,000</div>
+        <input type="range" id="value-range" min="50000" max="1500000" step="25000" value="400000">
+        <div class="range-value" id="value-bubble" data-type="value" contenteditable="true">$400,000</div>
       </div>
+      <p class="helper">Drag or type the amount in the bubble. This helps set expectations on overall sale potential.</p>
     </div>
 
-    <!-- 12 Contact -->
-    <div class="q" data-step="12">
+    <!-- 13. Contact Info (final step) -->
+    <div class="q" data-step="12" data-required="true">
       <label>Your name</label>
-      <input type="text" id="name" required>
+      <input type="text" id="name" placeholder="First and last name" required>
       <label style="margin-top:16px">Email</label>
-      <input type="email" id="email" required>
-      <label style="margin-top:16px">Phone <strong style="color:red;">*</strong></label>
-      <input type="tel" id="phone" required>
+      <input type="email" id="email" placeholder="We will send quotes here" required>
+      <label style="margin-top:16px">Phone</label>
+      <input type="tel" id="phone" placeholder="Mobile number" required>
       <label style="margin-top:20px">Anything else we should know?</label>
-      <textarea id="notes" rows="3"></textarea>
-    </div>
-
-    <!-- Desktop buttons -->
-    <div class="desktop-btns">
-      <button id="back-btn-desk">← Back</button>
-      <button id="main-btn-desk" style="margin-left:12px; padding:16px 40px; background:linear-gradient(135deg,var(--p),#3f37c9); color:#fff; border:none; border-radius:999px; font-weight:700;">Next →</button>
+      <textarea id="notes" rows="3" placeholder="Timeline, attorney involvement, locked areas, special requests, etc."></textarea>
     </div>
   </div>
 
-  <!-- Summary page -->
-  <div id="summary-page" class="form-container"></div>
+  <!-- Review Page -->
+  <div id="review" class="form-container">
+    <div class="review-title">Review your request</div>
+    <div class="review-sub">
+      Here is a simple summary of what you shared. If something looks off you can go back and edit before this is sent to local pros.
+    </div>
+    <div class="review-grid" id="review-grid"></div>
+    <button id="edit-btn">Edit answers</button>
+  </div>
 </div>
 
-<!-- Mobile sticky buttons -->
-<div class="fixed-btn" id="cta-bar">
+<!-- Single Fixed Button Bar -->
+<div class="fixed-btn" id="cta-bar" style="display:none;">
   <div class="btn-row">
-    <button id="back-btn">← Back</button>
-    <button id="main-btn">Next →</button>
+    <button id="back-btn">Back</button>
+    <button id="main-btn">Next</button>
   </div>
 </div>
 
-<!-- Hampton Roads modal -->
+<!-- Hampton Roads Modal -->
 <div class="modal" id="hr-modal">
   <div class="modal-content">
-    <i class="fas fa-check-circle fa-4x" style="color:var(--g);"></i>
-    <h2 style="color:var(--g);">Great news!</h2>
-    <p>We have in-network partners in Hampton Roads and can usually get you a detailed quote within 24 hours.</p>
-    <button onclick="closeModal()">Continue</button>
+    <i class="fas fa-check-circle fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">Great news</h2>
+    <p style="font-size:16px; margin:8px 0 0;">
+      You are in the Hampton Roads area. We have in-network partners and can usually get you a detailed quote within 24 hours.
+    </p>
+    <button style="margin-top:24px;" onclick="closeHRModal()">Continue</button>
+  </div>
+</div>
+
+<!-- Completion Modal -->
+<div class="modal" id="complete-modal">
+  <div class="modal-content">
+    <i class="fas fa-thumbs-up fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">You are all set</h2>
+    <p style="font-size:16px; margin:8px 0 0;">
+      Your answers are ready to review. On the next screen you will see everything in one place before it is shared with trusted local pros.
+    </p>
+    <button style="margin-top:24px;" onclick="closeCompleteModal()">Review my answers</button>
   </div>
 </div>
 
 <script>
-const hamptonRoadsZips = new Set(["23451","23452","23453","23454","23455","23456","23457","23461","23462","23464","23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523","23320","23321","23322","23323","23324","23325","23701","23702","23703","23704","23707","23708","23709","23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681","23601","23602","23603","23604","23605","23606","23607","23608","23609"]);
+const hamptonRoadsZips = new Set([
+  "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
+  "23320","23321","23322","23323","23324","23325","23326","23327","23328",
+  "23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523",
+  "23701","23702","23703","23704","23707","23708","23709",
+  "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681",
+  "23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"
+]);
+
 let currentStep = 0;
 const qs = document.querySelectorAll('#main-form .q');
 const totalSteps = qs.length;
-const titles = ["Property type","Square footage","Bedrooms & baths","Extra spaces","How full is it","High-value items","Clean-out needs","Timeline","Oversized items","Access difficulty","Video (optional)","Home value","Your details"];
-const encouragements = [
-  "Great start!","Nice, you're flying through this","You're on your way to a brighter future","Almost there – just a few more","Last few details…","You're doing awesome","One more step!","Final touches!"
+const bar = document.getElementById('bar');
+const stepTitle = document.getElementById('step-title');
+const stepHelper = document.getElementById('step-helper');
+const ctaBar = document.getElementById('cta-bar');
+const backBtn = document.getElementById('back-btn');
+const mainBtn = document.getElementById('main-btn');
+
+const titles = [
+  "Property type",
+  "Square footage",
+  "Bedrooms and baths",
+  "Extra rooms or spaces",
+  "How full is it",
+  "High value items",
+  "Clean out needs",
+  "Timeline",
+  "Oversized items",
+  "Access difficulty",
+  "Optional video",
+  "Estimated home value",
+  "Final details"
 ];
 
-function saveAllData() {
-  const data = {};
-  document.querySelectorAll('#main-form input, #main-form select, #main-form textarea').forEach(el => {
-    if (el.id) data[el.id] = el.value;
-  });
-  // chips
-  document.querySelectorAll('.chips').forEach(group => {
-    const active = Array.from(group.querySelectorAll('.chip.active')).map(c => c.dataset.val);
-    if (active.length) data[group.parentElement.dataset.step + '-chips'] = active.join(', ');
-  });
-  return data;
-}
-
-function showSummary() {
-  const data = saveAllData();
-  let html = `<h2 style="text-align:center; color:var(--g); margin-bottom:24px;">Review Your Info</h2><p style="text-align:center; margin-bottom:32px;">Everything look good? You can still edit anything.</p>`;
-  const labels = {
-    "0-chips": "Property type",
-    "sqft-range": "Square footage",
-    "beds": "Bedrooms", "baths": "Bathrooms",
-    "3-chips": "Extra spaces",
-    "fullness-text": "How full",
-    "5-chips": "High-value items",
-    "6-chips": "Clean-out needs",
-    "7-chips": "Timeline",
-    "8-chips": "Oversized items",
-    "9-chips": "Access difficulty",
-    "value-range": "Estimated home value",
-    "name": "Name", "email": "Email", "phone": "Phone", "notes": "Additional notes"
-  };
-  for (const key in data) {
-    if (!data[key]) continue;
-    const label = labels[key] || key;
-    html += `<div class="summary-item"><strong>${label}:</strong> ${data[key]} <span class="edit-btn" onclick="goToStep(${key.split('-')[0] || 12})">[Edit]</span></div>`;
-  }
-  html += `<div style="text-align:center; margin-top:40px;"><button style="padding:16px 48px; background:var(--g); color:#fff; border:none; border-radius:999px; font-size:18px; font-weight:700;" onclick="alert('Quote request sent! You’ll hear from us soon.')">Submit & Get Quotes</button></div>`;
-  document.getElementById('summary-page').innerHTML = html;
-  document.getElementById('main-form').style.display = 'none';
-  document.getElementById('summary-page').style.display = 'block';
-  document.getElementById('cta-bar').style.display = 'none';
-}
-
-function goToStep(step) {
-  document.getElementById('summary-page').style.display = 'none';
-  document.getElementById('main-form').style.display = 'block';
-  showStep(step);
-}
-
-// Rest of script unchanged except fixes below
-document.getElementById('zip-submit').onclick = () => {
-  const zip = document.getElementById('zip').value.trim();
-  if (!/^\d{5}$/.test(zip)) return alert('Please enter a valid 5-digit ZIP code');
-  localStorage.setItem('zip', zip);
-  if (hamptonRoadsZips.has(zip)) document.getElementById('hr-modal').classList.add('active');
-
-  // Shrink header
-  document.getElementById('page').classList.add('condensed');
-  document.getElementById('main-header').style.fontSize = '24px';
-  document.getElementById('main-sub').style.display = 'none';
-  document.getElementById('encouragement').classList.add('show');
-
-  document.getElementById('zip-section').style.display = 'none';
-  document.getElementById('main-form').style.display = 'block';
-  document.getElementById('cta-bar').style.display = 'block';
-  showStep(0);
-};
-
-function closeModal() { document.getElementById('hr-modal').classList.remove('active'); }
-window.closeModal = closeModal;
+const encouragements = [
+  "You are off to a great start.",
+  "Nice. This helps get realistic quotes.",
+  "Bedrooms and baths tell pros how many rooms to staff.",
+  "Extra spaces often add value. You are doing fine.",
+  "Almost there. A sense of fullness goes a long way.",
+  "This helps match you with the right kind of liquidator.",
+  "Clean out needs help avoid surprise costs later.",
+  "Timeline helps everyone plan and stay calm.",
+  "This keeps crews safe and prepared.",
+  "Access is a big factor. You are almost done.",
+  "Optional, but it really helps. No need to tidy.",
+  "This just sets expectations. Ballpark is enough.",
+  "Last step. Then you can review everything."
+];
 
 function updateProgress() {
   const percent = ((currentStep + 1) / totalSteps) * 100;
-  document.getElementById('bar').style.width = percent + '%';
-  document.getElementById('step-title').textContent = titles[currentStep];
-  document.getElementById('encouragement').textContent = encouragements[Math.min(currentStep, encouragements.length-1)];
-  document.getElementById('back-btn').disabled = currentStep === 0;
-  document.getElementById('back-btn-desk').disabled = currentStep === 0;
-  const isLast = currentStep === totalSteps - 1;
-  document.getElementById('main-btn').textContent = isLast ? "Submit" : "Next →";
-  document.getElementById('main-btn-desk').textContent = isLast ? "Submit" : "Next →";
+  bar.style.width = percent + '%';
+  stepTitle.textContent = titles[currentStep] || '';
+  stepHelper.textContent = encouragements[currentStep] || "You are doing great. A few more details and you will be done.";
+  backBtn.disabled = currentStep === 0;
+  mainBtn.textContent = currentStep === totalSteps - 1 ? "Submit request" : "Next";
   window.scrollTo(0,0);
 }
 
-function showStep(n) {
-  qs.forEach(q => q.classList.remove('active'));
-  qs[n].classList.add('active');
-  currentStep = n;
+function showStep(step) {
+  qs[currentStep].classList.remove('active');
+  currentStep = step;
+  qs[currentStep].classList.add('active');
   updateProgress();
 }
 
-// chip handling (multi + "Other" for access)
+function validateStep(stepIndex) {
+  const step = qs[stepIndex];
+  const required = step.getAttribute('data-required') === 'true';
+  if (!required) return true;
+
+  switch(stepIndex) {
+    case 0: { // property type
+      const activeChip = step.querySelector('.chip.active');
+      if (!activeChip) {
+        alert('Please select the property type.');
+        return false;
+      }
+      return true;
+    }
+    case 1: { // sqft
+      const val = parseInt(document.getElementById('sqft-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an approximate square footage.');
+        return false;
+      }
+      return true;
+    }
+    case 2: { // beds and baths
+      const beds = document.getElementById('beds').value;
+      const baths = document.getElementById('baths').value;
+      if (!beds || !baths) {
+        alert('Please select both bedrooms and bathrooms.');
+        return false;
+      }
+      return true;
+    }
+    case 3: { // extra rooms
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select if there are extra spaces, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 4: { // fullness
+      const val = parseInt(document.getElementById('fullness-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please tell us roughly how full the property is.');
+        return false;
+      }
+      return true;
+    }
+    case 5: { // high value
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select any high value items, or choose "None or not sure".');
+        return false;
+      }
+      return true;
+    }
+    case 6: { // clean-out
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please tell us what kind of clean out you need.');
+        return false;
+      }
+      return true;
+    }
+    case 7: { // timeline
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please select a timeline.');
+        return false;
+      }
+      return true;
+    }
+    case 8: { // oversized
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us if there are any oversized items, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 9: { // access difficulty
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us about access difficulty.');
+        return false;
+      }
+      const otherChip = step.querySelector('.chip.active[data-val="Other"]');
+      if (otherChip) {
+        const txt = document.getElementById('access-other').value.trim();
+        if (!txt) {
+          alert('Please describe the access challenges.');
+          return false;
+        }
+      }
+      return true;
+    }
+    case 11: { // home value
+      const val = parseInt(document.getElementById('value-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an estimated home value.');
+        return false;
+      }
+      return true;
+    }
+    case 12: { // contact info
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      if (!name) {
+        alert('Please enter your name.');
+        return false;
+      }
+      if (!email) {
+        alert('Please enter your email so we can send quotes.');
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      if (!phone) {
+        alert('Please enter a phone number.');
+        return false;
+      }
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
+/* Collect data for review */
+function collectData() {
+  const data = {};
+  data.zip = document.getElementById('zip').value.trim();
+
+  // Step 0 property type
+  const step0Chip = qs[0].querySelector('.chip.active');
+  data.propertyType = step0Chip ? (step0Chip.dataset.val || step0Chip.textContent.trim()) : '';
+
+  // Step 1 sqft
+  data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10);
+
+  // Step 2 beds baths
+  data.bedrooms = document.getElementById('beds').value;
+  data.bathrooms = document.getElementById('baths').value;
+
+  // Step 3 extra rooms
+  const step3 = qs[3];
+  const extraChips = step3.querySelectorAll('.chip.active');
+  data.extraRooms = extraChips.length
+    ? Array.from(extraChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : 'None';
+  data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
+
+  // Step 4 fullness
+  const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
+  let fullnessLabel = 'Medium';
+  if (fullnessVal === 1) fullnessLabel = 'Light';
+  if (fullnessVal === 2) fullnessLabel = 'Medium';
+  if (fullnessVal === 3) fullnessLabel = 'Full';
+  if (fullnessVal === 4) fullnessLabel = 'Really full';
+  data.fullness = fullnessLabel;
+
+  // Step 5 high value
+  const step5 = qs[5];
+  const hvChips = step5.querySelectorAll('.chip.active');
+  data.highValue = hvChips.length
+    ? Array.from(hvChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : 'None or not sure';
+  data.highValueOther = document.getElementById('highvalue-other').value.trim();
+
+  // Step 6 clean out
+  const step6Chip = qs[6].querySelector('.chip.active');
+  data.cleanOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
+
+  // Step 7 timeline
+  const step7Chip = qs[7].querySelector('.chip.active');
+  data.timeline = step7Chip ? (step7Chip.dataset.val || step7Chip.textContent.trim()) : '';
+
+  // Step 8 oversized
+  const step8 = qs[8];
+  const osChips = step8.querySelectorAll('.chip.active');
+  data.oversized = osChips.length
+    ? Array.from(osChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : 'None';
+  data.oversizedOther = document.getElementById('oversized-other').value.trim();
+
+  // Step 9 access
+  const step9 = qs[9];
+  const accChips = step9.querySelectorAll('.chip.active');
+  data.access = accChips.length
+    ? Array.from(accChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : '';
+  data.accessOther = document.getElementById('access-other').value.trim();
+
+  // Step 10 video
+  const videoPreview = document.getElementById('video-preview');
+  data.hasVideo = !!videoPreview.src;
+  data.videoConsentChecked = document.getElementById('tc-check').checked;
+
+  // Step 11 home value
+  data.homeValue = parseInt(document.getElementById('value-range').value, 10);
+
+  // Step 12 contact
+  data.name = document.getElementById('name').value.trim();
+  data.email = document.getElementById('email').value.trim();
+  data.phone = document.getElementById('phone').value.trim();
+  data.notes = document.getElementById('notes').value.trim();
+
+  return data;
+}
+
+/* Render review page */
+function renderReview(data) {
+  const grid = document.getElementById('review-grid');
+  const fmtMoney = n => n ? '$' + n.toLocaleString() : '';
+  const fmtSqft = n => n ? n.toLocaleString() + ' sq ft' : '';
+
+  const items = [
+    { label: "ZIP code", value: data.zip || '-' },
+    { label: "Property type", value: data.propertyType || '-' },
+    { label: "Square footage", value: fmtSqft(data.squareFootage) || '-' },
+    { label: "Bedrooms", value: data.bedrooms || '-' },
+    { label: "Bathrooms", value: data.bathrooms || '-' },
+    { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(' | ') || '-' },
+    { label: "How full it is", value: data.fullness || '-' },
+    { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Clean out needs", value: data.cleanOut || '-' },
+    { label: "Timeline", value: data.timeline || '-' },
+    { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Home value estimate", value: fmtMoney(data.homeValue) || '-' },
+    { label: "Name", value: data.name || '-' },
+    { label: "Email", value: data.email || '-' },
+    { label: "Phone", value: data.phone || '-' },
+    { label: "Notes", value: data.notes || 'None' },
+    { label: "Video provided", value: data.hasVideo ? "Yes" : "No" }
+  ];
+
+  grid.innerHTML = items.map(item => `
+    <div class="review-item">
+      <dl>
+        <dt>${item.label}</dt>
+        <dd>${item.value}</dd>
+      </dl>
+    </div>
+  `).join('');
+}
+
+/* ZIP submit */
+document.getElementById('zip-submit').onclick = () => {
+  const zip = document.getElementById('zip').value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    alert('Please enter a valid 5 digit ZIP code.');
+    return;
+  }
+  if (hamptonRoadsZips.has(zip)) {
+    document.getElementById('hr-modal').classList.add('active');
+  }
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  document.body.classList.add('form-active');
+  ctaBar.style.display = 'block';
+  qs[0].classList.add('active');
+  updateProgress();
+};
+
+function closeHRModal() {
+  document.getElementById('hr-modal').classList.remove('active');
+}
+function closeCompleteModal() {
+  document.getElementById('complete-modal').classList.remove('active');
+  document.getElementById('review').style.display = 'block';
+}
+window.closeHRModal = closeHRModal;
+window.closeCompleteModal = closeCompleteModal;
+
+/* Chips behavior */
 document.querySelectorAll('.chips').forEach(group => {
   const multi = group.getAttribute('data-multi') === 'true';
   group.addEventListener('click', e => {
     const chip = e.target.closest('.chip');
     if (!chip) return;
+
     if (multi) {
       chip.classList.toggle('active');
-      if (chip.dataset.val.includes('None')) {
-        group.querySelectorAll('.chip').forEach(c => c !== chip && c.classList.remove('active'));
+
+      // If a "None" type is selected, clear others
+      const noneValues = ["None", "None of these", "None or not sure"];
+      if (noneValues.includes(chip.dataset.val)) {
+        if (chip.classList.contains('active')) {
+          group.querySelectorAll('.chip').forEach(c => {
+            if (c !== chip) c.classList.remove('active');
+          });
+        }
       } else {
-        group.querySelectorAll('.chip').forEach(c => (c.dataset.val.includes('None') && c.classList.remove('active')));
+        // Deselect "None" type if something else picked
+        group.querySelectorAll('.chip').forEach(c => {
+          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
+        });
       }
     } else {
       group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
     }
-    // Access "Other"
-    if (group.parentElement.dataset.step === '9') {
+
+    // Show or hide access "Other" field
+    const parentStep = group.parentElement.getAttribute('data-step');
+    if (parentStep === '9') {
       const otherInput = document.getElementById('access-other');
-      const hasOther = group.querySelector('.chip[data-val="Other"].active');
-      otherInput.style.display = hasOther ? 'block' : 'none';
+      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
+      if (anyOtherActive) {
+        otherInput.style.display = 'block';
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.value = '';
+      }
     }
   });
 });
 
-// range sliders
+/* Range sliders + editable bubbles */
+function formatRange(slider, bubble) {
+  const val = parseInt(slider.value, 10);
+  const type = bubble.getAttribute('data-type');
+
+  if (type === 'sqft') {
+    bubble.textContent = val.toLocaleString() + ' sq ft';
+  } else if (type === 'value') {
+    bubble.textContent = '$' + val.toLocaleString();
+  } else if (type === 'fullness') {
+    let label = 'Medium';
+    if (val === 1) label = 'Light';
+    if (val === 2) label = 'Medium';
+    if (val === 3) label = 'Full';
+    if (val === 4) label = 'Really full';
+    bubble.textContent = label;
+  }
+
+  const min = parseInt(slider.min, 10);
+  const max = parseInt(slider.max, 10);
+  const percent = (val - min) / (max - min) * 100;
+  bubble.style.left = percent + '%';
+}
+
 document.querySelectorAll('.range-wrap').forEach(wrap => {
   const slider = wrap.querySelector('input[type=range]');
-  const bubble = wrap.querySelector('.range-value') || document.getElementById('fullness-text');
-  const format = () => {
-    let val = parseInt(slider.value);
-    let text = val.toLocaleString();
-    if (bubble.dataset.type === 'sqft') text += ' sq ft';
-    if (bubble.dataset.type === 'value') text = '$' + text;
-    if (bubble.dataset.type === 'fullness') {
-      const labels = ['','Light','Medium','Full','Really full'];
-      text = labels[val];
-    }
-    bubble.textContent = text;
-    const percent = (val - slider.min) / (slider.max - slider.min) * 100;
-    bubble.style.left = percent + '%';
-  };
-  slider.addEventListener('input', format);
-  if (bubble.contentEditable) {
-    bubble.addEventListener('blur', () => {
-      let num = parseInt(bubble.textContent.replace(/[^0-9]/g,'')) || slider.min;
-      num = Math.max(slider.min, Math.min(slider.max, num));
-      slider.value = num;
-      format();
-    });
-    bubble.addEventListener('keydown', e => e.key==='Enter' && e.preventDefault() && bubble.blur());
-  }
-  format();
-});
+  const bubble = wrap.querySelector('.range-value');
+  if (!slider || !bubble) return;
 
-// video
-document.getElementById('video-upload').onchange = e => {
-  const file = e.target.files[0];
-  if (file) {
-    document.getElementById('video-preview').src = URL.createObjectURL(file);
-    document.getElementById('video-preview').style.display = 'block';
-    document.getElementById('video-box').classList.add('ready');
-  }
-};
+  formatRange(slider, bubble);
+  slider.addEventListener('input', () => formatRange(slider, bubble));
 
-// navigation
-document.getElementById('main-btn').onclick = 
-document.getElementById('main-btn-desk').onclick = () => {
-  if (currentStep === totalSteps - 1) {
-    // simple validation on last step
-    if (!document.getElementById('name').value.trim() || !document.getElementById('email').value.trim() || !document.getElementById('phone').value.trim()) {
-      alert('Please fill in name, email and phone');
+  bubble.addEventListener('blur', () => {
+    const raw = bubble.textContent;
+    const digits = raw.replace(/[^\d]/g, '');
+    if (!digits) {
+      formatRange(slider, bubble);
       return;
     }
-    showSummary();
+    let val = parseInt(digits, 10);
+    const min = parseInt(slider.min, 10);
+    const max = parseInt(slider.max, 10);
+    if (val < min) val = min;
+    if (val > max) val = max;
+    slider.value = val;
+    formatRange(slider, bubble);
+  });
+
+  bubble.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      bubble.blur();
+    }
+  });
+});
+
+/* Video upload preview (optional) */
+document.getElementById('video-upload').onchange = e => {
+  const file = e.target.files[0];
+  if (file && file.type.startsWith('video/')) {
+    const url = URL.createObjectURL(file);
+    const prev = document.getElementById('video-preview');
+    prev.src = url;
+    prev.style.display = 'block';
+    document.getElementById('video-box').classList.add('ready');
+    document.getElementById('tc-label').style.display = 'block';
   } else {
-    showStep(currentStep + 1);
+    alert('Please upload a video file.');
+    e.target.value = '';
   }
 };
-document.getElementById('back-btn').onclick = 
-document.getElementById('back-btn-desk').onclick = () => currentStep > 0 && showStep(currentStep - 1);
 
-updateProgress(); // initial
+/* Navigation buttons */
+mainBtn.onclick = () => {
+  if (!validateStep(currentStep)) return;
+
+  if (currentStep === totalSteps - 1) {
+    const data = collectData();
+    renderReview(data);
+    document.getElementById('main-form').style.display = 'none';
+    ctaBar.style.display = 'none';
+    document.getElementById('complete-modal').classList.add('active');
+    return;
+  }
+  showStep(currentStep + 1);
+};
+
+backBtn.onclick = () => {
+  if (currentStep === 0) return;
+  showStep(currentStep - 1);
+};
+
+/* Edit after review */
+document.getElementById('edit-btn').onclick = () => {
+  document.getElementById('review').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  ctaBar.style.display = 'block';
+  showStep(0);
+};
 </script>
 </body>
 </html>
