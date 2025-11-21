@@ -795,7 +795,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 9: {
+        case 9: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please tell us about access difficulty.');
@@ -811,20 +811,18 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-
     case 10: {
-      // Video is optional, but if they upload one, they must consent
-      const fileInput = document.getElementById('video-upload');
-      const hasVideo = fileInput.files && fileInput.files.length > 0;
+      // Video step – only enforce consent if a video was uploaded
+      const videoPreview = document.getElementById('video-preview');
+      const hasVideo = !!videoPreview.src;
+      const consentChecked = document.getElementById('tc-check').checked;
 
-      if (hasVideo && !document.getElementById('tc-check').checked) {
-        alert('Please check the box to confirm you consent to us using and sharing this video with local pros.');
+      if (hasVideo && !consentChecked) {
+        alert('Please check the consent box so we can use your video for the quote.');
         return false;
       }
       return true;
     }
-
-      
     case 11: {
       const val = parseInt(document.getElementById('value-range').value, 10);
       if (!val || isNaN(val)) {
@@ -833,31 +831,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 12: {
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      if (!name) {
-        alert('Please enter your name.');
-        return false;
-      }
-      if (!email) {
-        alert('Please enter your email so we can send quotes.');
-        return false;
-      }
-      if (!/^\S+@\S+\.\S+$/.test(email)) {
-        alert('Please enter a valid email address.');
-        return false;
-      }
-      if (!phone) {
-        alert('Please enter a phone number.');
-        return false;
-      }
-      return true;
-    }
-    default:
-      return true;
-  }
+
 }
 
 /* Collect data for review */
