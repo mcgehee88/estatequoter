@@ -1206,10 +1206,44 @@ document.getElementById('edit-btn').onclick = () => {
   showStep(0);
 };
 
-/* Send to Make.com webhook */
+/* NEW: Send to Make.com + upload video to gofile.io → gives permanent clickable video link in Google Sheets */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+  
+  // Default values
+  leadData.videoUrl = "No video submitted";
+  leadData.videoProvided = "No";
 
+  const videoFile = document.getElementById('video-upload').files[0];
+  if (videoFile) {
+    try {
+      mainBtn.textContent = "Uploading video...";
+      mainBtn.disabled = true;
+
+      const formData = new FormData();
+      formData.append('file', videoFile);
+
+      // gofile.io = free, no account, links last forever (as long as someone opens it once)
+      const uploadRes = await fetch('https://store1.gofile.io/contents/uploadfile', {
+        method: 'POST',
+        body: formData
+      });
+
+      const result = await uploadRes.json();
+
+      if (result.status === 'ok' && result.data && result.data.directLink) {
+        leadData.videoUrl = result.data.directLink;   // ← this is the magic clickable link
+        leadData.videoProvided = "Yes";
+      } else {
+        leadData.videoUrl = "Upload failed – will contact user";
+      }
+    } catch (e) {
+      console.error("Video upload error:", e);
+      leadData.videoUrl = "Upload error – will follow up";
+    }
+  }
+
+  // Send everything to Make.com → lands in your Google Sheet
   try {
     await fetch(webhookURL, {
       method: "POST",
@@ -1217,8 +1251,12 @@ async function sendLeadToMake(leadData) {
       body: JSON.stringify(leadData)
     });
   } catch (err) {
-    console.error("Make.com send failed:", err);
+    console.error("Make.com failed:", err);
   }
+
+  // Reset button
+  mainBtn.textContent = "Submit request";
+  mainBtn.disabled = false;
 }
 </script>
 
