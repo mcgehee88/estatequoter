@@ -719,9 +719,11 @@ function showStep(step) {
 function validateStep(stepIndex) {
   const step = qs[stepIndex];
   const required = step.getAttribute('data-required') === 'true';
-  if (!required) return true;
 
-  switch(stepIndex) {
+  // Skip non-required steps EXCEPT the video step (10), which we still check
+  if (!required && stepIndex !== 10) return true;
+
+  switch (stepIndex) {
     case 0: {
       const activeChip = step.querySelector('.chip.active');
       if (!activeChip) {
@@ -795,7 +797,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-        case 9: {
+    case 9: {
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please tell us about access difficulty.');
@@ -831,7 +833,32 @@ function validateStep(stepIndex) {
       }
       return true;
     }
+    case 12: {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
 
+      if (!name) {
+        alert('Please enter your name.');
+        return false;
+      }
+      if (!email) {
+        alert('Please enter your email so we can send quotes.');
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      if (!phone) {
+        alert('Please enter a phone number.');
+        return false;
+      }
+      return true;
+    }
+    default:
+      return true;
+  }
 }
 
 /* Collect data for review */
