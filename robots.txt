@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://estatequoter.com/sitemap.xml
