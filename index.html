@@ -376,7 +376,7 @@
     padding:12px 32px;
     border-radius:999px;
     border:none;
-    background:var(--g); /* fixed */
+    background:var(--g);
     color:#fff;
     font-weight:700;
     font-size:16px;
@@ -813,6 +813,47 @@
   </div>
 </div>
 
+<!-- Contact Modal (popup) -->
+<div class="modal" id="contact-modal">
+  <div class="modal-content" style="max-width:480px; text-align:left;">
+    <h2 style="margin-bottom:8px; text-align:center;">Contact EstateQuoter</h2>
+    <p style="font-size:14px; margin-bottom:16px; color:#475569; text-align:center;">
+      Have a question before you start, or about a quote you already submitted? Send a quick note and we’ll follow up by email.
+    </p>
+
+    <form id="contact-form">
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        Your name
+      </label>
+      <input type="text" name="name" required
+             style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
+
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        Your email
+      </label>
+      <input type="email" name="email" required
+             style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
+
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        How can we help?
+      </label>
+      <textarea name="message" rows="3" required
+                style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:14px;"></textarea>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+        <button type="button" id="contact-cancel"
+                style="padding:10px 18px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#e2e8f0; color:#0f172a; cursor:pointer;">
+          Cancel
+        </button>
+        <button type="submit" id="contact-submit"
+                style="padding:10px 20px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#2153ff; color:#fff; cursor:pointer;">
+          Send message
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
 // -----------------------
 // Capture visitor metadata
@@ -1231,8 +1272,16 @@ function closeCompleteModal() {
   document.getElementById('complete-modal').classList.remove('active');
   document.getElementById('review').style.display = 'block';
 }
+function openContactModal() {
+  document.getElementById('contact-modal').classList.add('active');
+}
+function closeContactModal() {
+  document.getElementById('contact-modal').classList.remove('active');
+}
+
 window.closeHRModal = closeHRModal;
 window.closeCompleteModal = closeCompleteModal;
+window.closeContactModal = closeContactModal;
 
 /* Chips behavior */
 document.querySelectorAll('.chips').forEach(group => {
@@ -1456,14 +1505,13 @@ async function sendLeadToMake(leadData) {
 <footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
   <div style="margin-top:8px;">
-    <a href="#contact" style="color:#64748b; text-decoration:underline;">Contact</a>
+    <a href="#" id="contact-link" style="color:#64748b; text-decoration:underline;">Contact</a>
     &nbsp;&middot;&nbsp;
     <a href="/privacy.html" style="color:#64748b; text-decoration:underline;">Privacy</a>
     &nbsp;&middot;&nbsp;
     <a href="/terms.html" style="color:#64748b; text-decoration:underline;">Terms</a>
   </div>
 </footer>
-
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1512,45 +1560,68 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   }
+
+  // Contact modal wiring
+  const contactLink = document.getElementById('contact-link');
+  const contactForm = document.getElementById('contact-form');
+  const contactCancel = document.getElementById('contact-cancel');
+  const contactSubmit = document.getElementById('contact-submit');
+
+  if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openContactModal();
+    });
+  }
+
+  if (contactCancel) {
+    contactCancel.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeContactModal();
+    });
+  }
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const payload = {
+        type: "contact",
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        message: form.message.value.trim()
+      };
+
+      if (!payload.name || !payload.email || !payload.message) return;
+
+      if (contactSubmit) {
+        contactSubmit.disabled = true;
+        contactSubmit.textContent = "Sending...";
+      }
+
+      try {
+        await fetch("https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        form.reset();
+        alert("Thanks — your message has been sent. We’ll follow up by email.");
+        closeContactModal();
+      } catch (err) {
+        console.error("Contact submit failed", err);
+        alert("Something went wrong. Please try again in a minute.");
+      } finally {
+        if (contactSubmit) {
+          contactSubmit.disabled = false;
+          contactSubmit.textContent = "Send message";
+        }
+      }
+    });
+  }
 });
 </script>
-<section id="contact" style="padding:32px 16px 60px; text-align:center; font-size:14px; color:#0f172a;">
-  <h2 style="font-size:22px; margin-bottom:8px;">Contact EstateQuoter</h2>
-  <p style="max-width:420px; margin:0 auto 16px; color:#475569;">
-    Have a question before you start, or about a quote you already submitted?
-    Send us a quick note and we’ll reply from <strong>surplushaven123@gmail.com</strong>.
-  </p>
-
-  <form action="https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3"
-        method="POST"
-        style="max-width:480px; margin:0 auto; text-align:left;">
-    <!-- Tag this as a contact message in Make -->
-    <input type="hidden" name="type" value="contact">
-
-    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
-      Your name
-    </label>
-    <input type="text" name="name" required
-           style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
-
-    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
-      Your email
-    </label>
-    <input type="email" name="email" required
-           style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
-
-    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
-      How can we help?
-    </label>
-    <textarea name="message" rows="3" required
-              style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:14px;"></textarea>
-
-    <button type="submit"
-            style="display:inline-block; padding:10px 20px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#2153ff; color:#fff; cursor:pointer;">
-      Send message
-    </button>
-  </form>
-</section>
 
 </body>
 </html>
