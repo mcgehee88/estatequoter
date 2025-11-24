@@ -1456,13 +1456,14 @@ async function sendLeadToMake(leadData) {
 <footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
   <div style="margin-top:8px;">
-    <a href="mailto:surplushaven123@gmail.com" style="color:#64748b; text-decoration:underline;">Contact</a>
+    <a href="#contact" style="color:#64748b; text-decoration:underline;">Contact</a>
     &nbsp;&middot;&nbsp;
     <a href="/privacy.html" style="color:#64748b; text-decoration:underline;">Privacy</a>
     &nbsp;&middot;&nbsp;
     <a href="/terms.html" style="color:#64748b; text-decoration:underline;">Terms</a>
   </div>
 </footer>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1513,6 +1514,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+<section id="contact" style="padding:32px 16px 60px; text-align:center; font-size:14px; color:#0f172a;">
+  <h2 style="font-size:22px; margin-bottom:8px;">Contact EstateQuoter</h2>
+  <p style="max-width:420px; margin:0 auto 16px; color:#475569;">
+    Have a question before you start, or about a quote you already submitted?
+    Send us a quick note and we’ll reply from <strong>surplushaven123@gmail.com</strong>.
+  </p>
+
+  <form action="https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3"
+        method="POST"
+        style="max-width:480px; margin:0 auto; text-align:left;">
+    <!-- Tag this as a contact message in Make -->
+    <input type="hidden" name="type" value="contact">
+
+    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+      Your name
+    </label>
+    <input type="text" name="name" required
+           style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
+
+    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+      Your email
+    </label>
+    <input type="email" name="email" required
+           style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;">
+
+    <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+      How can we help?
+    </label>
+    <textarea name="message" rows="3" required
+              style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:14px;"></textarea>
+
+    <button type="submit"
+            style="display:inline-block; padding:10px 20px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#2153ff; color:#fff; cursor:pointer;">
+      Send message
+    </button>
+  </form>
+</section>
 
 </body>
 </html>
