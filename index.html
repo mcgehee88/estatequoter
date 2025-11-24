@@ -376,7 +376,7 @@
     padding:12px 32px;
     border-radius:999px;
     border:none;
-    background:var(--g); /* FIXED: use green */
+    background:var(--g); /* fixed */
     color:#fff;
     font-weight:700;
     font-size:16px;
@@ -485,7 +485,7 @@
     color:#475569;
   }
 
-  /* HIDE info/FAQ while form is active */
+  /* Hide info/FAQ while form is active */
   body.form-active .info-block {
     display:none;
   }
@@ -514,6 +514,11 @@
     font-size:14px;
     cursor:pointer;
     white-space:nowrap;
+  }
+
+  /* Hide banner while user is in the intake/review flow */
+  body.form-active #last-request-banner {
+    display:none;
   }
   </style>
 </head>
@@ -842,7 +847,7 @@ window._eqMeta = {};
 })();
 
 // -----------------------
-// Form logic
+// Form logic + history
 // -----------------------
 
 const MAX_VIDEO_MB = 200;
@@ -908,10 +913,15 @@ function updateProgress() {
   window.scrollTo(0,0);
 }
 
-function showStep(step) {
+function showStep(step, pushHistory = false) {
   qs[currentStep].classList.remove('active');
   currentStep = step;
   qs[currentStep].classList.add('active');
+
+  if (pushHistory) {
+    history.pushState({ eqStep: step }, "", "#step-" + step);
+  }
+
   updateProgress();
 }
 
@@ -1209,8 +1219,9 @@ document.getElementById('zip-submit').onclick = () => {
   document.getElementById('main-form').style.display = 'block';
   document.body.classList.add('form-active');
   ctaBar.style.display = 'block';
-  qs[0].classList.add('active');
-  updateProgress();
+
+  // start intake at step 0 and push first history state
+  showStep(0, true);
 };
 
 function closeHRModal() {
@@ -1351,13 +1362,12 @@ document.getElementById('video-upload').onchange = e => {
 };
 
 
-/* Navigation buttons */
+/* Navigation buttons (Next / Back) */
 mainBtn.onclick = () => {
   if (!validateStep(currentStep)) return;
 
   if (currentStep === totalSteps - 1) {
     const data = collectData();
-    // save last submission locally so user can reference later
     try {
       localStorage.setItem('eqLastLead', JSON.stringify(data));
     } catch(e) {
@@ -1370,22 +1380,50 @@ mainBtn.onclick = () => {
     document.getElementById('complete-modal').classList.add('active');
     return;
   }
-  showStep(currentStep + 1);
+  showStep(currentStep + 1, true);
 };
 
 backBtn.onclick = () => {
   if (currentStep === 0) return;
-  showStep(currentStep - 1);
+  showStep(currentStep - 1, true);
 };
 
 document.getElementById('edit-btn').onclick = () => {
   document.getElementById('review').style.display = 'none';
   document.getElementById('main-form').style.display = 'block';
   ctaBar.style.display = 'block';
-  showStep(0);
+  showStep(0, true);
 };
 
-/* NEW: Send to Make.com with attached video file (no direct GoFile from browser) */
+/* Back button integration: intercept popstate for step navigation */
+window.addEventListener('popstate', (event) => {
+  const state = event.state;
+
+  // If we have a step state, stay on this page and move between steps
+  if (state && typeof state.eqStep === 'number') {
+    // Make sure form is visible
+    document.getElementById('zip-section').style.display = 'none';
+    document.getElementById('review').style.display = 'none';
+    document.getElementById('main-form').style.display = 'block';
+    ctaBar.style.display = 'block';
+    document.body.classList.add('form-active');
+
+    showStep(state.eqStep, false);
+    return;
+  }
+
+  // If we hit the root state, reset to the start view
+  if (state && state.eqRoot) {
+    document.getElementById('zip-section').style.display = 'block';
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('review').style.display = 'none';
+    ctaBar.style.display = 'none';
+    document.body.classList.remove('form-active');
+    window.scrollTo(0,0);
+  }
+});
+
+/* Send to Make.com with attached video file */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
 
@@ -1428,7 +1466,10 @@ async function sendLeadToMake(leadData) {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // Set year
+  // baseline history state for the root (pre-intake) view
+  history.replaceState({ eqRoot: true }, "", window.location.pathname + window.location.search);
+
+  // Set footer year
   const y = document.getElementById('eq-year');
   if (y) y.textContent = new Date().getFullYear();
 
@@ -1464,6 +1505,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('cta-bar').style.display = 'none';
           document.getElementById('review').style.display = 'block';
           document.body.classList.add('form-active');
+          history.pushState({ eqStep: 'review' }, "", "#review");
           window.scrollTo(0,0);
         });
       }
