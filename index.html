@@ -1476,22 +1476,21 @@ window.addEventListener('popstate', (event) => {
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
 
+  // Just tell Make whether a video exists (no file upload for now)
   const videoFile = document.getElementById('video-upload').files[0];
-
   leadData.videoProvided = videoFile ? "Yes" : "No";
-  leadData.videoUrl = videoFile ? "Handled via Make (file attached)" : "No video submitted";
 
-  const formData = new FormData();
-  formData.append("lead", JSON.stringify(leadData));
-  if (videoFile) formData.append("video", videoFile);
-
-  mainBtn.textContent = videoFile ? "Uploading video..." : "Submitting...";
+  // Button state
+  mainBtn.textContent = "Submitting...";
   mainBtn.disabled = true;
 
   try {
     await fetch(webhookURL, {
       method: "POST",
-      body: formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(leadData)
     });
   } catch (err) {
     console.error("Make.com failed:", err);
