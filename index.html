@@ -17,7 +17,6 @@
   <meta property="og:url" content="https://estatequoter.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EstateQuoter">
-  <!-- Optional: replace with a real image URL when you have one -->
   <meta property="og:image" content="https://estatequoter.com/og-image.jpg">
 
   <!-- Twitter card -->
@@ -377,7 +376,7 @@
     padding:12px 32px;
     border-radius:999px;
     border:none;
-    background:var(--g); /* FIXED: use brand green */
+    background:var(--g); /* FIXED: use green */
     color:#fff;
     font-weight:700;
     font-size:16px;
@@ -463,35 +462,58 @@
     margin-left:4px;
   }
 
-  /* Info / FAQ blocks under the form (SEO + trust) */
   .info-block {
     margin-top:32px;
-    max-width:640px;
-    margin-left:auto;
-    margin-right:auto;
-    padding:0 16px;
     text-align:left;
     font-size:15px;
     color:#0f172a;
+    max-width:640px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0 16px 32px;
   }
   .info-block h2 {
     font-size:20px;
     margin-bottom:8px;
-    font-weight:700;
   }
   .info-block h3 {
     font-size:16px;
     margin:16px 0 4px;
-    font-weight:600;
   }
   .info-block p {
     margin-bottom:4px;
     color:#475569;
   }
 
-  @media(min-width:768px){
-    .info-block h2 { font-size:22px; }
-    .info-block p { font-size:15px; }
+  /* HIDE info/FAQ while form is active */
+  body.form-active .info-block {
+    display:none;
+  }
+
+  /* Last request banner */
+  #last-request-banner {
+    max-width:640px;
+    margin:0 auto 24px;
+    padding:16px 18px;
+    border-radius:18px;
+    background:#e0ebff;
+    color:#1e293b;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  #last-request-banner button {
+    padding:8px 16px;
+    border-radius:999px;
+    border:none;
+    background:var(--p);
+    color:#fff;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    white-space:nowrap;
   }
   </style>
 </head>
@@ -507,7 +529,7 @@
 
   <h1>Estate liquidation quotes,<br><span>without the hassle.</span></h1>
   <p class="sub">
-    Answer a few quick questions and get accurate quotes from trusted local pros - <strong>free and no pressure.</strong>
+    Answer a few quick questions and get accurate quotes from trusted local pros – <strong>free and no pressure.</strong>
   </p>
 
   <!-- ZIP Code First -->
@@ -610,8 +632,8 @@
       <label>Do you want it cleared & cleaned?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="no clear-out">No Thanks</div>
-        <div class="chip" data-val="Partial clear-out">Partial clear out - some but not all</div>
-        <div class="chip" data-val="Full clear-out">Full clear out - everything gone</div>
+        <div class="chip" data-val="Partial clear-out">Partial clear out – some but not all</div>
+        <div class="chip" data-val="Full clear-out">Full clear out – everything gone</div>
         <div class="chip" data-val="Not sure yet">Not sure yet</div>
       </div>
       <p class="helper">This helps liquidators understand how much hauling and disposal is needed.</p>
@@ -706,6 +728,54 @@
   </div>
 </div>
 
+<section class="info-block" aria-labelledby="how-estatequoter-works">
+  <h2 id="how-estatequoter-works">How EstateQuoter helps with estate liquidation</h2>
+  <p>
+    EstateQuoter is an online intake tool that connects families, heirs, and executors
+    with trusted local estate liquidators, estate sale companies, and cleanout crews.
+  </p>
+  <p>
+    You answer a few questions about the property, how full it is, and your timeline.
+    We share those details with vetted local professionals so they can review the
+    situation and provide quotes or follow-up questions — without pressure.
+  </p>
+
+  <h3>Situations we help with</h3>
+  <p>
+    EstateQuoter is often used for whole-house estate sales, downsizing a parent,
+    moving someone into assisted living, handling an inherited home, or clearing out
+    a property after a death in the family.
+  </p>
+
+  <h3>Where we operate</h3>
+  <p>
+    We currently focus on the Hampton Roads and Virginia Beach area while building a
+    wider network of estate liquidators and estate sale companies across the United States.
+  </p>
+</section>
+
+<section class="info-block" aria-labelledby="estate-faq">
+  <h2 id="estate-faq">Common questions</h2>
+
+  <h3>Is EstateQuoter free for families?</h3>
+  <p>
+    Yes. EstateQuoter is free for families, heirs, and executors requesting quotes.
+    Local estate professionals pay us for leads so you can compare options without extra cost.
+  </p>
+
+  <h3>What kinds of estate services can I get quotes for?</h3>
+  <p>
+    You can get quotes for estate sales, buyouts of contents, whole-house cleanouts,
+    donation and haul-away, and help with downsizing or preparing a home for sale.
+  </p>
+
+  <h3>Do I have to commit to any company?</h3>
+  <p>
+    No. You can review quotes, ask questions, and only move forward with a company
+    if it feels like the right fit for your situation.
+  </p>
+</section>
+
 <!-- Single Fixed Button Bar -->
 <div class="fixed-btn" id="cta-bar" style="display:none;">
   <div class="btn-row">
@@ -775,8 +845,8 @@ window._eqMeta = {};
 // Form logic
 // -----------------------
 
-const MAX_VIDEO_MB = 200; // change this number if you want smaller files
-  
+const MAX_VIDEO_MB = 200;
+
 const hamptonRoadsZips = new Set([
   "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
   "23320","23321","23322","23323","23324","23325","23326","23327","23328",
@@ -849,7 +919,6 @@ function validateStep(stepIndex) {
   const step = qs[stepIndex];
   const required = step.getAttribute('data-required') === 'true';
 
-  // Skip non-required steps EXCEPT the video step (10), which we still check
   if (!required && stepIndex !== 10) return true;
 
   switch (stepIndex) {
@@ -943,7 +1012,6 @@ function validateStep(stepIndex) {
       return true;
     }
     case 10: {
-      // Video step – only enforce consent if a video was uploaded
       const videoPreview = document.getElementById('video-preview');
       const hasVideo = !!videoPreview.src;
       const consentChecked = document.getElementById('tc-check').checked;
@@ -1264,7 +1332,6 @@ document.getElementById('video-upload').onchange = e => {
     return;
   }
 
-  // size check
   const maxBytes = MAX_VIDEO_MB * 1024 * 1024;
   if (file.size > maxBytes) {
     alert(`Please keep video files under ${MAX_VIDEO_MB} MB so they upload smoothly.`);
@@ -1280,7 +1347,6 @@ document.getElementById('video-upload').onchange = e => {
   document.getElementById('video-box').classList.add('ready');
   document.getElementById('tc-label').classList.add('required');
 
-  // make sure consent starts unchecked and must be checked on this step
   document.getElementById('tc-check').checked = false;
 };
 
@@ -1291,6 +1357,12 @@ mainBtn.onclick = () => {
 
   if (currentStep === totalSteps - 1) {
     const data = collectData();
+    // save last submission locally so user can reference later
+    try {
+      localStorage.setItem('eqLastLead', JSON.stringify(data));
+    } catch(e) {
+      console.warn('Unable to store last lead', e);
+    }
     sendLeadToMake(data);
     renderReview(data);
     document.getElementById('main-form').style.display = 'none';
@@ -1317,26 +1389,22 @@ document.getElementById('edit-btn').onclick = () => {
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
 
-  // Grab the file if one was chosen
   const videoFile = document.getElementById('video-upload').files[0];
 
-  // Mark in the payload whether a video was provided
   leadData.videoProvided = videoFile ? "Yes" : "No";
   leadData.videoUrl = videoFile ? "Handled via Make (file attached)" : "No video submitted";
 
-  // Build multipart/form-data for Make
   const formData = new FormData();
-  formData.append("lead", JSON.stringify(leadData)); // All text data
-  if (videoFile) formData.append("video", videoFile); // Actual file
+  formData.append("lead", JSON.stringify(leadData));
+  if (videoFile) formData.append("video", videoFile);
 
-  // Button state
   mainBtn.textContent = videoFile ? "Uploading video..." : "Submitting...";
   mainBtn.disabled = true;
 
   try {
     await fetch(webhookURL, {
       method: "POST",
-      body: formData // MUST NOT set Content-Type manually
+      body: formData
     });
   } catch (err) {
     console.error("Make.com failed:", err);
@@ -1347,59 +1415,10 @@ async function sendLeadToMake(leadData) {
 }
 </script>
 
-<!-- Info / FAQ sections now safely BELOW CTA bar so they never push buttons down -->
-<section class="info-block" aria-labelledby="how-estatequoter-works">
-  <h2 id="how-estatequoter-works">How EstateQuoter helps with estate liquidation</h2>
-  <p>
-    EstateQuoter is an online intake tool that connects families, heirs, and executors
-    with trusted local estate liquidators, estate sale companies, and cleanout crews.
-  </p>
-  <p>
-    You answer a few questions about the property, how full it is, and your timeline.
-    We share those details with vetted local professionals so they can review the
-    situation and provide quotes or follow-up questions, without pressure.
-  </p>
-
-  <h3>Situations we help with</h3>
-  <p>
-    EstateQuoter is often used for whole-house estate sales, downsizing a parent,
-    moving someone into assisted living, handling an inherited home, or clearing out
-    a property after a death in the family.
-  </p>
-
-  <h3>Where we operate</h3>
-  <p>
-    We currently focus on the Hampton Roads and Virginia Beach area while building a
-    wider network of estate liquidators and estate sale companies across the United States.
-  </p>
-</section>
-
-<section class="info-block" aria-labelledby="estate-faq">
-  <h2 id="estate-faq">Common questions</h2>
-
-  <h3>Is EstateQuoter free for families?</h3>
-  <p>
-    Yes. EstateQuoter is free for families, heirs, and executors requesting quotes.
-    Local estate professionals pay us for leads so you can compare options without extra cost.
-  </p>
-
-  <h3>What kinds of estate services can I get quotes for?</h3>
-  <p>
-    You can get quotes for estate sales, buyouts of contents, whole-house cleanouts,
-    donation and haul-away, and help with downsizing or preparing a home for sale.
-  </p>
-
-  <h3>Do I have to commit to any company?</h3>
-  <p>
-    No. You can review quotes, ask questions, and only move forward with a company
-    if it feels like the right fit for your situation.
-  </p>
-</section>
-
 <footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
   <div style="margin-top:8px;">
-    <a href="mailto:surplushaven123@gmail.com" style="color:#64748b; text-decoration:underline;">Contact</a>
+    <a href="mailto:hello@estatequoter.com" style="color:#64748b; text-decoration:underline;">Contact</a>
     &nbsp;&middot;&nbsp;
     <a href="/privacy.html" style="color:#64748b; text-decoration:underline;">Privacy</a>
     &nbsp;&middot;&nbsp;
@@ -1408,10 +1427,49 @@ async function sendLeadToMake(leadData) {
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const y = document.getElementById('eq-year');
-    if (y) y.textContent = new Date().getFullYear();
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  // Set year
+  const y = document.getElementById('eq-year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // Show "last request" banner if we have one
+  let last = null;
+  try {
+    const raw = localStorage.getItem('eqLastLead');
+    if (raw) last = JSON.parse(raw);
+  } catch(e) {
+    console.warn('Unable to read last lead', e);
+  }
+
+  if (last) {
+    const page = document.querySelector('.page');
+    if (page) {
+      const banner = document.createElement('div');
+      banner.id = 'last-request-banner';
+      banner.innerHTML = `
+        <div>
+          <strong>Last quote request saved.</strong><br>
+          You can quickly review the details you shared with local pros.
+        </div>
+        <button type="button">View my last request</button>
+      `;
+      page.parentNode.insertBefore(banner, page.nextSibling);
+
+      const btn = banner.querySelector('button');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          renderReview(last);
+          document.getElementById('zip-section').style.display = 'none';
+          document.getElementById('main-form').style.display = 'none';
+          document.getElementById('cta-bar').style.display = 'none';
+          document.getElementById('review').style.display = 'block';
+          document.body.classList.add('form-active');
+          window.scrollTo(0,0);
+        });
+      }
+    }
+  }
+});
 </script>
 
 </body>
