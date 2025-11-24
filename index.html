@@ -462,6 +462,26 @@
     font-weight:900;
     margin-left:4px;
   }
+
+  .info-block {
+  margin-top:32px;
+  text-align:left;
+  font-size:15px;
+  color:#0f172a;
+}
+.info-block h2 {
+  font-size:20px;
+  margin-bottom:8px;
+}
+.info-block h3 {
+  font-size:16px;
+  margin:16px 0 4px;
+}
+.info-block p {
+  margin-bottom:4px;
+  color:#475569;
+}
+
   </style>
 </head>
 <body>
@@ -674,6 +694,55 @@
     <button id="edit-btn">Edit answers</button>
   </div>
 </div>
+
+<section class="info-block" aria-labelledby="how-estatequoter-works">
+  <h2 id="how-estatequoter-works">How EstateQuoter helps with estate liquidation</h2>
+  <p>
+    EstateQuoter is an online intake tool that connects families, heirs, and executors
+    with trusted local estate liquidators, estate sale companies, and cleanout crews.
+  </p>
+  <p>
+    You answer a few questions about the property, how full it is, and your timeline.
+    We share those details with vetted local professionals so they can review the
+    situation and provide quotes or follow-up questions — without pressure.
+  </p>
+
+  <h3>Situations we help with</h3>
+  <p>
+    EstateQuoter is often used for whole-house estate sales, downsizing a parent,
+    moving someone into assisted living, handling an inherited home, or clearing out
+    a property after a death in the family.
+  </p>
+
+  <h3>Where we operate</h3>
+  <p>
+    We currently focus on the Hampton Roads and Virginia Beach area while building a
+    wider network of estate liquidators and estate sale companies across the United States.
+  </p>
+</section>
+
+<section class="info-block" aria-labelledby="estate-faq">
+  <h2 id="estate-faq">Common questions</h2>
+
+  <h3>Is EstateQuoter free for families?</h3>
+  <p>
+    Yes. EstateQuoter is free for families, heirs, and executors requesting quotes.
+    Local estate professionals pay us for leads so you can compare options without extra cost.
+  </p>
+
+  <h3>What kinds of estate services can I get quotes for?</h3>
+  <p>
+    You can get quotes for estate sales, buyouts of contents, whole-house cleanouts,
+    donation and haul-away, and help with downsizing or preparing a home for sale.
+  </p>
+
+  <h3>Do I have to commit to any company?</h3>
+  <p>
+    No. You can review quotes, ask questions, and only move forward with a company
+    if it feels like the right fit for your situation.
+  </p>
+</section>
+
 
 <!-- Single Fixed Button Bar -->
 <div class="fixed-btn" id="cta-bar" style="display:none;">
@@ -1318,5 +1387,25 @@ async function sendLeadToMake(leadData) {
 
 </script>
 
+<footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
+  <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
+  <div style="margin-top:8px;">
+    <a href="mailto:hello@estatequoter.com" style="color:#64748b; text-decoration:underline;">Contact</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#" style="color:#64748b; text-decoration:underline;">Privacy</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#" style="color:#64748b; text-decoration:underline;">Terms</a>
+  </div>
+</footer>
+
+<script>
+  // existing <script> is already on page; add this line at the top or bottom of it:
+  document.addEventListener('DOMContentLoaded', () => {
+    const y = document.getElementById('eq-year');
+    if (y) y.textContent = new Date().getFullYear();
+  });
+</script>
+  
+  
 </body>
 </html>
