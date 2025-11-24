@@ -742,7 +742,7 @@
   <p>
     You answer a few questions about the property, how full it is, and your timeline.
     We share those details with vetted local professionals so they can review the
-    situation and provide quotes or follow-up questions — without pressure.
+    situation and provide quotes or follow-up questions, without pressure.
   </p>
 
   <h3>Situations we help with</h3>
@@ -932,16 +932,16 @@ const encouragements = [
   "You are off to a great start.",
   "Nice. This helps get realistic quotes.",
   "Bedrooms and baths tell pros how many rooms to staff.",
-  "Extra spaces often add value. You are doing fine.",
-  "Almost there. A sense of fullness goes a long way.",
+  "Any other extra rooms/spaces? You're doing great!",
+  "Almost there. This bit of legwork goes a long way!",
   "This helps match you with the right kind of liquidator.",
-  "Clear out needs help avoid surprise costs later.",
-  "Timeline helps everyone plan and stay calm.",
-  "This keeps crews safe and prepared.",
-  "Access is a big factor. You are almost done.",
-  "Optional, but it really helps. No need to tidy.",
-  "This just sets expectations. Ballpark is enough.",
-  "Last step. Then you can review everything."
+  "Knowing your clear out needs helps avoid any surprise costs later.",
+  "Timeline helps everyone plan ahead for a great experience.",
+  "This keeps crews safe and prepared to work great for you.",
+  "Access is an important factor for labor & hauling needs. You're close!",
+  "Optional, but it really REALLY helps. No need to tidy up.",
+  "You're so close! A ballpark estimate here is enough.",
+  "Last step, then you can review everything :)"
 ];
 
 function updateProgress() {
@@ -1607,7 +1607,7 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify(payload)
         });
         form.reset();
-        alert("Thanks — your message has been sent. We’ll follow up by email.");
+        alert("Thanks, your message has been sent. We’ll follow up by email as soon as possible.");
         closeContactModal();
       } catch (err) {
         console.error("Contact submit failed", err);
