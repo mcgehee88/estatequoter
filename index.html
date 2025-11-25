@@ -1901,35 +1901,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (last) {
-    const page = document.querySelector('.page');
-    if (page) {
-      const banner = document.createElement('div');
-      banner.id = 'last-request-banner';
-      banner.innerHTML = `
-        <div>
-          <strong>Last quote request saved.</strong><br>
-          You can quickly review or edit the info you share with local pros.
+  const page = document.querySelector('.page');
+  if (page) {
+    const banner = document.createElement('div');
+    banner.id = 'last-request-banner';
+    banner.innerHTML = `
+      <div>
+        <strong>Last quote request saved.</strong><br>
+        You can quickly review or edit the info you share with local pros.
+      </div>
+      <div style="text-align:right;">
+        <button type="button" id="view-last-request-btn">View my last submission</button>
+        <div style="margin-top:6px;">
+          <a href="#" id="view-submissions-link"
+             style="font-size:13px; text-decoration:underline; color:#2153ff;">
+            View my submissions
+          </a>
         </div>
-        <button type="button">View my last request</button>
-      `;
-      page.parentNode.insertBefore(banner, page.nextSibling);
+      </div>
+    `;
+    page.parentNode.insertBefore(banner, page.nextSibling);
 
-      const btn = banner.querySelector('button');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          currentLeadData = last;
-          renderReview(last);
-          document.getElementById('zip-section').style.display = 'none';
-          document.getElementById('main-form').style.display = 'none';
-          document.getElementById('cta-bar').style.display = 'none';
-          document.getElementById('review').style.display = 'block';
-          document.body.classList.add('form-active');
-          history.pushState({ eqStep: 'review' }, "", "#review");
-          window.scrollTo(0,0);
-        });
-      }
+    const btn = document.getElementById('view-last-request-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        currentLeadData = last;
+        renderReview(last);
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('main-form').style.display = 'none';
+        document.getElementById('cta-bar').style.display = 'none';
+        document.getElementById('review').style.display = 'block';
+        document.body.classList.add('form-active');
+        history.pushState({ eqStep: 'review' }, "", "#review");
+        window.scrollTo(0,0);
+      });
     }
   }
+}
 
   // Contact modal wiring
   const contactLink = document.getElementById('contact-link');
@@ -2178,6 +2186,16 @@ function deleteLead(leadId) {
       manageModal.classList.remove('active');
     });
   }
+
+    // Also open "My requests" from the banner link
+  const viewSubsLink = document.getElementById('view-submissions-link');
+  if (viewSubsLink && manageModal) {
+    viewSubsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      renderManageList();
+      manageModal.classList.add('active');
+    });
+  }  
 });
 </script>
 
