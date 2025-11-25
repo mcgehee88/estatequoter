@@ -1905,6 +1905,30 @@ document.addEventListener('DOMContentLoaded', () => {
   if (page) {
     const banner = document.createElement('div');
     banner.id = 'last-request-banner';
+
+    // Count how many submissions this device has saved
+    let totalLeads = 0;
+    try {
+      const rawAll = localStorage.getItem('eqAllLeads');
+      if (rawAll) {
+        const arr = JSON.parse(rawAll) || [];
+        totalLeads = arr.length;
+      }
+    } catch (e) {
+      totalLeads = 0;
+    }
+
+    const showSubsLink = totalLeads >= 2;
+
+    const subsLinkHtml = showSubsLink ? `
+        <div style="margin-top:6px;">
+          <a href="#" id="view-submissions-link"
+             style="font-size:13px; text-decoration:underline; color:#2153ff;">
+            View my submissions
+          </a>
+        </div>
+    ` : '';
+
     banner.innerHTML = `
       <div>
         <strong>Last quote request saved.</strong><br>
@@ -1912,14 +1936,10 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       <div style="text-align:right;">
         <button type="button" id="view-last-request-btn">View my last submission</button>
-        <div style="margin-top:6px;">
-          <a href="#" id="view-submissions-link"
-             style="font-size:13px; text-decoration:underline; color:#2153ff;">
-            View my submissions
-          </a>
-        </div>
+        ${subsLinkHtml}
       </div>
     `;
+
     page.parentNode.insertBefore(banner, page.nextSibling);
 
     const btn = document.getElementById('view-last-request-btn');
