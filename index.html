@@ -866,6 +866,21 @@
   </div>
 </div>
 
+<!-- Pro / Login Modal -->
+<div class="modal" id="pro-modal">
+  <div class="modal-content">
+    <h2 style="margin-bottom:8px;">Use EstateQuoter a lot?</h2>
+    <p style="font-size:15px; margin-bottom:16px;">
+      It looks like you send requests regularly. Would you like a simple login so you can track and manage multiple estates?
+    </p>
+    <div style="display:flex; gap:8px; justify-content:center; margin-top:8px;">
+      <button id="pro-modal-yes">Yes, tell me more</button>
+      <button id="pro-modal-no" style="background:#e2e8f0; color:#0f172a;">Not now</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- Contact Modal (popup) -->
 <div class="modal" id="contact-modal">
   <div class="modal-content" style="max-width:480px; text-align:left;">
@@ -958,6 +973,8 @@ const hamptonRoadsZips = new Set([
 ]);
 
 let currentStep = 0;
+let proPromptShown = false;
+  
 const qs = document.querySelectorAll('#main-form .q');
 const totalSteps = qs.length;
 const bar = document.getElementById('bar');
@@ -1787,10 +1804,31 @@ window.addEventListener('popstate', (event) => {
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
 
+  // Track how many leads this browser has sent
+  let leadCount = 0;
+  try {
+    leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
+  } catch (e) {
+    leadCount = 0;
+  }
+  leadCount += 1;
+
+  // Save back to localStorage
+  try {
+    localStorage.setItem('eqLeadCount', String(leadCount));
+  } catch (e) {
+    console.warn("Unable to store lead count", e);
+  }
+
+  // Tag this lead in the payload for Make.com
+  leadData.leadCountOnDevice = leadCount;
+  leadData.submitterTypeHint = leadCount >= 2 ? "possible_pro" : "single_use";
+
   // Button state
   mainBtn.textContent = "Submitting...";
   mainBtn.disabled = true;
 
+  // Send JSON-only payload to Make.com (no files)
   try {
     await fetch(webhookURL, {
       method: "POST",
@@ -1803,6 +1841,14 @@ async function sendLeadToMake(leadData) {
     console.error("Make.com failed:", err);
   }
 
+  // 🔔 NEW: if this browser has sent 2+ leads, show the pro / login prompt once
+  if (leadCount >= 2 && !proPromptShown) {
+    proPromptShown = true;
+    const pm = document.getElementById('pro-modal');
+    if (pm) pm.classList.add('active');
+  }
+
+  // Reset button
   mainBtn.textContent = "Submit request";
   mainBtn.disabled = false;
 }
@@ -1925,6 +1971,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Pro / login modal buttons
+  const proYes = document.getElementById('pro-modal-yes');
+  const proNo = document.getElementById('pro-modal-no');
+  const proModal = document.getElementById('pro-modal');
+
+  if (proNo && proModal) {
+    proNo.addEventListener('click', (e) => {
+      e.preventDefault();
+      proModal.classList.remove('active');
+    });
+  }
+
+  if (proYes && proModal) {
+    proYes.addEventListener('click', (e) => {
+      e.preventDefault();
+      proModal.classList.remove('active');
+      window.location.href = "mailto:hello@estatequoter.com?subject=Pro%20account%20interest";
+    });
+  }  
 });
 </script>
 
