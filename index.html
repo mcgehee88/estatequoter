@@ -1996,7 +1996,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ---------------------------
   const manageLink = document.getElementById('manage-link');
   const manageModal = document.getElementById('manage-modal');
-  const manageList = document.getElementById('manage-list');
+  const manageList = document.getElementById('manage-list'); 
   const manageClose = document.getElementById('manage-close');
 
   function getAllLeads() {
@@ -2027,8 +2027,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function renderManageList() {
-    const leads = getAllLeads();
+function deleteLead(leadId) {
+  // read all saved leads
+  const all = getAllLeads();
+
+  // keep everything except the one with this id
+  const updated = all.filter(l => l.leadId !== leadId);
+
+  // write back to localStorage
+  localStorage.setItem('eqAllLeads', JSON.stringify(updated));
+}
+
+  
+    function renderManageList() {
+    // Oldest first so #1 is the first submission ever
+    const leads = getAllLeads().slice().reverse();
 
     if (!leads.length) {
       manageList.innerHTML = `
@@ -2040,59 +2053,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     manageList.innerHTML = leads.map((lead, index) => {
-  // #1 submission = most recent, #2 = next, etc. (capped at 999)
-  const displayIndex = Math.min(index + 1, 999);
-  const title = `#${displayIndex} submission`;
+      // SIMPLE: #1, #2, #3 ...
+      const displayIndex = index + 1;
+      const title = `#${displayIndex} submission`;
 
-  const created = lead.createdAt ? new Date(lead.createdAt) : null;
-  const dateLabel = created ? created.toLocaleString() : 'Previous request';
-  const need = lead.needs || '';
+      const created = lead.createdAt ? new Date(lead.createdAt) : null;
+      const dateLabel = created ? created.toLocaleString() : 'Previous request';
+      const need = lead.needs || '';
 
-  return `
-    <div style="border:1px solid #e2e8f0; border-radius:12px; padding:10px 12px; margin-bottom:8px; position:relative; padding-right:36px;">
-      <button type="button"
-        data-action="delete"
-        data-id="${lead.leadId}"
-        aria-label="Delete this submission"
-        style="
-          position:absolute;
-          top:8px;
-          right:8px;
-          width:22px;
-          height:22px;
-          border-radius:999px;
-          border:none;
-          background:#fee2e2;
-          color:#b91c1c;
-          font-size:14px;
-          line-height:1;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          cursor:pointer;
-        ">
-        ×
-      </button>
+      return `
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:10px 12px; margin-bottom:8px; position:relative; padding-right:36px;">
+          <button type="button"
+            data-action="delete"
+            data-id="${lead.leadId}"
+            aria-label="Delete this submission"
+            style="
+              position:absolute;
+              top:8px;
+              right:8px;
+              width:22px;
+              height:22px;
+              border-radius:999px;
+              border:none;
+              background:#fee2e2;
+              color:#b91c1c;
+              font-size:14px;
+              line-height:1;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              cursor:pointer;
+            ">
+            ×
+          </button>
 
-      <div style="font-size:13px; color:#64748b;">${dateLabel}</div>
-      <div style="font-size:15px; font-weight:600; margin-top:2px;">${title}</div>
-      <div style="font-size:13px; color:#64748b; margin-top:2px;">${need}</div>
-      <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-        <button type="button" data-action="view" data-id="${lead.leadId}"
-          style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#e0ebff; color:#1e293b; cursor:pointer;">
-          View summary
-        </button>
-        <button type="button" data-action="edit" data-id="${lead.leadId}"
-          style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#0d9d6a; color:#fff; cursor:pointer;">
-          Edit &amp; resubmit
-        </button>
-      </div>
-    </div>
-  `;
-}).join('');
+          <div style="font-size:13px; color:#64748b;">${dateLabel}</div>
+          <div style="font-size:15px; font-weight:600; margin-top:2px;">${title}</div>
+          <div style="font-size:13px; color:#64748b; margin-top:2px;">${need}</div>
+          <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" data-action="view" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#e0ebff; color:#1e293b; cursor:pointer;">
+              View summary
+            </button>
+            <button type="button" data-action="edit" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#0d9d6a; color:#fff; cursor:pointer;">
+              Edit &amp; resubmit
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
 
-
-    // Wire buttons
+    // VIEW
     manageList.querySelectorAll('button[data-action="view"]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
@@ -2114,6 +2126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // EDIT
     manageList.querySelectorAll('button[data-action="edit"]').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
@@ -2135,21 +2148,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+    // DELETE
     manageList.querySelectorAll('button[data-action="delete"]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const id = btn.getAttribute('data-id');
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const confirmed = window.confirm(
+          "Are you sure you want to delete this submission? It will be permanently deleted."
+        );
+        if (!confirmed) return;
 
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this submission? It will be permanently deleted."
-    );
-    if (!confirmed) return;
-
-    let leads = getAllLeads();
-    leads = leads.filter(l => l.leadId !== id);
-    saveAllLeads(leads);
-    renderManageList();
-  });
-});
+        let leads = getAllLeads();
+        leads = leads.filter(l => l.leadId !== id);
+        saveAllLeads(leads);
+        renderManageList();
+      });
+    });
   }
 
   if (manageLink && manageModal) {
