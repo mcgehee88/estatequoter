@@ -866,21 +866,6 @@
   </div>
 </div>
 
-<!-- Pro / Login Modal -->
-<div class="modal" id="pro-modal">
-  <div class="modal-content">
-    <h2 style="margin-bottom:8px;">Use EstateQuoter a lot?</h2>
-    <p style="font-size:15px; margin-bottom:16px;">
-      It looks like you send requests regularly. Would you like a simple login so you can track and manage multiple estates?
-    </p>
-    <div style="display:flex; gap:8px; justify-content:center; margin-top:8px;">
-      <button id="pro-modal-yes">Yes, tell me more</button>
-      <button id="pro-modal-no" style="background:#e2e8f0; color:#0f172a;">Not now</button>
-    </div>
-  </div>
-</div>
-
-
 <!-- Contact Modal (popup) -->
 <div class="modal" id="contact-modal">
   <div class="modal-content" style="max-width:480px; text-align:left;">
@@ -919,6 +904,25 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Manage Requests Modal -->
+<div class="modal" id="manage-modal">
+  <div class="modal-content" style="max-width:520px; text-align:left;">
+    <h2 style="margin-bottom:8px; text-align:center;">My quote requests</h2>
+    <p style="font-size:14px; margin-bottom:16px; color:#475569; text-align:center;">
+      These are saved on this device only. You can view, edit, or remove them.
+    </p>
+
+    <div id="manage-list" style="max-height:320px; overflow:auto; margin-bottom:16px;"></div>
+
+    <div style="text-align:center; margin-top:8px;">
+      <button type="button" id="manage-close"
+        style="padding:10px 22px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#e2e8f0; color:#0f172a; cursor:pointer;">
+        Close
+      </button>
+    </div>
   </div>
 </div>
 
@@ -973,8 +977,7 @@ const hamptonRoadsZips = new Set([
 ]);
 
 let currentStep = 0;
-let proPromptShown = false;
-  
+
 const qs = document.querySelectorAll('#main-form .q');
 const totalSteps = qs.length;
 const bar = document.getElementById('bar');
@@ -1820,9 +1823,30 @@ async function sendLeadToMake(leadData) {
     console.warn("Unable to store lead count", e);
   }
 
+  // Give this lead an ID + timestamp so we can manage it later
+  const leadId = "EQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+  leadData.leadId = leadId;
+  leadData.createdAt = new Date().toISOString();
+
   // Tag this lead in the payload for Make.com
   leadData.leadCountOnDevice = leadCount;
   leadData.submitterTypeHint = leadCount >= 2 ? "possible_pro" : "single_use";
+
+  // ALSO store this lead in a list for "My requests"
+  try {
+    let all = [];
+    const rawAll = localStorage.getItem("eqAllLeads");
+    if (rawAll) {
+      all = JSON.parse(rawAll) || [];
+    }
+    // put newest at the top
+    all.unshift(leadData);
+    // keep last 50 max so it doesn't grow forever
+    if (all.length > 50) all = all.slice(0, 50);
+    localStorage.setItem("eqAllLeads", JSON.stringify(all));
+  } catch (e) {
+    console.warn("Unable to store all leads", e);
+  }
 
   // Button state
   mainBtn.textContent = "Submitting...";
@@ -1841,13 +1865,6 @@ async function sendLeadToMake(leadData) {
     console.error("Make.com failed:", err);
   }
 
-  // 🔔 NEW: if this browser has sent 2+ leads, show the pro / login prompt once
-  if (leadCount >= 2 && !proPromptShown) {
-    proPromptShown = true;
-    const pm = document.getElementById('pro-modal');
-    if (pm) pm.classList.add('active');
-  }
-
   // Reset button
   mainBtn.textContent = "Submit request";
   mainBtn.disabled = false;
@@ -1858,6 +1875,8 @@ async function sendLeadToMake(leadData) {
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
   <div style="margin-top:8px;">
     <a href="#" id="contact-link" style="color:#64748b; text-decoration:underline;">Contact</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#" id="manage-link" style="color:#64748b; text-decoration:underline;">My requests</a>
     &nbsp;&middot;&nbsp;
     <a href="/privacy.html" style="color:#64748b; text-decoration:underline;">Privacy</a>
     &nbsp;&middot;&nbsp;
@@ -1972,25 +1991,150 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Pro / login modal buttons
-  const proYes = document.getElementById('pro-modal-yes');
-  const proNo = document.getElementById('pro-modal-no');
-  const proModal = document.getElementById('pro-modal');
+  // ---------------------------
+  // "My requests" manage modal
+  // ---------------------------
+  const manageLink = document.getElementById('manage-link');
+  const manageModal = document.getElementById('manage-modal');
+  const manageList = document.getElementById('manage-list');
+  const manageClose = document.getElementById('manage-close');
 
-  if (proNo && proModal) {
-    proNo.addEventListener('click', (e) => {
-      e.preventDefault();
-      proModal.classList.remove('active');
+  function getAllLeads() {
+    try {
+      const raw = localStorage.getItem('eqAllLeads');
+      if (!raw) return [];
+      const arr = JSON.parse(raw) || [];
+      // make sure each has an ID
+      arr.forEach((lead, idx) => {
+        if (!lead.leadId) {
+          lead.leadId = 'EQ-legacy-' + idx + '-' + (lead.createdAt || '');
+        }
+      });
+      // write back any added IDs
+      localStorage.setItem('eqAllLeads', JSON.stringify(arr));
+      return arr;
+    } catch (e) {
+      console.warn('Unable to read all leads', e);
+      return [];
+    }
+  }
+
+  function saveAllLeads(leads) {
+    try {
+      localStorage.setItem('eqAllLeads', JSON.stringify(leads || []));
+    } catch (e) {
+      console.warn('Unable to save all leads', e);
+    }
+  }
+
+  function renderManageList() {
+    const leads = getAllLeads();
+
+    if (!leads.length) {
+      manageList.innerHTML = `
+        <p style="font-size:14px; color:#64748b; text-align:center; margin:12px 0;">
+          No saved requests on this device yet.
+        </p>
+      `;
+      return;
+    }
+
+    manageList.innerHTML = leads.map((lead) => {
+      let title = lead.city || lead.zip || 'Estate request';
+      const created = lead.createdAt ? new Date(lead.createdAt) : null;
+      const dateLabel = created ? created.toLocaleString() : 'Previous request';
+      const need = lead.needs || '';
+
+      return `
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:10px 12px; margin-bottom:8px;">
+          <div style="font-size:13px; color:#64748b;">${dateLabel}</div>
+          <div style="font-size:15px; font-weight:600; margin-top:2px;">${title}</div>
+          <div style="font-size:13px; color:#64748b; margin-top:2px;">${need}</div>
+          <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" data-action="view" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#e0ebff; color:#1e293b; cursor:pointer;">
+              View summary
+            </button>
+            <button type="button" data-action="edit" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#0d9d6a; color:#fff; cursor:pointer;">
+              Edit &amp; resubmit
+            </button>
+            <button type="button" data-action="delete" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#fee2e2; color:#b91c1c; cursor:pointer;">
+              Remove
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Wire buttons
+    manageList.querySelectorAll('button[data-action="view"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const leads = getAllLeads();
+        const lead = leads.find(l => l.leadId === id);
+        if (!lead) return;
+
+        currentLeadData = lead;
+        renderReview(lead);
+
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('main-form').style.display = 'none';
+        document.getElementById('cta-bar').style.display = 'none';
+        document.getElementById('review').style.display = 'block';
+        document.body.classList.add('form-active');
+        manageModal.classList.remove('active');
+        history.pushState({ eqStep: 'review' }, "", "#review");
+        window.scrollTo(0, 0);
+      });
+    });
+
+    manageList.querySelectorAll('button[data-action="edit"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const leads = getAllLeads();
+        const lead = leads.find(l => l.leadId === id);
+        if (!lead) return;
+
+        currentLeadData = lead;
+        hydrateFormFromData(lead);
+
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('review').style.display = 'none';
+        document.getElementById('main-form').style.display = 'block';
+        document.getElementById('cta-bar').style.display = 'block';
+        document.body.classList.add('form-active');
+        showStep(0, true);
+        manageModal.classList.remove('active');
+        window.scrollTo(0, 0);
+      });
+    });
+
+    manageList.querySelectorAll('button[data-action="delete"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        let leads = getAllLeads();
+        leads = leads.filter(l => l.leadId !== id);
+        saveAllLeads(leads);
+        renderManageList();
+      });
     });
   }
 
-  if (proYes && proModal) {
-    proYes.addEventListener('click', (e) => {
+  if (manageLink && manageModal) {
+    manageLink.addEventListener('click', (e) => {
       e.preventDefault();
-      proModal.classList.remove('active');
-      window.location.href = "mailto:hello@estatequoter.com?subject=Pro%20account%20interest";
+      renderManageList();
+      manageModal.classList.add('active');
     });
-  }  
+  }
+
+  if (manageClose && manageModal) {
+    manageClose.addEventListener('click', () => {
+      manageModal.classList.remove('active');
+    });
+  }
 });
 </script>
 
