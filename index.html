@@ -555,8 +555,38 @@
     <div class="step-title" id="step-title">Property type</div>
     <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
 
+    <!-- 0. Your role (multi) -->
+    <div class="q active" data-required="true">
+      <label>Your role in this process</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Child or family member helping">Child or family member helping</div>
+        <div class="chip" data-val="Executor / personal representative">Executor / personal representative</div>
+        <div class="chip" data-val="Homeowner / selling my own items">Homeowner / selling my own items</div>
+        <div class="chip" data-val="Realtor helping a client">Realtor helping a client</div>
+        <div class="chip" data-val="Attorney / financial / estate professional">Attorney / financial / estate professional</div>
+        <div class="chip" data-val="Estate liquidator / cleanout pro">Estate liquidator / cleanout pro checking fit</div>
+        <div class="chip" data-val="Other">Other</div>
+      </div>
+      <input type="text" id="role-other" placeholder="Anything else about your role" style="margin-top:12px;">
+    </div>
+
+    <!-- 1. What you need (multi) -->
+    <div class="q" data-required="true">
+      <label>What do you need help with most?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Full estate sale / tag sale">Full estate sale / tag sale</div>
+        <div class="chip" data-val="Buyout of most contents">Buyout of most contents</div>
+        <div class="chip" data-val="Whole-house cleanout / haul away">Whole-house cleanout / haul away</div>
+        <div class="chip" data-val="Help with move / downsizing">Help with move / downsizing</div>
+        <div class="chip" data-val="Help planning / pricing an estate sale">Help planning / pricing an estate sale</div>
+        <div class="chip" data-val="I'm not sure yet – need guidance">I'm not sure yet – need guidance</div>
+      </div>
+      <input type="text" id="needs-other" placeholder="Anything else you're hoping for" style="margin-top:12px;">
+    </div>
+ 
+
     <!-- 1. Property Type (single) -->
-    <div class="q active" data-step="0" data-required="true">
+    <div class="q" data-step="0" data-required="true">
       <label>What type of property is it?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="House">House</div>
@@ -913,11 +943,13 @@ const backBtn = document.getElementById('back-btn');
 const mainBtn = document.getElementById('main-btn');
 
 const titles = [
+  "Your role",
+  "What you need most",
   "Property type",
   "Square footage",
   "Bedrooms and baths",
   "Extra rooms or spaces",
-  "How full is it",
+  "How full it is",
   "High value items",
   "Clear out needs",
   "Timeline",
@@ -929,7 +961,9 @@ const titles = [
 ];
 
 const encouragements = [
-  "You are off to a great start.",
+  "You’re in the right place. A couple of quick questions first.",
+  "Got it. This helps us match you to the right kind of pros.",
+  "Great. This gives pros a sense of the property.",
   "Nice. This helps get realistic quotes.",
   "Bedrooms and baths tell pros how many rooms to staff.",
   "Any other extra rooms/spaces? You're doing great!",
@@ -939,7 +973,7 @@ const encouragements = [
   "Timeline helps everyone plan ahead for a great experience.",
   "This keeps crews safe and prepared to work great for you.",
   "Access is an important factor for labor & hauling needs. You're close!",
-  "Optional, but it really REALLY helps. No need to tidy up.",
+  "Optional, but it really helps. No need to tidy up.",
   "You're so close! A ballpark estimate here is enough.",
   "Last step, then you can review everything :)"
 ];
@@ -970,10 +1004,27 @@ function validateStep(stepIndex) {
   const step = qs[stepIndex];
   const required = step.getAttribute('data-required') === 'true';
 
-  if (!required && stepIndex !== 10) return true;
+  // Only special-case the optional video step (now index 12)
+  if (!required && stepIndex !== 12) return true;
 
   switch (stepIndex) {
-    case 0: {
+    case 0: { // Your role
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us your role in this process.');
+        return false;
+      }
+      return true;
+    }
+    case 1: { // What you need
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us what you need help with.');
+        return false;
+      }
+      return true;
+    }
+    case 2: { // Property type (old case 0)
       const activeChip = step.querySelector('.chip.active');
       if (!activeChip) {
         alert('Please select the property type.');
@@ -981,7 +1032,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 1: {
+    case 3: { // Square footage (old case 1)
       const val = parseInt(document.getElementById('sqft-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please set an approximate square footage.');
@@ -989,7 +1040,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 2: {
+    case 4: { // Beds & baths (old case 2)
       const beds = document.getElementById('beds').value;
       const baths = document.getElementById('baths').value;
       if (!beds || !baths) {
@@ -998,7 +1049,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 3: {
+    case 5: { // Extra rooms (old case 3)
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please select if there are extra spaces, or choose "None of these".');
@@ -1006,7 +1057,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 4: {
+    case 6: { // Fullness (old case 4)
       const val = parseInt(document.getElementById('fullness-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please tell us roughly how full the property is.');
@@ -1014,7 +1065,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 5: {
+    case 7: { // High value items (old case 5)
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please select any high value items, or choose "None or not sure".');
@@ -1022,7 +1073,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 6: {
+    case 8: { // Clear-out needs (old case 6)
       const chip = step.querySelector('.chip.active');
       if (!chip) {
         alert('Please tell us what kind of clear out you need.');
@@ -1030,7 +1081,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 7: {
+    case 9: { // Timeline (old case 7)
       const chip = step.querySelector('.chip.active');
       if (!chip) {
         alert('Please select a timeline.');
@@ -1038,7 +1089,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 8: {
+    case 10: { // Oversized / hazardous (old case 8)
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please tell us if there are any oversized items, or choose "None of these".');
@@ -1046,7 +1097,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 9: {
+    case 11: { // Access difficulty (old case 9)
       const chips = step.querySelectorAll('.chip.active');
       if (chips.length === 0) {
         alert('Please tell us about access difficulty.');
@@ -1062,18 +1113,17 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 10: {
+    case 12: { // Optional video (old case 10)
       const videoPreview = document.getElementById('video-preview');
       const hasVideo = !!videoPreview.src;
       const consentChecked = document.getElementById('tc-check').checked;
-
       if (hasVideo && !consentChecked) {
         alert('Please check the consent box so we can use your video for the quote.');
         return false;
       }
       return true;
     }
-    case 11: {
+    case 13: { // Estimated home value (old case 11)
       const val = parseInt(document.getElementById('value-range').value, 10);
       if (!val || isNaN(val)) {
         alert('Please set an estimated home value.');
@@ -1081,7 +1131,7 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 12: {
+    case 14: { // Contact info (old case 12)
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -1114,21 +1164,42 @@ function collectData() {
   const data = {};
   data.zip = document.getElementById('zip').value.trim();
 
-  const step0Chip = qs[0].querySelector('.chip.active');
-  data.propertyType = step0Chip ? (step0Chip.dataset.val || step0Chip.textContent.trim()) : '';
+  // Step 0: Your role
+  const roleStep = qs[0];
+  const roleChips = roleStep.querySelectorAll('.chip.active');
+  data.role = roleChips.length
+    ? Array.from(roleChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : '';
+  data.roleOther = document.getElementById('role-other').value.trim();
 
+  // Step 1: What you need most
+  const needsStep = qs[1];
+  const needsChips = needsStep.querySelectorAll('.chip.active');
+  data.needs = needsChips.length
+    ? Array.from(needsChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
+    : '';
+  data.needsOther = document.getElementById('needs-other').value.trim();
+
+  // Step 2: Property type
+  const step2Chip = qs[2].querySelector('.chip.active');
+  data.propertyType = step2Chip ? (step2Chip.dataset.val || step2Chip.textContent.trim()) : '';
+
+  // Step 3: Square footage
   data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10);
 
+  // Step 4: Beds & baths
   data.bedrooms = document.getElementById('beds').value;
   data.bathrooms = document.getElementById('baths').value;
 
-  const step3 = qs[3];
-  const extraChips = step3.querySelectorAll('.chip.active');
+  // Step 5: Extra rooms
+  const step5 = qs[5];
+  const extraChips = step5.querySelectorAll('.chip.active');
   data.extraRooms = extraChips.length
     ? Array.from(extraChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
     : 'None';
   data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
 
+  // Step 6: Fullness
   const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
   let fullnessLabel = 'Medium';
   if (fullnessVal === 1) fullnessLabel = 'Light';
@@ -1137,44 +1208,53 @@ function collectData() {
   if (fullnessVal === 4) fullnessLabel = 'Really full';
   data.fullness = fullnessLabel;
 
-  const step5 = qs[5];
-  const hvChips = step5.querySelectorAll('.chip.active');
+  // Step 7: High value items
+  const step7 = qs[7];
+  const hvChips = step7.querySelectorAll('.chip.active');
   data.highValue = hvChips.length
     ? Array.from(hvChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
     : 'None or not sure';
   data.highValueOther = document.getElementById('highvalue-other').value.trim();
 
-  const step6Chip = qs[6].querySelector('.chip.active');
-  data.clearOut = step6Chip ? (step6Chip.dataset.val || step6Chip.textContent.trim()) : '';
+  // Step 8: Clear-out needs
+  const step8Chip = qs[8].querySelector('.chip.active');
+  data.clearOut = step8Chip ? (step8Chip.dataset.val || step8Chip.textContent.trim()) : '';
 
-  const step7Chip = qs[7].querySelector('.chip.active');
-  data.timeline = step7Chip ? (step7Chip.dataset.val || step7Chip.textContent.trim()) : '';
+  // Step 9: Timeline
+  const step9Chip = qs[9].querySelector('.chip.active');
+  data.timeline = step9Chip ? (step9Chip.dataset.val || step9Chip.textContent.trim()) : '';
 
-  const step8 = qs[8];
-  const osChips = step8.querySelectorAll('.chip.active');
+  // Step 10: Oversized / difficult
+  const step10 = qs[10];
+  const osChips = step10.querySelectorAll('.chip.active');
   data.oversized = osChips.length
     ? Array.from(osChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
     : 'None';
   data.oversizedOther = document.getElementById('oversized-other').value.trim();
 
-  const step9 = qs[9];
-  const accChips = step9.querySelectorAll('.chip.active');
+  // Step 11: Access
+  const step11 = qs[11];
+  const accChips = step11.querySelectorAll('.chip.active');
   data.access = accChips.length
     ? Array.from(accChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
     : '';
   data.accessOther = document.getElementById('access-other').value.trim();
 
+  // Step 12: Optional video
   const videoPreview = document.getElementById('video-preview');
   data.hasVideo = !!videoPreview.src;
   data.videoConsentChecked = document.getElementById('tc-check').checked;
 
+  // Step 13: Home value
   data.homeValue = parseInt(document.getElementById('value-range').value, 10);
 
+  // Step 14: Contact + notes
   data.name = document.getElementById('name').value.trim();
   data.email = document.getElementById('email').value.trim();
   data.phone = document.getElementById('phone').value.trim();
   data.notes = document.getElementById('notes').value.trim();
 
+  // Meta
   const meta = window._eqMeta || {};
 
   data.ip = meta.ip || "";
@@ -1217,6 +1297,8 @@ function renderReview(data) {
 
   const items = [
     { label: "ZIP code", value: data.zip || '-' },
+    { label: "Your role", value: [data.role, data.roleOther].filter(Boolean).join(' | ') || '-' },
+    { label: "What you need most", value: [data.needs, data.needsOther].filter(Boolean).join(' | ') || '-' },
     { label: "Property type", value: data.propertyType || '-' },
     { label: "Square footage", value: fmtSqft(data.squareFootage) || '-' },
     { label: "Bedrooms", value: data.bedrooms || '-' },
