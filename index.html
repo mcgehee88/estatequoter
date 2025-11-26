@@ -1979,6 +1979,130 @@ async function sendLeadToMake(leadData) {
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isVB = path === "/virginia-beach-estate-liquidation";
+
+  const GEO_CONFIG = {
+    default: {
+      title: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      description: "EstateQuoter helps families, heirs, and executors get fast, free quotes from local estate sale companies and estate liquidators for whole-house cleanouts, downsizing, and estate sales. Answer a few questions and compare options without pressure.",
+      canonical: "https://estatequoter.com/",
+      ogTitle: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      ogDescription: "Get fast, no-pressure quotes from trusted local estate liquidators and estate sale companies for cleanouts, downsizing, and estate sales.",
+      ogUrl: "https://estatequoter.com/",
+      twitterTitle: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      twitterDescription: "Answer a few questions and get quotes from local estate liquidators, estate sale companies, and cleanout crews. Free and no pressure.",
+      heroH1: "Estate liquidation quotes,<br><span>without the hassle.</span>",
+      heroSub: "Answer a few quick questions and get accurate quotes from trusted local pros – <strong>free and no pressure.</strong>",
+      infoHeading: "How EstateQuoter helps with your estate needs",
+      infoAreasHeading: "Where we operate",
+      infoAreasText: "We currently focus on the Hampton Roads and Virginia Beach area while building a wider network of estate liquidators and estate sale companies across the United States.",
+      localServiceSchema: null
+    },
+
+    vb: {
+      title: "EstateQuoter – Virginia Beach Estate Liquidation & Estate Sale Quotes",
+      description: "Get fast, free quotes from trusted Virginia Beach and Hampton Roads estate sale companies and estate liquidators. Whole-house cleanouts, downsizing, buyouts and full estate sales with no pressure.",
+      canonical: "https://estatequoter.com/virginia-beach-estate-liquidation",
+      ogTitle: "Virginia Beach Estate Liquidation & Estate Sale Quotes – EstateQuoter",
+      ogDescription: "Answer a few questions and get fast, free quotes from trusted Virginia Beach and Hampton Roads estate sale companies and estate liquidators.",
+      ogUrl: "https://estatequoter.com/virginia-beach-estate-liquidation",
+      twitterTitle: "Virginia Beach Estate Liquidation & Estate Sale Quotes – EstateQuoter",
+      twitterDescription: "Get fast, free Virginia Beach and Hampton Roads estate liquidation and estate sale quotes. Free, no pressure, and handled by trusted local pros.",
+      heroH1: "Virginia Beach estate liquidation,<br><span>without the hassle.</span>",
+      heroSub: "Answer a few quick questions and get accurate quotes from trusted Virginia Beach and Hampton Roads pros – <strong>free and no pressure.</strong>",
+      infoHeading: "Estate liquidation help in Virginia Beach and Hampton Roads",
+      infoAreasHeading: "Areas we cover",
+      infoAreasText: "On this page we focus on Virginia Beach and nearby parts of Hampton Roads including Chesapeake, Norfolk, Portsmouth, Suffolk, Hampton and Newport News. We are also building a wider network of estate liquidators and estate sale companies across the United States.",
+      localServiceSchema: {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "EstateQuoter Virginia Beach Estate Liquidation",
+        "url": "https://estatequoter.com/virginia-beach-estate-liquidation",
+        "description": "Online intake that helps families, heirs and executors in Virginia Beach and the greater Hampton Roads area get fast quotes from local estate liquidators, estate sale companies and cleanout crews.",
+        "serviceType": [
+          "Estate liquidation",
+          "Estate sale coordination",
+          "Estate cleanout",
+          "Downsizing help"
+        ],
+        "areaServed": [
+          { "@type": "Country", "name": "United States" },
+          { "@type": "City", "name": "Virginia Beach" },
+          { "@type": "City", "name": "Chesapeake" },
+          { "@type": "City", "name": "Norfolk" },
+          { "@type": "City", "name": "Hampton" },
+          { "@type": "City", "name": "Newport News" },
+          { "@type": "City", "name": "Suffolk" },
+          { "@type": "City", "name": "Portsmouth" }
+        ],
+        "provider": {
+          "@type": "Organization",
+          "name": "EstateQuoter"
+        }
+      }
+    }
+  };
+
+  const cfg = isVB ? GEO_CONFIG.vb : GEO_CONFIG.default;
+
+  function setAttr(selector, attr, value) {
+    if (!value) return;
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  }
+
+  // ---- Head tags ----
+  document.title = cfg.title;
+  setAttr('meta[name="description"]', 'content', cfg.description);
+  setAttr('link[rel="canonical"]', 'href', cfg.canonical);
+  setAttr('meta[property="og:title"]', 'content', cfg.ogTitle);
+  setAttr('meta[property="og:description"]', 'content', cfg.ogDescription);
+  setAttr('meta[property="og:url"]', 'content', cfg.ogUrl);
+  setAttr('meta[name="twitter:title"]', 'content', cfg.twitterTitle);
+  setAttr('meta[name="twitter:description"]', 'content', cfg.twitterDescription);
+
+  // ---- Hero text ----
+  const heroH1 = document.querySelector('.page h1');
+  if (heroH1 && cfg.heroH1) heroH1.innerHTML = cfg.heroH1;
+
+  const heroSub = document.querySelector('.page .sub');
+  if (heroSub && cfg.heroSub) heroSub.innerHTML = cfg.heroSub;
+
+  // ---- Info block localization ----
+  const infoBlocks = document.querySelectorAll('.info-block');
+  if (infoBlocks.length > 0) {
+    const firstBlock = infoBlocks[0];
+
+    const h2 = firstBlock.querySelector('h2');
+    if (h2 && cfg.infoHeading) h2.textContent = cfg.infoHeading;
+
+    const h3List = firstBlock.querySelectorAll('h3');
+    h3List.forEach(h3 => {
+      if (h3.textContent.trim().toLowerCase().includes("where we operate") && cfg.infoAreasHeading) {
+        h3.textContent = cfg.infoAreasHeading;
+      }
+    });
+
+    const ps = firstBlock.querySelectorAll('p');
+    if (ps.length && cfg.infoAreasText) {
+      ps[ps.length - 1].textContent = cfg.infoAreasText;
+    }
+  }
+
+  // ---- Extra local Service schema for VB ----
+  if (cfg.localServiceSchema) {
+    const schemaScript = document.createElement('script');
+    schemaScript.type = "application/ld+json";
+    schemaScript.textContent = JSON.stringify(cfg.localServiceSchema);
+    document.head.appendChild(schemaScript);
+  }
+});
+</script>
+
+  
+<script>
+document.addEventListener('DOMContentLoaded', () => {
   history.replaceState({ eqRoot: true }, "", window.location.pathname + window.location.search);
 
   const y = document.getElementById('eq-year');
