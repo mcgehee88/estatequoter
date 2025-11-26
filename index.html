@@ -505,6 +505,47 @@
     color:#475569;
   }
 
+   .social-bar {
+    margin:32px auto 8px;
+    max-width:640px;
+    text-align:center;
+  }
+  .social-bar-label {
+    font-size:13px;
+    color:var(--m);
+    margin-bottom:8px;
+  }
+  .social-links {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+  }
+  .social-link {
+    width:36px;
+    height:36px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e2e8f0;
+    color:#0f172a;
+    font-size:16px;
+    text-decoration:none;
+    transition:transform .15s, box-shadow .15s, background .15s, color .15s;
+  }
+  .social-link:hover {
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(15,23,42,.2);
+    background:var(--p);
+    color:#fff;
+  }
+
+  /* Hide socials while intake/review is active */
+  body.form-active .social-bar {
+    display:none;
+  }   
+    
   /* Hide info/FAQ while form is active */
   body.form-active .info-block {
     display:none;
@@ -1870,6 +1911,58 @@ async function sendLeadToMake(leadData) {
   mainBtn.disabled = false;
 }
 </script>
+
+<!-- Social links bar (homepage only, above footer) -->
+<div class="social-bar" aria-label="EstateQuoter social channels">
+  <div class="social-bar-label">Stay connected with EstateQuoter</div>
+  <div class="social-links">
+    <a class="social-link"
+       href="https://x.com/EstateQuoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on X (Twitter)">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.instagram.com/estatequoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.tiktok.com/@estatequoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on TikTok">
+      <i class="fab fa-tiktok"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.facebook.com/EstateQuoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.youtube.com/@EstateQuoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on YouTube">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.linkedin.com/company/estatequoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on LinkedIn">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.reddit.com/r/EstateQuoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Reddit">
+      <i class="fab fa-reddit-alien"></i>
+    </a>
+  </div>
+</div>
+
+<footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
+
 
 <footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
