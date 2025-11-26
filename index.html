@@ -83,6 +83,40 @@
   }
   </script>
 
+    <!-- Structured data: Organization + founders -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EstateQuoter",
+    "url": "https://estatequoter.com/",
+    "description": "EstateQuoter helps families, heirs, and executors get fast, no-pressure quotes from trusted local estate sale companies, estate liquidators, and cleanout crews.",
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Michael McGehee",
+        "jobTitle": "Co-Founder",
+        "description": "Co-founder of EstateQuoter and founder of FreeTrials.com, with over a decade of experience building consumer-focused online platforms.",
+        "homeLocation": {
+          "@type": "Place",
+          "name": "Virginia Beach, Virginia"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Todd Osborne",
+        "jobTitle": "Co-Founder",
+        "description": "Co-founder of EstateQuoter and owner of Caring Transitions of Chesapeake & Virginia Beach West, with extensive hands-on experience helping families with estate sales, cleanouts, and senior moves.",
+        "homeLocation": {
+          "@type": "Place",
+          "name": "Hampton Roads, Virginia"
+        }
+      }
+    ]
+  }
+  </script>
+
+
   <!-- Icons / styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -505,6 +539,87 @@
     color:#475569;
   }
 
+   /* Our Team / Founders section */
+  .team-section {
+    margin-top:32px;
+    text-align:left;
+  }
+
+  .team-intro {
+    font-size:15px;
+    color:#475569;
+    margin-bottom:12px;
+  }
+
+  .team-grid {
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:12px;
+  }
+
+  .team-member {
+    background:#ffffff;
+    border-radius:16px;
+    border:1px solid #e2e8f0;
+    padding:16px 14px;
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+  }
+
+  .team-member-header {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:6px;
+  }
+
+  .team-avatar {
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    background:var(--p);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:18px;
+    flex-shrink:0;
+  }
+
+  .team-title {
+    font-size:15px;
+    font-weight:700;
+    color:#0f172a;
+  }
+
+  .team-subtitle {
+    font-size:13px;
+    color:#64748b;
+  }
+
+  .team-member p {
+    font-size:14px;
+    color:#475569;
+    margin-bottom:4px;
+  }
+
+  .team-values {
+    font-size:14px;
+    color:#475569;
+    margin-top:8px;
+  }
+
+  @media (min-width:768px) {
+    .team-grid {
+      flex-direction:row;
+    }
+    .team-member {
+      flex:1;
+    }
+  }
+   
+
    .social-bar {
     margin:32px auto 8px;
     max-width:640px;
@@ -874,6 +989,83 @@
     if it feels like the right fit for your situation.
   </p>
 </section>
+
+<!-- 🔽 PASTE NEW OUR TEAM SECTION HERE, AFTER FAQ BLOCK -->
+
+<section class="info-block team-section" aria-labelledby="our-team">
+  <h2 id="our-team">Meet the founders behind EstateQuoter</h2>
+
+  <p class="team-intro">
+    EstateQuoter was created by two people who have been inside these situations personally and
+    professionally. Our goal is simple: give families a clear, calm way to get help with estates
+    without pressure, confusion, or endless phone calls.
+  </p>
+
+  <div class="team-grid">
+    <!-- Michael -->
+    <article class="team-member" itemscope itemtype="https://schema.org/Person">
+      <div class="team-member-header">
+        <div class="team-avatar" aria-hidden="true">M</div>
+        <div>
+          <div class="team-title" itemprop="name">Michael McGehee</div>
+          <div class="team-subtitle">
+            Co-Founder • Business strategy & product
+          </div>
+        </div>
+      </div>
+      <p>
+        Based in Virginia Beach, <span itemprop="description">Michael has spent more than a decade
+        building consumer-focused platforms that connect people with the right services in a clear,
+        honest way.</span>
+      </p>
+      <p>
+        He is also the founder of FreeTrials.com, a leading directory for software introductory offers,
+        where he designed systems that prioritize trust, transparency, and ease of use.
+      </p>
+      <p>
+        Michael’s interest in estate services comes from real family experiences with downsizing,
+        inherited homes, and whole-house cleanouts, and a desire to make that process easier for
+        other families.
+      </p>
+    </article>
+
+    <!-- Todd -->
+    <article class="team-member" itemscope itemtype="https://schema.org/Person">
+      <div class="team-member-header">
+        <div class="team-avatar" aria-hidden="true">T</div>
+        <div>
+          <div class="team-title" itemprop="name">Todd Osborne</div>
+          <div class="team-subtitle">
+            Co-Founder • Estate transitions & local network
+          </div>
+        </div>
+      </div>
+      <p>
+        Todd is a U.S. military veteran and owner of Caring Transitions of Chesapeake &amp;
+        Virginia Beach West, where he has personally helped hundreds of families with estate sales,
+        cleanouts, downsizing, and senior moves.
+      </p>
+      <p>
+        He brings on-the-ground experience from walking properties, understanding how full they
+        really are, and talking face-to-face with families who are overwhelmed, grieving, or unsure
+        where to start.
+      </p>
+      <p>
+        Todd and his wife Lynn are long-time members of the Hampton Roads community and care deeply
+        about serving seniors, veterans, and local families with respect and patience.
+      </p>
+    </article>
+  </div>
+
+  <div class="team-values">
+    Together, Michael and Todd built EstateQuoter so families can answer a few questions once, have
+    vetted local professionals review the details, and get quotes without spam or pressure. EstateQuoter
+    is always free for families&mdash;local pros pay us for leads so you can compare options at no extra cost.
+  </div>
+</section>
+
+<!-- 🔼 END OUR TEAM SECTION -->
+  
 
 <!-- Single Fixed Button Bar -->
 <div class="fixed-btn" id="cta-bar" style="display:none;">
