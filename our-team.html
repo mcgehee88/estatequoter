@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO basics -->
-  <meta name="description" content="Meet the founders of EstateQuoter. Todd Osborne and Michael McGehee combine on-the-ground estate experience with online product expertise to help families get clear, no-pressure estate liquidation quotes.">
-  <link rel="canonical" href="https://estatequoter.com/our-team">
+  <meta name="description" content="Meet the founders of EstateQuoter. Michael McGehee and Todd Osborne combine online product experience and hands-on estate services to help families get clear, no-pressure estate liquidation quotes.">
+  <link rel="canonical" href="https://estatequoter.com/our-team.html">
   <meta name="robots" content="index,follow">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Our Team – EstateQuoter">
-  <meta property="og:description" content="Learn about the people behind EstateQuoter and why they care about helping families with estate liquidation and downsizing.">
-  <meta property="og:url" content="https://estatequoter.com/our-team">
+  <meta property="og:description" content="Learn about the people behind EstateQuoter and how they help families, heirs, and executors get clear, no-pressure estate liquidation quotes.">
+  <meta property="og:url" content="https://estatequoter.com/our-team.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EstateQuoter">
   <meta property="og:image" content="https://estatequoter.com/og-image.jpg">
@@ -22,23 +22,38 @@
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Our Team – EstateQuoter">
-  <meta name="twitter:description" content="Meet the founders behind EstateQuoter and their experience with estates, downsizing, and cleanouts.">
+  <meta name="twitter:description" content="Meet the founders behind EstateQuoter and how they support families with estate sales, downsizing, and full cleanouts.">
 
-  <!-- Simple Organization schema keyed to this page -->
+  <!-- Simple Organization/Person schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "name": "Our Team – EstateQuoter",
-    "url": "https://estatequoter.com/our-team",
-    "about": {
-      "@type": "Organization",
-      "name": "EstateQuoter",
-      "url": "https://estatequoter.com/"
-    }
+    "@type": "Organization",
+    "name": "EstateQuoter",
+    "url": "https://estatequoter.com/",
+    "description": "EstateQuoter helps families, heirs, and executors get fast, no-pressure quotes from trusted local estate sale companies, estate liquidators, and cleanout crews.",
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Todd Osborne",
+        "jobTitle": "Co-Founder",
+        "sameAs": [
+          "https://www.linkedin.com/in/todd-osborne-22277243"
+        ]
+      },
+      {
+        "@type": "Person",
+        "name": "Michael McGehee",
+        "jobTitle": "Co-Founder",
+        "sameAs": [
+          "https://www.linkedin.com/in/michaelreidmcgehee/"
+        ]
+      }
+    ]
   }
   </script>
 
+  <!-- Icons / styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -56,20 +71,25 @@
     background:var(--bg);
     color:var(--t);
     line-height:1.6;
-    min-height:100vh;
+    min-height:100dvh;
   }
   .page {
-    padding:32px 16px 48px;
+    padding:32px 16px 40px;
     max-width:800px;
     margin:0 auto;
-    text-align:left;
+    text-align:center;
   }
+
+  /* Logo */
   .logo {
     font-weight:800;
     display:flex;
     align-items:center;
+    justify-content:center;
     gap:12px;
     margin-bottom:24px;
+    text-decoration:none;
+    color:inherit;
   }
   .logo-mark {
     width:44px;
@@ -89,101 +109,125 @@
     font-size:26px;
     letter-spacing:.03em;
   }
-  #logo-home {
-    text-decoration:none;
-    color:inherit;
-  }
 
-  h1 {
-    font-size:32px;
-    font-weight:800;
-    margin-bottom:8px;
-  }
-  h1 span {
-    color:var(--p);
-  }
-  .sub {
-    font-size:16px;
-    color:#475569;
-    margin-bottom:24px;
-  }
+  h1 { font-size:32px; font-weight:800; margin-bottom:12px; }
+  h1 span { color:var(--p); }
+  .sub { font-size:17px; color:#475569; margin-bottom:28px; }
+  .sub strong { color:var(--g); }
 
-  .team-section {
-    margin-top:24px;
-  }
   .team-intro {
     font-size:15px;
     color:#475569;
-    margin-bottom:16px;
+    max-width:640px;
+    margin:0 auto 24px;
+    text-align:left;
   }
+
   .team-grid {
     display:flex;
     flex-direction:column;
-    gap:16px;
-    margin-top:12px;
+    gap:20px;
+    margin-top:8px;
+    text-align:left;
   }
+
   .team-member {
     background:#ffffff;
-    border-radius:16px;
+    border-radius:18px;
     border:1px solid #e2e8f0;
-    padding:16px 14px;
-    box-shadow:0 8px 24px rgba(15,23,42,.04);
+    padding:16px 16px 18px;
+    box-shadow:0 12px 32px rgba(15,23,42,.06);
   }
+
   .team-member-header {
     display:flex;
     align-items:flex-start;
-    gap:10px;
-    margin-bottom:6px;
+    gap:14px;
+    margin-bottom:8px;
   }
-  .team-avatar {
-    width:40px;
-    height:40px;
-    border-radius:999px;
-    background:var(--p);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    font-weight:700;
-    font-size:18px;
+
+  .team-photo-wrap {
+    width:70px;
+    height:70px;
     flex-shrink:0;
+    overflow:hidden;
   }
+
+  /* You said B, so no extra rounding here – use the image as-is. */
+  .team-photo {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+
   .team-title {
-    font-size:15px;
+    font-size:16px;
     font-weight:700;
     color:#0f172a;
   }
+
   .team-subtitle {
     font-size:13px;
     color:#64748b;
+    margin-top:2px;
   }
+
   .team-member p {
     font-size:14px;
     color:#475569;
-    margin-bottom:4px;
+    margin-bottom:6px;
   }
+
+  .team-meta {
+    font-size:13px;
+    color:#64748b;
+    margin-top:4px;
+  }
+
   .team-linkedin {
+    margin-top:10px;
+  }
+  .team-linkedin a {
     display:inline-flex;
     align-items:center;
     gap:6px;
-    margin-top:8px;
+    padding:7px 12px;
+    border-radius:999px;
+    border:1px solid #cbd5e1;
     font-size:13px;
-    color:var(--p);
-    text-decoration:underline;
+    color:#0f172a;
+    text-decoration:none;
+    background:#f8fafc;
+    transition:background .15s, color .15s, box-shadow .15s, border-color .15s;
   }
-  .team-linkedin i {
+  .team-linkedin a i {
     font-size:14px;
+    color:#0a66c2;
   }
+  .team-linkedin a:hover {
+    background:#e0ebff;
+    border-color:var(--p);
+    box-shadow:0 6px 18px rgba(33,83,255,.2);
+    color:#0f172a;
+  }
+
   .team-values {
     font-size:14px;
     color:#475569;
-    margin-top:20px;
+    margin-top:24px;
+    max-width:680px;
   }
 
   @media (min-width:768px) {
-    .page { padding-top:40px; }
-    .team-grid { flex-direction:row; }
-    .team-member { flex:1; }
+    .page { padding-top:40px; padding-bottom:48px; }
+    h1 { font-size:36px; }
+    .team-grid {
+      flex-direction:row;
+    }
+    .team-member {
+      flex:1;
+    }
   }
 
   footer {
@@ -201,101 +245,137 @@
 <body>
 
 <div class="page">
-  <a href="/" class="logo" id="logo-home">
+  <a href="/" class="logo">
     <div class="logo-mark">
       <i class="fas fa-house-chimney"></i>
     </div>
     <span class="logo-word">EstateQuoter</span>
   </a>
 
-  <h1>Meet the <span>EstateQuoter</span> team</h1>
+  <h1>Meet the team<br><span>behind EstateQuoter.</span></h1>
   <p class="sub">
-    EstateQuoter was created by two people who have been inside estate situations personally and
-    professionally. The goal is simple: give families a clear, calm way to get help with estates
-    without pressure, confusion, or endless phone calls.
+    EstateQuoter was created by people who have lived through estate situations themselves and
+    worked inside them professionally. Our goal is simple: <strong>give families a clear, calm way
+    to get help with estates without pressure or confusion.</strong>
   </p>
 
-  <section class="team-section" aria-labelledby="our-team">
-    <div class="team-grid">
-      <!-- Todd first -->
-      <article class="team-member" itemscope itemtype="https://schema.org/Person">
-        <div class="team-member-header">
-          <div class="team-avatar" aria-hidden="true">T</div>
-          <div>
-            <div class="team-title" itemprop="name">Todd Osborne</div>
-            <div class="team-subtitle">
-              Co-Founder • Estate transitions & local network
-            </div>
+  <p class="team-intro">
+    Together, Todd and Michael combine hands-on experience in estate sales and cleanouts with
+    online product and customer experience design. EstateQuoter is built to respect your time,
+    your family, and your situation.
+  </p>
+
+  <div class="team-grid">
+
+    <!-- Todd FIRST -->
+    <article class="team-member" itemscope itemtype="https://schema.org/Person">
+      <div class="team-member-header">
+        <div class="team-photo-wrap">
+          <img src="/images/team-todd.webp"
+               alt="Photo of Todd Osborne, Co-Founder of EstateQuoter"
+               class="team-photo"
+               loading="lazy"
+               itemprop="image">
+        </div>
+        <div>
+          <div class="team-title" itemprop="name">Todd Osborne</div>
+          <div class="team-subtitle">
+            Co-Founder • Estate transitions & local network
+          </div>
+          <div class="team-meta">
+            U.S. military veteran • Owner, Caring Transitions of Chesapeake &amp; Virginia Beach West
           </div>
         </div>
-        <p>
-          Todd is a U.S. military veteran and owner of Caring Transitions of Chesapeake &amp;
-          Virginia Beach West, where he has personally helped hundreds of families with estate sales,
-          cleanouts, downsizing, and senior moves.
-        </p>
-        <p>
-          He brings on-the-ground experience from walking properties, understanding how full they
-          really are, and talking face-to-face with families who are overwhelmed, grieving, or unsure
-          where to start.
-        </p>
-        <p>
-          Todd and his wife Lynn are long-time members of the Hampton Roads community and care deeply
-          about serving seniors, veterans, and local families with respect and patience.
-        </p>
-        <a class="team-linkedin"
-           href="https://www.linkedin.com/in/todd-osborne-22277243"
-           target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-linkedin-in"></i>
-          Connect with Todd on LinkedIn
-        </a>
-      </article>
+      </div>
 
-      <!-- Michael -->
-      <article class="team-member" itemscope itemtype="https://schema.org/Person">
-        <div class="team-member-header">
-          <div class="team-avatar" aria-hidden="true">M</div>
-          <div>
-            <div class="team-title" itemprop="name">Michael McGehee</div>
-            <div class="team-subtitle">
-              Co-Founder • Product & family experience
-            </div>
+      <p itemprop="description">
+        Todd is a U.S. military veteran and owner of Caring Transitions of Chesapeake &amp;
+        Virginia Beach West, where he has personally helped hundreds of families with estate sales,
+        cleanouts, downsizing, and senior moves.
+      </p>
+      <p>
+        He brings on-the-ground experience from walking properties, understanding how full they
+        really are, and talking face-to-face with families who are overwhelmed, grieving, or unsure
+        where to start.
+      </p>
+      <p>
+        Todd and his wife Lynn are long-time members of the Hampton Roads community and care deeply
+        about serving seniors, veterans, and local families with respect and patience.
+      </p>
+
+      <div class="team-linkedin">
+        <a href="https://www.linkedin.com/in/todd-osborne-22277243"
+           target="_blank"
+           rel="noopener noreferrer">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+          <span>Connect with Todd on LinkedIn</span>
+        </a>
+      </div>
+    </article>
+
+    <!-- Michael -->
+    <article class="team-member" itemscope itemtype="https://schema.org/Person">
+      <div class="team-member-header">
+        <div class="team-photo-wrap">
+          <img src="/images/team-michael.webp"
+               alt="Photo of Michael McGehee, Co-Founder of EstateQuoter"
+               class="team-photo"
+               loading="lazy"
+               itemprop="image">
+        </div>
+        <div>
+          <div class="team-title" itemprop="name">Michael McGehee</div>
+          <div class="team-subtitle">
+            Co-Founder • Product, experience & partnerships
+          </div>
+          <div class="team-meta">
+            Founder, FreeTrials.com • Based in Virginia Beach, VA
           </div>
         </div>
-        <p>
-          Based in Virginia Beach, Michael has spent more than a decade building consumer-focused
-          platforms that connect people with the right services.
-        </p>
-        <p>
-          He is also the founder of Freetrials.com, a directory for software introductory offers,
-          where he designs systems that prioritize trust, transparency, and ease of use.
-        </p>
-        <p>
-          Michael’s entrepreneurial spirit began at age 8, attending garage sales & estate sales
-          with his mother on weekends, while shadowing his father in business meetings during the week.
-          He aims to help simplify estate logistics to take pressure off families and professionals alike.
-        </p>
-        <a class="team-linkedin"
-           href="https://www.linkedin.com/in/michaelreidmcgehee/"
-           target="_blank" rel="noopener noreferrer">
-          <i class="fab fa-linkedin-in"></i>
-          Connect with Michael on LinkedIn
-        </a>
-      </article>
-    </div>
+      </div>
 
-    <div class="team-values">
-      Together, Todd and Michael built EstateQuoter so families can answer a few questions once, have
-      vetted local professionals review the details, and get quotes without spam or pressure.
-      EstateQuoter is always free for families—local pros pay us for leads so you can compare options
-      at no extra cost.
-    </div>
-  </section>
+      <p itemprop="description">
+        Based in Virginia Beach, Michael has spent more than a decade building consumer-focused
+        platforms that connect people with the right services.
+      </p>
+      <p>
+        He is also the founder of Freetrials.com, a directory for software introductory offers,
+        where he designs systems that prioritize trust, transparency, and ease of use.
+      </p>
+      <p>
+        Michael's entrepreneurial spirit began at age 8, attending garage sales & estate sales
+        with his mother on weekends, while shadowing his father in business meetings during the week.
+        He aims to help simplify estate logistics to take pressure off families and professionals alike.
+      </p>
+
+      <div class="team-linkedin">
+        <a href="https://www.linkedin.com/in/michaelreidmcgehee/"
+           target="_blank"
+           rel="noopener noreferrer">
+          <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+          <span>Connect with Michael on LinkedIn</span>
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <p class="team-values">
+    EstateQuoter lets you answer a few questions once, have vetted local professionals review the
+    details, and get quotes without spam or pressure. It is always free for families and heirs;
+    local estate pros pay us for leads so you can compare options at no extra cost.
+  </p>
 </div>
 
 <footer>
   <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
   <div style="margin-top:8px;">
-    <a href="/">Back to home</a>
+    <a href="/" >Home</a>
+    &nbsp;&middot;&nbsp;
+    <a href="mailto:estatequoter@gmail.com">Contact</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/privacy.html">Privacy</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/terms.html">Terms</a>
   </div>
 </footer>
 
