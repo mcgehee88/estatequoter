@@ -2,1163 +2,248 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EstateQuoter Pro – Custom Intake Links for Estate Companies</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- SEO basics -->
-  <meta name="description" content="EstateQuoter Pro gives estate sale and cleanout companies a free custom intake link to share with clients, plus optional company listing, leads, and simple quote tools when it makes sense.">
+  <title>EstateQuoter Pro – Your Branded Intake & Quoting Link (Free)</title>
+  <meta name="description" content="Your own professional intake link that collects every detail you need and can return a pre-calculated quote range in minutes. Used daily by top estate sale companies and cleanout teams.">
   <link rel="canonical" href="https://estatequoter.com/pro">
-  <meta name="robots" content="noindex,follow">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="EstateQuoter Pro – Custom Intake Links for Estate Companies">
-  <meta property="og:description" content="Get your own EstateQuoter intake link to send to clients. Later, turn on company listing, leads, and quote rules if they fit your business.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://estatequoter.com/pro">
-  <meta property="og:image" content="https://estatequoter.com/og-image-pro.png">
-
   <style>
     :root {
-      --eq-bg: #f4f5f7;
-      --eq-surface: #ffffff;
-      --eq-surface-soft: #f9fafb;
-      --eq-border-subtle: #e2e4ea;
-      --eq-border-strong: #d0d4df;
-      --eq-text-main: #111827;
-      --eq-text-muted: #4b5563;
-      --eq-text-softer: #6b7280;
-      --eq-accent: #15803d;
-      --eq-accent-soft: #ecfdf3;
-      --eq-accent-border: #bbf7d0;
-      --eq-pill-bg: #eef2ff;
-      --eq-pill-text: #3730a3;
-      --eq-shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
-      --eq-radius-md: 12px;
-      --eq-radius-lg: 16px;
-      --eq-radius-xl: 20px;
-      --eq-radius-pill: 999px;
-      --eq-max-width: 1120px;
+      --green: #157e3b;
+      --green-light: #f0fdf4;
+      --green-border: #86efac;
+      --gray-bg: #f8fafc;
+      --text: #1e293b;
+      --text-muted: #475569;
+      --border: #e2e8f0;
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--eq-text-main);
-      background-color: var(--eq-bg);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
+    * { box-sizing: border-box; margin:0; padding:0; }
     body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 24px;
+      color: var(--green);
+    }
+    .logo span { font-weight: 400; font-size: 15px; color: #64748b; }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px 100px;
+      background: white;
+      margin-top: 40px;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.07);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #0f172a;
+      color: white;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 24px;
+    }
+    .badge-dot {
+      width: 11px; height: 11px; background: #22c55e; border-radius: 50%; }
+    h1 {
+      font-size: 46px;
+      font-weight: 800;
+      margin: 20px 0 20px;
+      line-height: 1.15;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .lead {
+      font-size: 22px;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 40px;
+    }
+    .cta-primary {
+      display: inline-block;
+      background: var(--green);
+      color: white;
+      font-size: 21px;
+      font-weight: 600;
+      padding: 20px 48px;
+      border-radius: 60px;
+      box-shadow: 0 12px 30px rgba(21,128,61,0.3);
+    }
+    .cta-primary:hover { background: #166534; }
+    .cta-note {
+      margin-top: 16px;
+      font-size: 17px;
+      color: var(--text-muted);
+    }
+    .example {
+      margin: 60px auto;
+      padding: 40px;
+      background: var(--green-light);
+      border: 2px solid var(--green-border);
+      border-radius: 20px;
+      max-width: 740px;
+      font-size: 20px;
       line-height: 1.5;
     }
-
-    .eq-shell {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: radial-gradient(circle at top left, #e0f2fe, transparent 55%), radial-gradient(circle at bottom right, #dcfce7, transparent 55%);
-      background-color: #e5e7eb;
-    }
-
-    /* HEADER */
-
-    .eq-header {
-      border-bottom: 1px solid var(--eq-border-subtle);
-      background-color: #ffffff;
-      position: sticky;
-      top: 0;
-      z-index: 20;
-    }
-
-    .eq-header-inner {
-      max-width: var(--eq-max-width);
-      margin: 0 auto;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .eq-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .eq-logo-mark {
-      width: 28px;
-      height: 28px;
-      border-radius: 9px;
-      background: radial-gradient(circle at 20% 20%, #bbf7d0, #16a34a);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
+    .example strong {
+      color: var(--green);
+      font-size: 28px;
       font-weight: 700;
-      font-size: 16px;
     }
 
-    .eq-logo-text-main {
-      font-weight: 650;
-      font-size: 16px;
-      letter-spacing: 0.02em;
-    }
-
-    .eq-logo-text-sub {
-      font-size: 11px;
-      color: var(--eq-text-softer);
-    }
-
-    .eq-header-nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-    }
-
-    .eq-header-link {
-      padding: 4px 9px;
-      border-radius: var(--eq-radius-pill);
-      color: var(--eq-text-softer);
-      border: 1px solid transparent;
-      white-space: nowrap;
-    }
-
-    .eq-header-link:hover {
-      border-color: var(--eq-border-subtle);
-      background-color: var(--eq-surface-soft);
-    }
-
-    .eq-header-link-active {
-      border-radius: var(--eq-radius-pill);
-      padding: 5px 11px;
-      font-weight: 600;
-      background-color: var(--eq-accent-soft);
-      color: var(--eq-accent);
-      border: 1px solid var(--eq-accent-border);
-    }
-
-    /* MAIN WRAP */
-
-    .eq-main {
-      flex: 1;
-    }
-
-    .eq-main-inner {
-      max-width: var(--eq-max-width);
-      margin: 0 auto;
-      padding: 24px 16px 40px;
-    }
-
-    /* HERO */
-
-    .pro-hero {
-      background-color: rgba(255, 255, 255, 0.96);
-      border-radius: 24px;
-      padding: 20px 18px 22px;
-      box-shadow: var(--eq-shadow-soft);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      margin-bottom: 26px;
-    }
-
-    .pro-hero-top {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .pro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
-      border-radius: var(--eq-radius-pill);
-      background-color: #0f172a;
-      color: #e5e7eb;
-      font-size: 11px;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .pro-badge-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #bbf7d0, #16a34a);
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
-    }
-
-    .pro-pill {
-      padding: 4px 10px;
-      border-radius: var(--eq-radius-pill);
-      background-color: var(--eq-pill-bg);
-      color: var(--eq-pill-text);
-      font-size: 11px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .pro-pill-pill {
-      width: 14px;
-      height: 14px;
-      border-radius: var(--eq-radius-pill);
-      border: 1px solid rgba(129, 140, 248, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-    }
-
-    .pro-hero-layout {
+    .use-cases {
       display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 22px;
-      align-items: stretch;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 32px;
+      margin: 100px auto;
+      max-width: 1000px;
     }
-
-    .pro-hero-title {
-      font-size: 24px;
-      line-height: 1.15;
-      margin: 0 0 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .pro-hero-sub {
-      margin: 0 0 14px;
-      font-size: 14px;
-      color: var(--eq-text-muted);
-      max-width: 40rem;
-    }
-
-    .pro-hero-sub strong {
-      color: #022c22;
-      font-weight: 600;
-    }
-
-    .pro-hero-sub-alt {
-      margin: 0 0 16px;
-      font-size: 13px;
-      color: var(--eq-text-softer);
-      max-width: 40rem;
-    }
-
-    .pro-hero-list {
-      margin: 0 0 18px;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--eq-text-muted);
-    }
-
-    .pro-hero-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .pro-hero-dot {
-      margin-top: 5px;
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background-color: #16a34a;
-      flex-shrink: 0;
-    }
-
-    .pro-hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn-pro-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 9px 16px;
-      font-size: 13px;
-      border-radius: var(--eq-radius-pill);
-      background-color: var(--eq-accent);
-      color: #ffffff;
-      font-weight: 600;
-      border: 1px solid #15803d;
-      box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn-pro-primary span {
-      font-size: 14px;
-    }
-
-    .btn-pro-primary small {
-      font-size: 11px;
-      font-weight: 500;
-      opacity: 0.9;
-    }
-
-    .btn-pro-primary:hover {
-      background-color: #166534;
-    }
-
-    .btn-pro-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 13px;
-      font-size: 12px;
-      border-radius: var(--eq-radius-pill);
-      background-color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      color: #111827;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .btn-pro-secondary:hover {
-      background-color: #f9fafb;
-    }
-
-    .btn-pro-secondary-icon {
-      font-size: 13px;
-    }
-
-    .pro-hero-note {
-      margin-top: 6px;
-      font-size: 11px;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-hero-card {
-      border-radius: var(--eq-radius-xl);
-      background-color: rgba(249, 250, 251, 0.98);
-      border: 1px solid rgba(148, 163, 184, 0.7);
-      padding: 12px 13px;
-      font-size: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .pro-hero-card-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: #6b7280;
-    }
-
-    .pro-hero-card-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #111827;
-    }
-
-    .pro-hero-card-body {
-      font-size: 12px;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-hero-card-pillrow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .pro-chip {
-      font-size: 11px;
-      border-radius: var(--eq-radius-pill);
-      padding: 4px 8px;
-      background-color: #e5e7eb;
-      color: #374151;
-    }
-
-    .pro-hero-card-foot {
-      font-size: 11px;
-      color: #4b5563;
-      border-top: 1px dashed rgba(156, 163, 175, 0.7);
-      padding-top: 6px;
-      margin-top: 4px;
-    }
-
-    /* HOW IT WORKS */
-
-    .pro-steps {
-      margin-top: 18px;
-      border-radius: 18px;
-      padding: 12px 14px;
-      background-color: var(--eq-surface-soft);
-      border: 1px solid var(--eq-border-subtle);
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .pro-step {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .pro-step-num {
-      width: 18px;
-      height: 18px;
-      border-radius: var(--eq-radius-pill);
-      background-color: #0f172a;
-      color: #f9fafb;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .pro-step-main {
-      font-weight: 600;
-      font-size: 12px;
-      margin-bottom: 2px;
-    }
-
-    .pro-step-sub {
-      font-size: 11px;
-      color: var(--eq-text-softer);
-    }
-
-    /* SHARED SECTION STYLES */
-
-    .pro-section {
-      margin-top: 30px;
-    }
-
-    .pro-section-header {
-      margin-bottom: 18px;
-    }
-
-    .pro-section-kicker {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.13em;
-      color: var(--eq-text-softer);
-      margin-bottom: 6px;
-    }
-
-    .pro-section-title {
-      font-size: 19px;
-      margin: 0 0 4px;
-      letter-spacing: -0.015em;
-    }
-
-    .pro-section-lead {
-      margin: 0;
-      font-size: 13px;
-      color: var(--eq-text-muted);
-      max-width: 40rem;
-    }
-
-    .pro-grid-two {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 16px;
-    }
-
-    .pro-card {
-      background-color: var(--eq-surface);
-      border-radius: var(--eq-radius-lg);
-      border: 1px solid var(--eq-border-subtle);
-      padding: 14px 14px 13px;
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      font-size: 13px;
-    }
-
-    .pro-card-kicker {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-card-title {
-      font-size: 15px;
-      margin: 0;
-      letter-spacing: -0.015em;
-    }
-
-    .pro-card-body {
-      margin: 2px 0 4px;
-      font-size: 13px;
-      color: var(--eq-text-muted);
-    }
-
-    .pro-card-list {
-      margin: 4px 0 2px;
-      padding-left: 18px;
-      color: var(--eq-text-muted);
-      font-size: 12px;
-    }
-
-    .pro-card-list li {
-      margin-bottom: 4px;
-    }
-
-    .pro-card-tagline {
-      margin: 6px 0 0;
-      font-size: 12px;
-      color: var(--eq-text-softer);
-    }
-
-    /* UPSALES */
-
-    .pro-upsell-row {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      font-size: 12px;
-    }
-
-    .pro-upsell-card {
-      border-radius: var(--eq-radius-lg);
-      background-color: var(--eq-surface-soft);
-      border: 1px dashed var(--eq-border-strong);
-      padding: 10px 11px 9px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .pro-upsell-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-upsell-title {
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .pro-upsell-body {
-      font-size: 12px;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-upsell-pill {
-      margin-top: 4px;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 3px 7px;
-      border-radius: var(--eq-radius-pill);
-      background-color: #ecfdf3;
-      border: 1px solid #bbf7d0;
-      font-size: 10px;
-      color: #166534;
-      align-self: flex-start;
-    }
-
-    /* WHO FOR */
-
-    .pro-audience-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .pro-audience-card {
-      border-radius: var(--eq-radius-lg);
-      background-color: var(--eq-surface);
-      border: 1px solid var(--eq-border-subtle);
-      padding: 10px 11px 9px;
-    }
-
-    .pro-audience-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
-    .pro-audience-list {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--eq-text-softer);
-    }
-
-    .pro-audience-list li {
-      margin-bottom: 3px;
-    }
-
-    /* FAQ */
-
-    .pro-faq-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-      gap: 18px;
-      font-size: 13px;
-    }
-
-    .pro-faq-item {
-      border-radius: var(--eq-radius-lg);
-      background-color: var(--eq-surface-soft);
-      border: 1px solid var(--eq-border-subtle);
-      padding: 10px 12px 9px;
-    }
-
-    .pro-faq-q {
-      font-weight: 600;
-      margin-bottom: 3px;
-      font-size: 13px;
-    }
-
-    .pro-faq-a {
-      color: var(--eq-text-muted);
-      font-size: 12px;
-    }
-
-    /* BOTTOM CTA */
-
-    .pro-bottom-cta {
-      margin-top: 30px;
+    .case {
+      background: white;
+      padding: 40px;
       border-radius: 20px;
-      background: linear-gradient(135deg, #0f172a, #052e16);
-      color: #e5e7eb;
-      padding: 18px 16px 16px;
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 16px;
-      align-items: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+      text-align: left;
     }
-
-    .pro-bottom-title {
+    .case h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: var(--green);
+    }
+    .case ul {
+      margin: 20px 0;
       font-size: 18px;
-      margin: 0 0 4px;
-      letter-spacing: -0.02em;
+      color: var(--text-muted);
     }
+    .case li { margin-bottom: 12px; }
 
-    .pro-bottom-body {
-      font-size: 13px;
-      color: #cbd5f5;
-      margin: 0;
-      max-width: 34rem;
+    .bottom-cta {
+      background: linear-gradient(135deg, #0f172a, #052e16);
+      color: white;
+      text-align: center;
+      padding: 90px 40px;
+      border-radius: 24px;
+      margin: 100px 0 60px;
     }
-
-    .pro-bottom-note {
-      margin-top: 4px;
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .pro-bottom-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .btn-pro-bottom-main {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: var(--eq-radius-pill);
-      background-color: #bbf7d0;
+    .bottom-cta h2 { font-size: 40px; margin-bottom: 20px; }
+    .bottom-cta p { font-size: 21px; opacity: 0.95; max-width: 700px; margin: 0 auto 36px; }
+    .btn-white {
+      background: white;
       color: #022c22;
-      font-size: 13px;
+      padding: 22px 52px;
+      border-radius: 60px;
+      font-size: 21px;
       font-weight: 600;
-      border: 1px solid #4ade80;
-      cursor: pointer;
     }
 
-    .btn-pro-bottom-main:hover {
-      background-color: #a7f3d0;
+    footer {
+      text-align: center;
+      padding: 50px 0;
+      color: #64748b;
+      font-size: 15px;
     }
 
-    .btn-pro-bottom-secondary {
-      font-size: 11px;
-      color: #e5e7eb;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    /* FOOTER */
-
-    .eq-footer {
-      border-top: 1px solid var(--eq-border-subtle);
-      padding: 14px 16px;
-      font-size: 11px;
-      color: var(--eq-text-softer);
-      background-color: #ffffff;
-    }
-
-    .eq-footer-inner {
-      max-width: var(--eq-max-width);
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .eq-footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .eq-footer-link {
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    /* RESPONSIVE */
-
-    @media (max-width: 900px) {
-      .pro-hero-layout {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-hero-card {
-        order: -1;
-      }
-
-      .pro-steps {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-grid-two {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-upsell-row {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-audience-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-faq-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .pro-bottom-cta {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .eq-header-inner {
-        padding-inline: 12px;
-      }
-
-      .eq-main-inner {
-        padding-inline: 12px;
-      }
-
-      .pro-hero {
-        padding: 16px 14px 18px;
-      }
-
-      .pro-section {
-        margin-top: 24px;
-      }
-
-      .pro-hero-title {
-        font-size: 21px;
-      }
-
-      .pro-hero-sub {
-        font-size: 13px;
-      }
-
-      .pro-hero-sub-alt {
-        font-size: 12px;
-      }
-
-      .pro-hero-list {
-        font-size: 12px;
-      }
-
-      .btn-pro-primary {
-        width: 100%;
-        justify-content: center;
-        white-space: normal;
-      }
-
-      .btn-pro-secondary {
-        width: 100%;
-        justify-content: center;
-        white-space: normal;
-      }
+    @media (max-width: 780px) {
+      h1 { font-size: 36px; }
+      .lead { font-size: 19px; }
+      .cta-primary, .btn-white { width: 100%; padding: 20px; }
+      .use-cases { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<div class="eq-shell">
 
-  <header class="eq-header">
-    <div class="eq-header-inner">
-      <a href="/" class="eq-logo">
-        <div class="eq-logo-mark">E</div>
-        <div>
-          <div class="eq-logo-text-main">EstateQuoter</div>
-          <div class="eq-logo-text-sub">Calm help for estates</div>
-        </div>
-      </a>
-      <nav class="eq-header-nav">
-        <a href="/" class="eq-header-link">For families</a>
-        <span class="eq-header-link-active">For professionals</span>
-      </nav>
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">EstateQuoter <span>Professional intake & quoting</span></a>
+      <div style="font-weight:600;color:var(--green)">EstateQuoter Pro</div>
     </div>
   </header>
 
-  <main class="eq-main">
-    <div class="eq-main-inner">
+  <div class="container">
 
-      <!-- HERO -->
-      <section class="pro-hero">
-        <div class="pro-hero-top">
-          <div class="pro-badge">
-            <span class="pro-badge-dot"></span>
-            EstateQuoter Pro
-          </div>
-          <div class="pro-pill">
-            <span class="pro-pill-pill">★</span>
-            Start with your custom intake link, grow into listing and leads
-          </div>
-        </div>
-
-        <div class="pro-hero-layout">
-          <div>
-            <h1 class="pro-hero-title">Get your own EstateQuoter intake link to send to clients.</h1>
-            <p class="pro-hero-sub">
-              One link you can give to families, attorneys, and referral partners. They answer calm, clear questions about the estate. You receive a complete snapshot that is ready to quote and schedule.
-            </p>
-            <p class="pro-hero-sub-alt">
-              After your link is live, you can choose to <strong>list your company on EstateQuoter</strong> and receive <strong>matched leads</strong> and simple quote tools. The link always comes first.
-            </p>
-
-            <ul class="pro-hero-list">
-              <li>
-                <span class="pro-hero-dot"></span>
-                <span>Custom intake that reads like “Get a quote from your company name” built on the same flow families see on our main site.</span>
-              </li>
-              <li>
-                <span class="pro-hero-dot"></span>
-                <span>Add your link to your website, email signature, business cards, and referral partners without changing your whole process.</span>
-              </li>
-              <li>
-                <span class="pro-hero-dot"></span>
-                <span>When it feels right, layer on company listing, leads routed to you, and quote rules that use the answers in the form.</span>
-              </li>
-            </ul>
-
-            <div class="pro-hero-cta-row">
-              <!-- Primary: request intake link -->
-              <a
-                href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Tell%20us%20your%3A%0A%0A%E2%80%A2%20Company%20name%0A%E2%80%A2%20Service%20area%20(cities%20and%20states)%0A%E2%80%A2%20Best%20contact%20email%0A%E2%80%A2%20Website%20or%20social%20link%20(if%20you%20have%20one)%0A%0AWe%27ll%20respond%20with%20a%20proposed%20intake%20link%20pattern%20and%20how%20listing%20and%20leads%20could%20fit.%0A"
-                class="btn-pro-primary"
-              >
-                <span>Request my custom intake link</span>
-                <small>Free to start · no contract</small>
-              </a>
-
-              <!-- Secondary: learn how listing and leads plug in -->
-              <a href="#how-it-works" class="btn-pro-secondary">
-                <span class="btn-pro-secondary-icon">⟶</span>
-                <span>See how listing and leads fit on top</span>
-              </a>
-            </div>
-
-            <div class="pro-hero-note">
-              Your intake link keeps working even if you never use the lead program or dashboard. Pro features sit on top of it, they do not get in the way.
-            </div>
-          </div>
-
-          <aside class="pro-hero-card">
-            <div class="pro-hero-card-label">Example intake link pattern</div>
-            <div class="pro-hero-card-title">
-              estatequoter.com/go/greenoak
-            </div>
-            <div class="pro-hero-card-body">
-              A family clicks a link like this from your site or a referral. The experience is labeled for your company and walks them through the EstateQuoter intake. You receive the full story instead of three rushed phone calls.
-            </div>
-            <div class="pro-hero-card-pillrow">
-              <span class="pro-chip">“Get a quote” button on your website</span>
-              <span class="pro-chip">Link in emails and text threads</span>
-              <span class="pro-chip">Attorneys and realtors use the same link</span>
-            </div>
-            <div class="pro-hero-card-foot">
-              When you turn on listing and leads, this same link becomes the way EstateQuoter families reach you too.
-            </div>
-          </aside>
-        </div>
-
-        <div class="pro-steps" id="how-it-works">
-          <div class="pro-step">
-            <div class="pro-step-num">1</div>
-            <div>
-              <div class="pro-step-main">Start with your custom intake link</div>
-              <div class="pro-step-sub">
-                You share your company details. We set up an intake link that uses the same calm questions as our main site, labeled clearly for your business.
-              </div>
-            </div>
-          </div>
-          <div class="pro-step">
-            <div class="pro-step-num">2</div>
-            <div>
-              <div class="pro-step-main">Use it with your own clients</div>
-              <div class="pro-step-sub">
-                Add the link to your website, referral partners, and email. Families go through the questions once and you see everything in one place.
-              </div>
-            </div>
-          </div>
-          <div class="pro-step">
-            <div class="pro-step-num">3</div>
-            <div>
-              <div class="pro-step-main">Grow into listing and leads</div>
-              <div class="pro-step-sub">
-                When it makes sense, we can add your company to EstateQuoter, route matched leads to you, and apply simple quote rules based on the intake answers.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- LINK + LISTING / LEADS SIDE BY SIDE -->
-      <section class="pro-section">
-        <div class="pro-section-header">
-          <div class="pro-section-kicker">One foundation with two clear outcomes</div>
-          <h2 class="pro-section-title">Custom intake link first. Listing and leads when you are ready.</h2>
-          <p class="pro-section-lead">
-            We keep the offer simple. Your intake link should help you right away, even if you are not ready for more volume. Listing and leads are a second step you can decide on once you see how it feels.
-          </p>
-        </div>
-
-        <div class="pro-grid-two">
-          <article class="pro-card">
-            <div class="pro-card-kicker">Step 1 · Free intake link</div>
-            <h3 class="pro-card-title">Your own calm intake for every estate conversation</h3>
-            <p class="pro-card-body">
-              We plug your company into the EstateQuoter flow and label it clearly, so families know who they are talking to. The questions cover property, contents, timing, access, and special situations without being harsh.
-            </p>
-            <ul class="pro-card-list">
-              <li>Language written for families who may be grieving or overwhelmed.</li>
-              <li>Prompts that gather the details you need to say yes, no, or “let us see it” without five follow ups.</li>
-              <li>One clean summary sent to you instead of scattered notes on paper and phones.</li>
-            </ul>
-            <p class="pro-card-tagline">
-              This link is yours. You can use it with every referral partner and client whether or not you ever join the lead program.
-            </p>
-          </article>
-
-          <article class="pro-card">
-            <div class="pro-card-kicker">Step 2 · Optional Pro features</div>
-            <h3 class="pro-card-title">List your company and receive leads that match your profile</h3>
-            <p class="pro-card-body">
-              When you are ready, we can add your company to EstateQuoter and route matched requests to you. Everything still flows through the same calm intake, you just see more of the right jobs.
-            </p>
-            <ul class="pro-card-list">
-              <li>Company listing on EstateQuoter in the areas you actually serve.</li>
-              <li>Leads that match your service area and job types, not random spam.</li>
-              <li>Simple quote tools that apply your own guardrails to the answers in the form.</li>
-            </ul>
-            <p class="pro-card-tagline">
-              You decide how aggressive or selective you want to be. We would rather send you the right work than flood you.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <!-- PRO OPTIONS DETAIL -->
-      <section class="pro-section">
-        <div class="pro-section-header">
-          <div class="pro-section-kicker">Optional Pro tools that stay out of the way</div>
-          <h2 class="pro-section-title">What you can turn on after your intake link is live</h2>
-          <p class="pro-section-lead">
-            Pro is not a complicated software platform you have to learn. It is a handful of add ons that sit behind the same intake link your clients already use.
-          </p>
-        </div>
-
-        <div class="pro-upsell-row">
-          <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Company listing</div>
-            <div class="pro-upsell-title">Be visible where families are already asking for help</div>
-            <div class="pro-upsell-body">
-              When a family in your service area lands on EstateQuoter, we can show your company as an option. If they select you, they go through the same intake you already use, and you receive the request.
-            </div>
-            <div class="pro-upsell-pill">
-              <span>Built on your existing intake link</span>
-            </div>
-          </div>
-
-          <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Matched leads</div>
-            <div class="pro-upsell-title">Leads that fit your service area and job profile</div>
-            <div class="pro-upsell-body">
-              You tell us which types of estates you are best suited for. We use the answers in the intake to route only those leads to you, so you spend less time saying no to jobs you never would have taken.
-            </div>
-            <div class="pro-upsell-pill">
-              <span>You control the boundaries</span>
-            </div>
-          </div>
-
-          <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Quote rules</div>
-            <div class="pro-upsell-title">Use your own guardrails on top of the intake</div>
-            <div class="pro-upsell-body">
-              We can set simple rules based on square footage, distance, time pressure, and other fields in the form. Those rules help you sort, prioritize, and respond without thinking through the same logic every time.
-            </div>
-            <div class="pro-upsell-pill">
-              <span>No auto pricing, you stay in control</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- WHO PRO IS FOR -->
-      <section class="pro-section">
-        <div class="pro-section-header">
-          <div class="pro-section-kicker">Who usually gets the most value</div>
-          <h2 class="pro-section-title">For teams who care about families and their own time</h2>
-          <p class="pro-section-lead">
-            EstateQuoter Pro is built for companies that want to treat people well and still run a tight operation. If you are already trying to be thoughtful on the phone, this lets you capture that in a clear, repeatable way.
-          </p>
-        </div>
-
-        <div class="pro-audience-grid">
-          <article class="pro-audience-card">
-            <div class="pro-audience-title">Estate sale companies</div>
-            <ul class="pro-audience-list">
-              <li>Multiple calls about the same property and contents.</li>
-              <li>Need a better way to decide which consultations to book.</li>
-              <li>Want intake that reflects how you actually talk to families.</li>
-            </ul>
-          </article>
-
-          <article class="pro-audience-card">
-            <div class="pro-audience-title">Cleanout and junk removal teams</div>
-            <ul class="pro-audience-list">
-              <li>Need clear information about volume and access before sending a truck.</li>
-              <li>Handle hoarder and complex situations where details matter.</li>
-              <li>Prefer to see the scope laid out before committing a crew.</li>
-            </ul>
-          </article>
-
-          <article class="pro-audience-card">
-            <div class="pro-audience-title">Hybrid and referral based services</div>
-            <ul class="pro-audience-list">
-              <li>Work closely with attorneys, realtors, and care facilities.</li>
-              <li>Want one simple link that every referral partner can share.</li>
-              <li>Need a calm and neutral way for families to explain what is going on.</li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="pro-section">
-        <div class="pro-section-header">
-          <div class="pro-section-kicker">Questions pros often ask</div>
-          <h2 class="pro-section-title">How the intake link, listing, and leads work together</h2>
-        </div>
-
-        <div class="pro-faq-grid">
-          <div class="pro-faq-item">
-            <div class="pro-faq-q">Is this mainly for listing my company or for intake?</div>
-            <div class="pro-faq-a">
-              Intake comes first. Every company starts by getting a custom link they can use with their own clients and referrals. Listing and leads are optional tools we layer on later if they make sense for your business.
-            </div>
-          </div>
-          <div class="pro-faq-item">
-            <div class="pro-faq-q">Who owns the relationship with the families who fill out the form?</div>
-            <div class="pro-faq-a">
-              When someone uses your intake link, they are contacting you. EstateQuoter is the bridge. If a request comes from the EstateQuoter site, we are clear about which company it is being sent to and why.
-            </div>
-          </div>
-          <div class="pro-faq-item">
-            <div class="pro-faq-q">Do I have to switch my whole website or CRM to use this?</div>
-            <div class="pro-faq-a">
-              No. You can start with a single “Tell us about the estate” or “Get a quote” button that points to your intake link. You can keep using whatever email and systems you already have behind the scenes.
-            </div>
-          </div>
-          <div class="pro-faq-item">
-            <div class="pro-faq-q">How do quote rules work in real life?</div>
-            <div class="pro-faq-a">
-              You tell us your deal breakers and sweet spots. For example distance from your base, size of the estate, and timing. We use those settings to flag which requests are likely a good match. You still decide what to charge and how to respond.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- BOTTOM CTA -->
-      <section class="pro-bottom-cta">
-        <div>
-          <h2 class="pro-bottom-title">Start with your custom intake link. Decide on listing and leads later.</h2>
-          <p class="pro-bottom-body">
-            Send us a quick note with your company name, service area, and best email. We will reply with a proposed intake link pattern, examples of how it would look, and how listing and leads could fit around it.
-          </p>
-          <p class="pro-bottom-note">
-            The first step is making it easier for families to tell you what is going on. Everything else builds on that.
-          </p>
-        </div>
-        <div class="pro-bottom-actions">
-          <a
-            href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Please%20share%20your%3A%0A%0A%E2%80%A2%20Company%20name%0A%E2%80%A2%20Service%20area%20(cities%20and%20states)%0A%E2%80%A2%20Best%20contact%20email%0A%E2%80%A2%20Website%20or%20social%20link%0A%E2%80%A2%20Approximate%20jobs%20per%20month%0A%0AWe%27ll%20respond%20with%20a%20link%20pattern%2C%20mock%20copy%2C%20and%20how%20listing%20and%20leads%20could%20be%20layered%20on.%0A"
-            class="btn-pro-bottom-main"
-          >
-            <span>Email to request my intake link</span>
-          </a>
-          <a href="/" class="btn-pro-bottom-secondary">
-            Prefer to see the family intake first? Visit the main EstateQuoter page
-          </a>
-        </div>
-      </section>
-
-    </div>
-  </main>
-
-  <footer class="eq-footer">
-    <div class="eq-footer-inner">
-      <div>EstateQuoter is owned by Surplus Haven LLC.</div>
-      <div class="eq-footer-links">
-        <a href="/privacy.html" class="eq-footer-link">Privacy</a>
-        <a href="/terms.html" class="eq-footer-link">Terms</a>
-        <a href="mailto:estatequoter@gmail.com" class="eq-footer-link">Contact</a>
+    <section class="hero">
+      <div class="badge">
+        <div class="badge-dot"></div>
+        Free for every licensed estate sale & cleanout company
       </div>
-    </div>
+
+      <h1>Your own branded intake & quoting link<br>used daily by the industry’s top operators</h1>
+      <p class="lead">
+        Give clients one professional link — on the phone, in a text, on your site, or with referral partners — and receive every detail you need with your quote range already calculated.
+      </p>
+
+      <a href="mailto:estatequoter@gmail.com?subject=Activate%20my%20free%20EstateQuoter%20Pro%20link&body=Hi%20team%2C%0A%0APlease%20create%20my%20free%20branded%20intake%20%26%20quoting%20link.%0A%0ACompany%20name%3A%0AService%20area%20(cities%2Fstates)%3A%0ABest%20email%20for%20incoming%20requests%3A%0AOptional%3A%20Approx%20jobs%20per%20month%3A%0A%0AThank%20you!"
+         class="cta-primary">
+        Get My Free Professional Link
+      </a>
+      <p class="cta-note">We’ll reply within 24 hours with your live link + examples. No cost · No contract · Ready the same day</p>
+
+      <div class="example">
+        Your link will look like:<br>
+        <strong>estatequoter.com/go/apex-estate-services</strong><br><br>
+        Clients see “Get a quote from Apex Estate Services” and complete the same proven intake used by thousands of families nationwide.<br>
+        You receive a complete summary + optional pre-calculated quote range based on your pricing rules.
+      </div>
+    </section>
+
+    <section class="use-cases">
+      <div class="case">
+        <h3>On the phone or at the property</h3>
+        <p>Send your link in a quick text or email while you’re still talking to the client. They complete it in 5–7 minutes and you can often quote on the spot — or arrive tomorrow already knowing exactly what to expect.</p>
+        <ul>
+          <li>Perfect for calls, texts, or walk-ins</li>
+          <li>No more back-and-forth about square footage, access, or deadlines</li>
+          <li>Quote ranges can be pre-baked using your cost parameters</li>
+        </ul>
+      </div>
+
+      <div class="case">
+        <h3>Referral partners & marketing</h3>
+        <p>Give attorneys, realtors, fiduciaries, and senior-living facilities one link to share with every family. They send you complete, consistent requests instead of partial information.</p>
+        <ul>
+          <li>Professional impression with every referral</li>
+          <li>Works on your website, email signature, and business cards</li>
+          <li>Optional: receive additional matched leads from the main EstateQuoter site</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="bottom-cta">
+      <h2>Start using your professional link today<br>— at no cost and with zero setup on your end</h2>
+      <p>Top companies across the country already rely on their EstateQuoter Pro link every single day.</p>
+      <a href="mailto:estatequoter@gmail.com?subject=Activate%20my%20free%20EstateQuoter%20Pro%20link&body=Hi%20team%2C%0A%0APlease%20create%20my%20free%20branded%20intake%20%26%20quoting%20link.%0A%0ACompany%20name%3A%0AService%20area%20(cities%2Fstates)%3A%0ABest%20email%20for%20incoming%20requests%3A%0AOptional%3A%20Approx%20jobs%20per%20month%3A%0A%0AThank%20you!"
+         class="btn-white">
+        Yes — Activate My Free Link Now
+      </a>
+    </section>
+
+  </div>
+
+  <footer>
+    © 2025 EstateQuoter • Trusted daily by leading estate sale companies and cleanout teams nationwide
   </footer>
 
-</div>
 </body>
 </html>
