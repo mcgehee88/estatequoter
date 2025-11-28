@@ -727,6 +727,7 @@
 
   <!-- Main Form -->
   <div id="main-form" class="form-container">
+    <input type="hidden" id="proSlug" name="proSlug" value="">
     <div class="progress"><div class="bar" id="bar"></div></div>
     <div class="step-title" id="step-title">Property type</div>
     <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
@@ -1474,8 +1475,15 @@ function hydrateFormFromData(data) {
 
 /* Collect data for review + Make */
 function collectData() {
-  const data = {};
-  data.zip = document.getElementById('zip').value.trim();
+const data = {};
+
+// Pro slug (if present)
+const proInput = document.getElementById('proSlug');
+data.proSlug = proInput ? (proInput.value || '').trim() : "";
+
+// ZIP
+data.zip = document.getElementById('zip').value.trim();
+
 
   // Step 0: Your role
   const roleStep = qs[0];
