@@ -15,6 +15,8 @@
       --text: #1e293b;
       --text-muted: #475569;
       --border: #e2e8f0;
+      --error: #b91c1c;
+      --error-light: #fee2e2;
     }
     * {
       box-sizing: border-box;
@@ -98,6 +100,7 @@
       max-width: 720px;
       margin: 0 auto 28px;
     }
+
     .cta-primary {
       display: inline-block;
       background: var(--green);
@@ -111,11 +114,17 @@
     .cta-primary:hover {
       background: #166534;
     }
+    .cta-primary:disabled {
+      opacity: 0.7;
+      cursor: default;
+      box-shadow: none;
+    }
     .cta-note {
       margin-top: 12px;
       font-size: 14px;
       color: var(--text-muted);
     }
+
     .example {
       margin: 40px auto 0;
       padding: 28px;
@@ -131,6 +140,80 @@
       color: var(--green);
       font-size: 22px;
       font-weight: 700;
+    }
+    .example-label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .slug-check {
+      margin-top: 14px;
+    }
+
+    .slug-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .slug-prefix {
+      background: white;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 14px;
+      border: 1px solid var(--green-border);
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .slug-input {
+      flex: 1;
+      min-width: 140px;
+      border-radius: 999px;
+      border: 1px solid var(--green-border);
+      padding: 10px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .slug-input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+    }
+
+    .slug-check .cta-primary {
+      font-size: 15px;
+      padding: 11px 22px;
+      box-shadow: none;
+    }
+
+    .slug-help {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .availability-message {
+      margin-top: 10px;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      display: none;
+    }
+    .availability-message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #4ade80;
+      display: block;
+    }
+    .availability-message.error {
+      background: var(--error-light);
+      color: var(--error);
+      border: 1px solid #fecaca;
+      display: block;
     }
 
     .use-cases {
@@ -202,6 +285,35 @@
       font-size: 13px;
     }
 
+    .onboarding-placeholder {
+      background: white;
+      border-radius: 18px;
+      padding: 28px 24px;
+      margin: 0 auto 60px;
+      max-width: 780px;
+      border: 1px dashed var(--border);
+      text-align: left;
+      display: none;
+    }
+    .onboarding-placeholder h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--green);
+    }
+    .onboarding-placeholder p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .onboarding-placeholder ul {
+      margin-left: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .onboarding-placeholder li {
+      margin-bottom: 6px;
+    }
+
     @media (max-width: 780px) {
       h1 {
         font-size: 26px;
@@ -221,6 +333,15 @@
       }
       .use-cases {
         margin: 40px auto 50px;
+      }
+      .slug-input-wrapper {
+        align-items: stretch;
+      }
+      .slug-prefix {
+        border-radius: 12px;
+      }
+      .slug-input {
+        border-radius: 12px;
       }
     }
   </style>
@@ -248,23 +369,46 @@
       <h1>Your own branded intake and quoting link for every estate conversation</h1>
 
       <p class="lead">
-        Give clients <strong>one link</strong> on the phone, in a text, on your site, or through referral partners. Receive submissions based on <strong>your quote setup</strong> & <strong>your rules</strong>.
+        Give clients <strong>one link</strong> on the phone, in a text, on your site, or through referral partners. Receive submissions based on <strong>your quote setup</strong> and <strong>your rules</strong>.
       </p>
 
-      <!-- This should trigger the Pro intake flow in your app -->
-      <a href="#pro-intake-start" class="cta-primary">
+      <!-- Top CTA scrolls them down to the link chooser -->
+      <a href="#pro-link-chooser" class="cta-primary">
         Get My Free Professional Link
       </a>
       <p class="cta-note">
         Completely free, no strings.
       </p>
 
-      <div class="example">
-        Your link will look like:<br><br>
-        <center><strong>EstateQuoter.com/YOUR-BUSINESS</strong></center><br>
-        <strong>→</strong> Clients see “Get a quote from [YOUR BUSINESS]”<br> 
-        <strong>→</strong> Use our proven EstateQuoter funnel with your branding.<br>
-        <strong>→</strong> Receive quotes instantly and organized, based on YOUR unique pricing rules.
+      <div class="example" id="pro-link-chooser">
+        <div class="example-label">Step 1: Check if your link is available</div>
+
+        <form class="slug-check" id="slug-check-form">
+          <div class="slug-input-wrapper">
+            <div class="slug-prefix">EstateQuoter.com/</div>
+            <input
+              type="text"
+              id="slug-input"
+              class="slug-input"
+              placeholder="YourBusinessName"
+              autocomplete="off"
+              maxlength="40"
+            >
+            <button type="submit" class="cta-primary" id="slug-check-button">
+              Check availability
+            </button>
+          </div>
+          <div class="slug-help">
+            Letters, numbers, and hyphens only. For example: <strong>GreenValleyEstates</strong> or <strong>Trusted-Cleanouts</strong>.
+          </div>
+          <div id="availability-message" class="availability-message"></div>
+        </form>
+
+        <br>
+        <strong>What families see:</strong><br>
+        → “Get a quote from [YOUR BUSINESS]”<br>
+        → Your name and branding on top of the EstateQuoter flow<br>
+        → You receive organized submissions with quote ranges based on your pricing rules.
       </div>
     </section>
 
@@ -299,19 +443,151 @@
       <p>
         Many companies already rely on their EstateQuoter Pro link every day to keep intake calm for families and clear for their own teams.
       </p>
-      <a href="#pro-intake-start" class="btn-white">
-        Activate My Free Link
+      <a href="#pro-link-chooser" class="btn-white">
+        Choose my link and start setup
       </a>
     </section>
 
-    <!-- Placeholder anchor for where your Pro intake form begins -->
-    <div id="pro-intake-start"></div>
+    <!-- Onboarding anchor / placeholder: replace this with real Pro flow -->
+    <div id="pro-intake-start" class="onboarding-placeholder">
+      <h3>Step 2: Add your details and quoting rules</h3>
+      <p>
+        This is where your Pro onboarding will live. Once a company picks an available link, you can:
+      </p>
+      <ul>
+        <li>Capture company name, service areas, and contact details</li>
+        <li>Set basic quoting ranges or rules for common job types</li>
+        <li>Turn on lead sharing from the main EstateQuoter site (optional)</li>
+      </ul>
+      <p>
+        You can replace this box with your actual Pro intake form or flow when it is ready.
+      </p>
+    </div>
 
   </div>
 
   <footer>
     © 2025 EstateQuoter · EstateQuoter is owned by Surplus Haven LLC
   </footer>
+
+  <script>
+    (function () {
+      // Wire this to your real endpoint when ready.
+      // Endpoint should accept ?slug=my-slug and return:
+      // { "available": true } or { "available": false, "reason": "Already in use" }
+      const CHECK_SLUG_ENDPOINT = "/api/check-slug";
+
+      const form = document.getElementById("slug-check-form");
+      const input = document.getElementById("slug-input");
+      const button = document.getElementById("slug-check-button");
+      const messageBox = document.getElementById("availability-message");
+      const onboardingBox = document.getElementById("pro-intake-start");
+
+      const RESERVED_SLUGS = [
+        "pro",
+        "professionals",
+        "estatequoter",
+        "admin",
+        "demo",
+        "test",
+        "www"
+      ];
+
+      function showMessage(type, text) {
+        messageBox.textContent = text;
+        messageBox.className = "availability-message " + type;
+        messageBox.style.display = "block";
+      }
+
+      function validateSlug(raw) {
+        const trimmed = raw.trim();
+        if (!trimmed) {
+          return { ok: false, msg: "Please enter a word or short phrase for your link." };
+        }
+        const slug = trimmed.replace(/\s+/g, "-");
+        if (!/^[a-zA-Z0-9-]+$/.test(slug)) {
+          return { ok: false, msg: "Use letters, numbers, and hyphens only. No spaces or symbols." };
+        }
+        if (slug.length < 3) {
+          return { ok: false, msg: "Your link should be at least 3 characters long." };
+        }
+        if (slug.length > 40) {
+          return { ok: false, msg: "Your link is a bit long. Try something shorter than 40 characters." };
+        }
+        if (RESERVED_SLUGS.includes(slug.toLowerCase())) {
+          return { ok: false, msg: "That link is reserved. Try a different name or add your city." };
+        }
+        return { ok: true, slug: slug };
+      }
+
+      function startOnboarding(slug) {
+        try {
+          localStorage.setItem("estatequoter_pro_slug", slug);
+        } catch (e) {
+          // Ignore if localStorage fails
+        }
+
+        if (onboardingBox) {
+          onboardingBox.style.display = "block";
+          onboardingBox.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+
+      async function checkAvailability(slug) {
+        // If you have not wired a real endpoint yet, this will just say "available".
+        if (!CHECK_SLUG_ENDPOINT || CHECK_SLUG_ENDPOINT === "/api/check-slug") {
+          return { available: true, fallback: true };
+        }
+
+        const url = CHECK_SLUG_ENDPOINT + "?slug=" + encodeURIComponent(slug);
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) {
+          throw new Error("Network error");
+        }
+        return response.json();
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const raw = input.value;
+        const { ok, slug, msg } = validateSlug(raw);
+
+        if (!ok) {
+          showMessage("error", msg);
+          return;
+        }
+
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = "Checking...";
+
+        try {
+          const result = await checkAvailability(slug);
+
+          if (result.available) {
+            const suffix = result.fallback ? " (we will confirm during setup)." : ".";
+            showMessage(
+              "success",
+              "Good news. EstateQuoter.com/" + slug + " is available for your business" + suffix
+            );
+            startOnboarding(slug);
+          } else {
+            const reason = result.reason || "That link is already in use. Try a variation or add your city.";
+            showMessage("error", reason);
+          }
+        } catch (err) {
+          showMessage(
+            "error",
+            "We could not confirm availability right now. Please try again in a moment or pick a slightly different name."
+          );
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
