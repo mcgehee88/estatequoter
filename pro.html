@@ -503,10 +503,10 @@
 
     <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('pro-onboard-form');
-    const modal = document.getElementById('pro-intake-modal');
+    const form     = document.getElementById('pro-onboard-form');
+    const modal    = document.getElementById('pro-intake-modal');
     const openBtns = document.querySelectorAll('[data-open-pro-modal]');
-    const closeBtns = document.querySelectorAll('[data-close-pro-modal]');
+    const closeBtns= document.querySelectorAll('[data-close-pro-modal]');
 
     if (modal && openBtns.length) {
       const openModal = (e) => {
@@ -534,6 +534,10 @@
     const successBox  = document.getElementById('pro-onboard-success');
     const linkBox     = document.getElementById('pro-link-box');
     const copyBtn     = document.getElementById('pro-copy-btn');
+
+    // these are the "Step 1" title + intro we want gone after success
+    const modalTitle  = document.getElementById('pro-modal-title');
+    const modalIntro  = modalTitle ? modalTitle.nextElementSibling : null;
 
     // Put your REAL Make webhook here when you're ready.
     // If this stays as-is, we simply skip the webhook call.
@@ -592,9 +596,11 @@
         }
       }
 
-      // Front-end success: show link, hide form no matter what
+      // Front-end success: show link, hide form + "Step 1" stuff
       form.style.display = 'none';
       if (note) note.style.display = 'none';
+      if (modalTitle) modalTitle.style.display = 'none';
+      if (modalIntro) modalIntro.style.display = 'none';
       successBox.style.display = 'block';
       linkBox.textContent = proLink;
 
