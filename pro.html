@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EstateQuoter Pro – Free Intake Link for Estate Companies</title>
+  <title>EstateQuoter Pro – Custom Intake Links for Estate Companies</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO basics -->
-  <meta name="description" content="EstateQuoter Pro gives estate sale companies and cleanout services a free intake link they can share with families, plus optional leads, dashboard, and quote rules when they are ready.">
+  <meta name="description" content="EstateQuoter Pro gives estate sale and cleanout companies a free custom intake link to share with clients, plus optional company listing, leads, and simple quote tools when it makes sense.">
   <link rel="canonical" href="https://estatequoter.com/pro">
   <meta name="robots" content="noindex,follow">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="EstateQuoter Pro – Free Intake Link for Estate Companies">
-  <meta property="og:description" content="Get your own EstateQuoter intake link to share with families, then turn on leads, dashboard, and quote rules when it makes sense for your business.">
+  <meta property="og:title" content="EstateQuoter Pro – Custom Intake Links for Estate Companies">
+  <meta property="og:description" content="Get your own EstateQuoter intake link to send to clients. Later, turn on company listing, leads, and quote rules if they fit your business.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://estatequoter.com/pro">
   <meta property="og:image" content="https://estatequoter.com/og-image-pro.png">
@@ -33,9 +33,8 @@
       --eq-accent-border: #bbf7d0;
       --eq-pill-bg: #eef2ff;
       --eq-pill-text: #3730a3;
-      --eq-chip-bg: #e5e7eb;
-      --eq-chip-text: #374151;
       --eq-shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --eq-radius-md: 12px;
       --eq-radius-lg: 16px;
       --eq-radius-xl: 20px;
       --eq-radius-pill: 999px;
@@ -68,7 +67,11 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      background: radial-gradient(circle at top left, #e0f2fe, transparent 55%), radial-gradient(circle at bottom right, #dcfce7, transparent 55%);
+      background-color: #e5e7eb;
     }
+
+    /* HEADER */
 
     .eq-header {
       border-bottom: 1px solid var(--eq-border-subtle);
@@ -81,7 +84,7 @@
     .eq-header-inner {
       max-width: var(--eq-max-width);
       margin: 0 auto;
-      padding: 12px 16px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -126,7 +129,7 @@
     }
 
     .eq-header-link {
-      padding: 4px 8px;
+      padding: 4px 9px;
       border-radius: var(--eq-radius-pill);
       color: var(--eq-text-softer);
       border: 1px solid transparent;
@@ -140,12 +143,14 @@
 
     .eq-header-link-active {
       border-radius: var(--eq-radius-pill);
-      padding: 5px 10px;
+      padding: 5px 11px;
       font-weight: 600;
       background-color: var(--eq-accent-soft);
       color: var(--eq-accent);
       border: 1px solid var(--eq-accent-border);
     }
+
+    /* MAIN WRAP */
 
     .eq-main {
       flex: 1;
@@ -160,13 +165,12 @@
     /* HERO */
 
     .pro-hero {
-      background: radial-gradient(circle at top left, #e0f2fe, transparent 55%),
-                  radial-gradient(circle at bottom right, #dcfce7, transparent 55%);
+      background-color: rgba(255, 255, 255, 0.96);
       border-radius: 24px;
       padding: 20px 18px 22px;
       box-shadow: var(--eq-shadow-soft);
       border: 1px solid rgba(148, 163, 184, 0.4);
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
     .pro-hero-top {
@@ -175,7 +179,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .pro-badge {
@@ -223,7 +227,7 @@
 
     .pro-hero-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
       gap: 22px;
       align-items: stretch;
     }
@@ -236,15 +240,22 @@
     }
 
     .pro-hero-sub {
-      margin: 0 0 16px;
+      margin: 0 0 14px;
       font-size: 14px;
       color: var(--eq-text-muted);
-      max-width: 34rem;
+      max-width: 40rem;
     }
 
     .pro-hero-sub strong {
       color: #022c22;
       font-weight: 600;
+    }
+
+    .pro-hero-sub-alt {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--eq-text-softer);
+      max-width: 40rem;
     }
 
     .pro-hero-list {
@@ -283,7 +294,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       padding: 9px 16px;
       font-size: 13px;
       border-radius: var(--eq-radius-pill);
@@ -293,6 +304,7 @@
       border: 1px solid #15803d;
       box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .btn-pro-primary span {
@@ -321,6 +333,7 @@
       border: 1px solid rgba(148, 163, 184, 0.7);
       color: #111827;
       cursor: pointer;
+      white-space: nowrap;
     }
 
     .btn-pro-secondary:hover {
@@ -339,13 +352,13 @@
 
     .pro-hero-card {
       border-radius: var(--eq-radius-xl);
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(249, 250, 251, 0.98);
       border: 1px solid rgba(148, 163, 184, 0.7);
       padding: 12px 13px;
       font-size: 12px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       position: relative;
       overflow: hidden;
     }
@@ -372,7 +385,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
     .pro-chip {
@@ -391,10 +404,10 @@
       margin-top: 4px;
     }
 
-    /* HOW IT WORKS STRIP */
+    /* HOW IT WORKS */
 
     .pro-steps {
-      margin-top: 22px;
+      margin-top: 18px;
       border-radius: 18px;
       padding: 12px 14px;
       background-color: var(--eq-surface-soft);
@@ -521,7 +534,7 @@
       color: var(--eq-text-softer);
     }
 
-    /* UPSALE ROW */
+    /* UPSALES */
 
     .pro-upsell-row {
       display: grid;
@@ -788,6 +801,10 @@
         font-size: 13px;
       }
 
+      .pro-hero-sub-alt {
+        font-size: 12px;
+      }
+
       .pro-hero-list {
         font-size: 12px;
       }
@@ -795,11 +812,13 @@
       .btn-pro-primary {
         width: 100%;
         justify-content: center;
+        white-space: normal;
       }
 
       .btn-pro-secondary {
         width: 100%;
         justify-content: center;
+        white-space: normal;
       }
     }
   </style>
@@ -834,69 +853,73 @@
             EstateQuoter Pro
           </div>
           <div class="pro-pill">
-            <span class="pro-pill-pill">∞</span>
-            Start with your own free intake link
+            <span class="pro-pill-pill">★</span>
+            Start with your custom intake link, grow into listing and leads
           </div>
         </div>
 
         <div class="pro-hero-layout">
           <div>
-            <h1 class="pro-hero-title">Get your own EstateQuoter intake link for free.</h1>
+            <h1 class="pro-hero-title">Get your own EstateQuoter intake link to send to clients.</h1>
             <p class="pro-hero-sub">
-              Share one simple link with families and referrals. They answer the questions you normally ask on the phone.
-              You get a clear summary in your inbox that is ready to quote and schedule.
+              One link you can give to families, attorneys, and referral partners. They answer calm, clear questions about the estate. You receive a complete snapshot that is ready to quote and schedule.
+            </p>
+            <p class="pro-hero-sub-alt">
+              After your link is live, you can choose to <strong>list your company on EstateQuoter</strong> and receive <strong>matched leads</strong> and simple quote tools. The link always comes first.
             </p>
 
             <ul class="pro-hero-list">
               <li>
                 <span class="pro-hero-dot"></span>
-                <span>Branded intake like “Get a quote from your company name” that plugs into the calm EstateQuoter flow.</span>
+                <span>Custom intake that reads like “Get a quote from your company name” built on the same flow families see on our main site.</span>
               </li>
               <li>
                 <span class="pro-hero-dot"></span>
-                <span>Use your link first. If you want more later you can turn on leads, a simple dashboard, and quote rules.</span>
+                <span>Add your link to your website, email signature, business cards, and referral partners without changing your whole process.</span>
               </li>
               <li>
                 <span class="pro-hero-dot"></span>
-                <span>No software to set up to start. You can be using your link with the very next family you talk to.</span>
+                <span>When it feels right, layer on company listing, leads routed to you, and quote rules that use the answers in the form.</span>
               </li>
             </ul>
 
             <div class="pro-hero-cta-row">
-              <!-- Pathway to the free URL: for now this can be a simple mailto that you can read in Gmail -->
-              <a href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Tell%20us%20your%20company%20name%2C%20service%20area%2C%20and%20best%20contact%20email.%20We%27ll%20reply%20with%20a%20proposed%20intake%20link%20pattern%20and%20next%20steps."
-                 class="btn-pro-primary">
-                <span>Request my free intake link</span>
-                <small>We will reply with a link pattern and setup details</small>
+              <!-- Primary: request intake link -->
+              <a
+                href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Tell%20us%20your%3A%0A%0A%E2%80%A2%20Company%20name%0A%E2%80%A2%20Service%20area%20(cities%20and%20states)%0A%E2%80%A2%20Best%20contact%20email%0A%E2%80%A2%20Website%20or%20social%20link%20(if%20you%20have%20one)%0A%0AWe%27ll%20respond%20with%20a%20proposed%20intake%20link%20pattern%20and%20how%20listing%20and%20leads%20could%20fit.%0A"
+                class="btn-pro-primary"
+              >
+                <span>Request my custom intake link</span>
+                <small>Free to start · no contract</small>
               </a>
+
+              <!-- Secondary: learn how listing and leads plug in -->
               <a href="#how-it-works" class="btn-pro-secondary">
                 <span class="btn-pro-secondary-icon">⟶</span>
-                <span>See how the link and upsells fit together</span>
+                <span>See how listing and leads fit on top</span>
               </a>
             </div>
 
             <div class="pro-hero-note">
-              No contracts or hidden fees. Your intake link can stand alone even if you never use the extra Pro features.
+              Your intake link keeps working even if you never use the lead program or dashboard. Pro features sit on top of it, they do not get in the way.
             </div>
           </div>
 
           <aside class="pro-hero-card">
-            <div class="pro-hero-card-label">What your link can look like</div>
+            <div class="pro-hero-card-label">Example intake link pattern</div>
             <div class="pro-hero-card-title">
-              “Get a quote from Green Oak Estate Services”
+              estatequoter.com/go/greenoak
             </div>
             <div class="pro-hero-card-body">
-              We give you a dedicated URL that you can add to your website, email signature, referral partners, and printed cards.
-              Families click once, walk through a calm intake, and you receive the full picture instead of scattered calls and texts.
+              A family clicks a link like this from your site or a referral. The experience is labeled for your company and walks them through the EstateQuoter intake. You receive the full story instead of three rushed phone calls.
             </div>
             <div class="pro-hero-card-pillrow">
-              <span class="pro-chip">Website “Get a quote” button</span>
-              <span class="pro-chip">Referral partners and attorneys</span>
-              <span class="pro-chip">Business cards and mailers</span>
-              <span class="pro-chip">Email signatures</span>
+              <span class="pro-chip">“Get a quote” button on your website</span>
+              <span class="pro-chip">Link in emails and text threads</span>
+              <span class="pro-chip">Attorneys and realtors use the same link</span>
             </div>
             <div class="pro-hero-card-foot">
-              Your unique URL stays yours. Pro features for leads and quote rules are layered on top, not in the way.
+              When you turn on listing and leads, this same link becomes the way EstateQuoter families reach you too.
             </div>
           </aside>
         </div>
@@ -905,126 +928,119 @@
           <div class="pro-step">
             <div class="pro-step-num">1</div>
             <div>
-              <div class="pro-step-main">Tell us who you are</div>
+              <div class="pro-step-main">Start with your custom intake link</div>
               <div class="pro-step-sub">
-                Company name, service area, and where you want requests to go. We keep it simple and practical.
+                You share your company details. We set up an intake link that uses the same calm questions as our main site, labeled clearly for your business.
               </div>
             </div>
           </div>
           <div class="pro-step">
             <div class="pro-step-num">2</div>
             <div>
-              <div class="pro-step-main">We set up your intake link</div>
+              <div class="pro-step-main">Use it with your own clients</div>
               <div class="pro-step-sub">
-                We plug you into the EstateQuoter intake questions and add your name so families know they are reaching you.
+                Add the link to your website, referral partners, and email. Families go through the questions once and you see everything in one place.
               </div>
             </div>
           </div>
           <div class="pro-step">
             <div class="pro-step-num">3</div>
             <div>
-              <div class="pro-step-main">Use it with real families</div>
+              <div class="pro-step-main">Grow into listing and leads</div>
               <div class="pro-step-sub">
-                Share the link and start receiving organized requests. When you are ready you can choose which Pro features to turn on.
+                When it makes sense, we can add your company to EstateQuoter, route matched leads to you, and apply simple quote rules based on the intake answers.
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- LINK FIRST, THEN UPSALES -->
+      <!-- LINK + LISTING / LEADS SIDE BY SIDE -->
       <section class="pro-section">
         <div class="pro-section-header">
-          <div class="pro-section-kicker">Start with the link, then add more if it helps</div>
-          <h2 class="pro-section-title">Your intake link is the foundation. Pro features sit on top of it.</h2>
+          <div class="pro-section-kicker">One foundation with two clear outcomes</div>
+          <h2 class="pro-section-title">Custom intake link first. Listing and leads when you are ready.</h2>
           <p class="pro-section-lead">
-            Every company begins the same way. You get your own intake link that mirrors the EstateQuoter flow families see on our main site.
-            From there you can decide if leads, a simple dashboard, and quote rules make sense for you.
+            We keep the offer simple. Your intake link should help you right away, even if you are not ready for more volume. Listing and leads are a second step you can decide on once you see how it feels.
           </p>
         </div>
 
         <div class="pro-grid-two">
           <article class="pro-card">
             <div class="pro-card-kicker">Step 1 · Free intake link</div>
-            <h3 class="pro-card-title">One calm intake that speaks your language</h3>
+            <h3 class="pro-card-title">Your own calm intake for every estate conversation</h3>
             <p class="pro-card-body">
-              We use the same clear questions we ask families on EstateQuoter, then label the experience for your company.
-              The goal is simple. Families should feel like they are telling you the story once in a calm way, not defending the house.
+              We plug your company into the EstateQuoter flow and label it clearly, so families know who they are talking to. The questions cover property, contents, timing, access, and special situations without being harsh.
             </p>
             <ul class="pro-card-list">
-              <li>Prompts that cover contents, property, timing, access, and special circumstances.</li>
-              <li>Language that is sensitive to grief and complicated family dynamics.</li>
-              <li>A structure that keeps you from missing key details you often have to chase down later.</li>
+              <li>Language written for families who may be grieving or overwhelmed.</li>
+              <li>Prompts that gather the details you need to say yes, no, or “let us see it” without five follow ups.</li>
+              <li>One clean summary sent to you instead of scattered notes on paper and phones.</li>
             </ul>
             <p class="pro-card-tagline">
-              Your link can run beside whatever you already do. You do not have to rip out your current intake process to try it.
+              This link is yours. You can use it with every referral partner and client whether or not you ever join the lead program.
             </p>
           </article>
 
           <article class="pro-card">
             <div class="pro-card-kicker">Step 2 · Optional Pro features</div>
-            <h3 class="pro-card-title">Leads, dashboard, and quote rules when you are ready</h3>
+            <h3 class="pro-card-title">List your company and receive leads that match your profile</h3>
             <p class="pro-card-body">
-              Once your link is in use we can layer in Pro tools. These do not change the link families see.
-              They change how you receive and organize the requests behind the scenes.
+              When you are ready, we can add your company to EstateQuoter and route matched requests to you. Everything still flows through the same calm intake, you just see more of the right jobs.
             </p>
             <ul class="pro-card-list">
-              <li>Route EstateQuoter leads that match your area and profile to your inbox or dashboard.</li>
-              <li>Keep one simple view of every request instead of digging through email threads.</li>
-              <li>Set rules that flag jobs that fit your ideal profile so your team knows what to respond to first.</li>
+              <li>Company listing on EstateQuoter in the areas you actually serve.</li>
+              <li>Leads that match your service area and job types, not random spam.</li>
+              <li>Simple quote tools that apply your own guardrails to the answers in the form.</li>
             </ul>
             <p class="pro-card-tagline">
-              Your intake link stays the core asset. Everything else is an upgrade you can flip on once it feels like a fit.
+              You decide how aggressive or selective you want to be. We would rather send you the right work than flood you.
             </p>
           </article>
         </div>
       </section>
 
-      <!-- SPECIFIC UPSALES -->
+      <!-- PRO OPTIONS DETAIL -->
       <section class="pro-section">
         <div class="pro-section-header">
-          <div class="pro-section-kicker">Pro options that do not get in the way</div>
-          <h2 class="pro-section-title">What you can turn on after your link is live</h2>
+          <div class="pro-section-kicker">Optional Pro tools that stay out of the way</div>
+          <h2 class="pro-section-title">What you can turn on after your intake link is live</h2>
           <p class="pro-section-lead">
-            Pro is not an all or nothing platform. Think of it as a set of add ons you can grow into.
-            Your unique intake link keeps working even if you never use every feature.
+            Pro is not a complicated software platform you have to learn. It is a handful of add ons that sit behind the same intake link your clients already use.
           </p>
         </div>
 
         <div class="pro-upsell-row">
           <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Optional add on</div>
-            <div class="pro-upsell-title">Leads that match your profile</div>
+            <div class="pro-upsell-label">Company listing</div>
+            <div class="pro-upsell-title">Be visible where families are already asking for help</div>
             <div class="pro-upsell-body">
-              If you choose to receive leads from EstateQuoter, we match incoming family requests to the service areas
-              and job types you care about. You can start with a small footprint and adjust as you go.
+              When a family in your service area lands on EstateQuoter, we can show your company as an option. If they select you, they go through the same intake you already use, and you receive the request.
             </div>
             <div class="pro-upsell-pill">
-              <span>Only on for approved partners</span>
+              <span>Built on your existing intake link</span>
             </div>
           </div>
 
           <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Optional add on</div>
-            <div class="pro-upsell-title">Simple dashboard for all requests</div>
+            <div class="pro-upsell-label">Matched leads</div>
+            <div class="pro-upsell-title">Leads that fit your service area and job profile</div>
             <div class="pro-upsell-body">
-              Instead of managing everything out of your inbox, you can see a clean list of requests that came through your link
-              and from EstateQuoter. Filter by date, location, and status and export for your team.
+              You tell us which types of estates you are best suited for. We use the answers in the intake to route only those leads to you, so you spend less time saying no to jobs you never would have taken.
             </div>
             <div class="pro-upsell-pill">
-              <span>Your intake link continues to work as normal</span>
+              <span>You control the boundaries</span>
             </div>
           </div>
 
           <div class="pro-upsell-card">
-            <div class="pro-upsell-label">Optional add on</div>
-            <div class="pro-upsell-title">Quote rules that use your own guardrails</div>
+            <div class="pro-upsell-label">Quote rules</div>
+            <div class="pro-upsell-title">Use your own guardrails on top of the intake</div>
             <div class="pro-upsell-body">
-              You can define simple rules using the questions in the intake. For example minimum square footage, distance from your base,
-              or whether there is a tight timeline. Requests that match can be marked for priority or fast quote ranges.
+              We can set simple rules based on square footage, distance, time pressure, and other fields in the form. Those rules help you sort, prioritize, and respond without thinking through the same logic every time.
             </div>
             <div class="pro-upsell-pill">
-              <span>Built on top of the main intake questions</span>
+              <span>No auto pricing, you stay in control</span>
             </div>
           </div>
         </div>
@@ -1033,11 +1049,10 @@
       <!-- WHO PRO IS FOR -->
       <section class="pro-section">
         <div class="pro-section-header">
-          <div class="pro-section-kicker">Who usually benefits most</div>
-          <h2 class="pro-section-title">Designed for teams who want fewer messy calls and clearer jobs</h2>
+          <div class="pro-section-kicker">Who usually gets the most value</div>
+          <h2 class="pro-section-title">For teams who care about families and their own time</h2>
           <p class="pro-section-lead">
-            EstateQuoter Pro is meant for companies who care about both families and their own time.
-            If you are already trying to be thoughtful with people and still juggle a full schedule, you are in the right place.
+            EstateQuoter Pro is built for companies that want to treat people well and still run a tight operation. If you are already trying to be thoughtful on the phone, this lets you capture that in a clear, repeatable way.
           </p>
         </div>
 
@@ -1045,66 +1060,62 @@
           <article class="pro-audience-card">
             <div class="pro-audience-title">Estate sale companies</div>
             <ul class="pro-audience-list">
-              <li>Multiple calls about the same house and contents.</li>
-              <li>Hard time getting full information before a visit.</li>
-              <li>Want intake that feels kind but still specific.</li>
+              <li>Multiple calls about the same property and contents.</li>
+              <li>Need a better way to decide which consultations to book.</li>
+              <li>Want intake that reflects how you actually talk to families.</li>
             </ul>
           </article>
 
           <article class="pro-audience-card">
             <div class="pro-audience-title">Cleanout and junk removal teams</div>
             <ul class="pro-audience-list">
-              <li>Need clear pictures of volume and access issues.</li>
-              <li>Want a better way to handle hoarder or complex jobs.</li>
-              <li>Prefer to see the story before sending a crew.</li>
+              <li>Need clear information about volume and access before sending a truck.</li>
+              <li>Handle hoarder and complex situations where details matter.</li>
+              <li>Prefer to see the scope laid out before committing a crew.</li>
             </ul>
           </article>
 
           <article class="pro-audience-card">
             <div class="pro-audience-title">Hybrid and referral based services</div>
             <ul class="pro-audience-list">
-              <li>Work with attorneys, realtors, and care facilities.</li>
-              <li>Need one link they can share with every referral partner.</li>
-              <li>Want lead flow without feeling like a call center.</li>
+              <li>Work closely with attorneys, realtors, and care facilities.</li>
+              <li>Want one simple link that every referral partner can share.</li>
+              <li>Need a calm and neutral way for families to explain what is going on.</li>
             </ul>
           </article>
         </div>
       </section>
 
-      <!-- FAQ / REASSURANCE -->
+      <!-- FAQ -->
       <section class="pro-section">
         <div class="pro-section-header">
           <div class="pro-section-kicker">Questions pros often ask</div>
-          <h2 class="pro-section-title">How the link, leads, and quote rules fit together</h2>
+          <h2 class="pro-section-title">How the intake link, listing, and leads work together</h2>
         </div>
 
         <div class="pro-faq-grid">
           <div class="pro-faq-item">
-            <div class="pro-faq-q">Is the intake link still useful if I never use the lead program?</div>
+            <div class="pro-faq-q">Is this mainly for listing my company or for intake?</div>
             <div class="pro-faq-a">
-              Yes. The intake link is valuable on its own. Many companies start by using it just for their existing referrals
-              and clients. You can treat Pro features like a second step for when you are ready to grow.
+              Intake comes first. Every company starts by getting a custom link they can use with their own clients and referrals. Listing and leads are optional tools we layer on later if they make sense for your business.
             </div>
           </div>
           <div class="pro-faq-item">
             <div class="pro-faq-q">Who owns the relationship with the families who fill out the form?</div>
             <div class="pro-faq-a">
-              When someone uses your intake link they are reaching you. Pro features simply help route and organize those requests.
-              If we send you an EstateQuoter lead that matches your profile we are clear about how that handoff works.
+              When someone uses your intake link, they are contacting you. EstateQuoter is the bridge. If a request comes from the EstateQuoter site, we are clear about which company it is being sent to and why.
             </div>
           </div>
           <div class="pro-faq-item">
-            <div class="pro-faq-q">Do I have to change my whole website to use this?</div>
+            <div class="pro-faq-q">Do I have to switch my whole website or CRM to use this?</div>
             <div class="pro-faq-a">
-              No. You can add your intake link as a single “Get a quote” or “Tell us about the estate” button.
-              Many teams start by giving the link to a few referral partners or adding it to email signatures before changing anything else.
+              No. You can start with a single “Tell us about the estate” or “Get a quote” button that points to your intake link. You can keep using whatever email and systems you already have behind the scenes.
             </div>
           </div>
           <div class="pro-faq-item">
-            <div class="pro-faq-q">How do quote rules work in practice?</div>
+            <div class="pro-faq-q">How do quote rules work in real life?</div>
             <div class="pro-faq-a">
-              Quote rules do not guess at prices for you. They apply your own guardrails to the answers in the form
-              so your team can see which jobs likely fit your ideal window and which ones may need a different approach.
+              You tell us your deal breakers and sweet spots. For example distance from your base, size of the estate, and timing. We use those settings to flag which requests are likely a good match. You still decide what to charge and how to respond.
             </div>
           </div>
         </div>
@@ -1113,20 +1124,20 @@
       <!-- BOTTOM CTA -->
       <section class="pro-bottom-cta">
         <div>
-          <h2 class="pro-bottom-title">Ready to see your own intake link in action?</h2>
+          <h2 class="pro-bottom-title">Start with your custom intake link. Decide on listing and leads later.</h2>
           <p class="pro-bottom-body">
-            Send us your company name, service area, and preferred contact email. We will respond with a suggested
-            link pattern and a clear outline of how your link would sit next to the EstateQuoter main intake.
+            Send us a quick note with your company name, service area, and best email. We will reply with a proposed intake link pattern, examples of how it would look, and how listing and leads could fit around it.
           </p>
           <p class="pro-bottom-note">
-            If you like the way the link looks and feels, we can then talk through leads, dashboard access, and quote rules.
-            The first step is simply making it easy for families to tell you what is going on.
+            The first step is making it easier for families to tell you what is going on. Everything else builds on that.
           </p>
         </div>
         <div class="pro-bottom-actions">
-          <a href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Please%20share%20your%3A%0A%0A%E2%80%A2%20Company%20name%0A%E2%80%A2%20Service%20area%20(cities%20and%20states)%0A%E2%80%A2%20Best%20contact%20email%0A%E2%80%A2%20Rough%20number%20of%20jobs%20per%20month%0A%0AWe%27ll%20reply%20with%20a%20link%20pattern%2C%20examples%2C%20and%20next%20steps."
-             class="btn-pro-bottom-main">
-            <span>Request my free intake link by email</span>
+          <a
+            href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20Pro%20intake%20link%20request&body=Please%20share%20your%3A%0A%0A%E2%80%A2%20Company%20name%0A%E2%80%A2%20Service%20area%20(cities%20and%20states)%0A%E2%80%A2%20Best%20contact%20email%0A%E2%80%A2%20Website%20or%20social%20link%0A%E2%80%A2%20Approximate%20jobs%20per%20month%0A%0AWe%27ll%20respond%20with%20a%20link%20pattern%2C%20mock%20copy%2C%20and%20how%20listing%20and%20leads%20could%20be%20layered%20on.%0A"
+            class="btn-pro-bottom-main"
+          >
+            <span>Email to request my intake link</span>
           </a>
           <a href="/" class="btn-pro-bottom-secondary">
             Prefer to see the family intake first? Visit the main EstateQuoter page
