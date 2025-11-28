@@ -458,11 +458,29 @@
             <li>Help you track all requests in one place</li>
           </ul>
         </div>
+
+        <!-- NEW: upgrade teaser lives INSIDE the success box -->
+        <div id="pro-upgrade-teaser" style="display:none;margin-top:18px;padding:12px 12px 10px;border-radius:12px;background:#020617;border:1px solid #1f2937;color:#e5e7eb;font-size:13px;">
+          <div style="font-weight:700;margin-bottom:4px;font-size:13px;">
+            Coming soon: more power for your link
+          </div>
+          <p style="margin-bottom:6px;">
+            Keep using this link for free. When you are ready, you will be able to upgrade to:
+          </p>
+          <ul style="margin:0 0 6px 18px;list-style:disc;">
+            <li><strong>Pro Essential</strong> – customize your intake, add your logo, see a simple dashboard.</li>
+            <li><strong>Pro Leads</strong> – get matched leads from the main EstateQuoter site and set quote rules.</li>
+            <li><strong>Pro Market</strong> – boosted local placement and help with SEO visibility.</li>
+          </ul>
+          <p style="margin:0;">
+            We will introduce these options by email, starting with the companies already using their links.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <script>
+    <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('pro-onboard-form');
     const modal = document.getElementById('pro-intake-modal');
@@ -496,11 +514,12 @@
 
     if (!form) return;
 
-    const submitBtn = document.getElementById('pro-onboard-submit');
-    const note = document.getElementById('pro-onboard-note');
-    const successBox = document.getElementById('pro-onboard-success');
-    const linkBox = document.getElementById('pro-link-box');
-    const copyBtn = document.getElementById('pro-copy-btn');
+    const submitBtn   = document.getElementById('pro-onboard-submit');
+    const note        = document.getElementById('pro-onboard-note');
+    const successBox  = document.getElementById('pro-onboard-success');
+    const linkBox     = document.getElementById('pro-link-box');
+    const copyBtn     = document.getElementById('pro-copy-btn');
+    const upgradeTeaser = document.getElementById('pro-upgrade-teaser');
 
     // TODO: create a Make.com webhook just for pro onboarding
     const PRO_WEBHOOK_URL = "https://hook.us2.make.com/YOUR_PRO_WEBHOOK_HERE";
@@ -564,6 +583,7 @@
       successBox.style.display = 'block';
       linkBox.textContent = proLink;
 
+      // Copy link + show upsell teaser after they actually copy
       if (copyBtn && navigator.clipboard) {
         copyBtn.addEventListener('click', async () => {
           try {
@@ -572,6 +592,10 @@
             setTimeout(() => {
               copyBtn.textContent = "Copy link";
             }, 1500);
+
+            if (upgradeTeaser && upgradeTeaser.style.display !== 'block') {
+              upgradeTeaser.style.display = 'block';
+            }
           } catch (e) {
             console.error("Copy failed", e);
           }
