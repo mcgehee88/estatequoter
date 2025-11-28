@@ -2559,5 +2559,56 @@ function deleteLead(leadId) {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Read ?pro=todd or ?pro=todd-osborne, etc.
+  const params = new URLSearchParams(window.location.search);
+  const rawPro = params.get('pro');
+  if (!rawPro) return;
+
+  const slug = rawPro.trim();
+  if (!slug) return;
+
+  // Push into hidden input so it goes to Make.com
+  const proInput = document.getElementById('proSlug');
+  if (proInput) {
+    proInput.value = slug;
+  }
+
+  // Optional: body tag hook for future styling
+  document.body.classList.add('pro-mode');
+
+  // Simple mapping so copy looks human, not like "todd-osborne-va"
+  const PRO_CONFIG = {
+    "todd": {
+      displayName: "Todd Osborne",
+      heroH1: "Get an estate quote<br><span>from Todd.</span>",
+      heroSub: "You are filling this out for <strong>Todd Osborne</strong>. Answer a few quick questions so he can review the property and send a clear, no-pressure quote."
+    }
+    // You can add more later:
+    // "acme-estates": { displayName: "Acme Estate Services", heroH1: "...", heroSub: "..." }
+  };
+
+  // Resolve config or fall back to generic
+  const proCfg = PRO_CONFIG[slug.toLowerCase()] || {
+    displayName: slug,
+    heroH1: "Get an estate quote<br><span>from your local pro.</span>",
+    heroSub: "You are filling this out for <strong>" + slug + "</strong>. Answer a few quick questions so they can review the property and send a clear, no-pressure quote."
+  };
+
+  // Update hero heading + sub copy
+  const heroH1 = document.querySelector('.page h1');
+  if (heroH1) {
+    heroH1.innerHTML = proCfg.heroH1;
+  }
+
+  const heroSub = document.querySelector('.page .sub');
+  if (heroSub) {
+    heroSub.innerHTML = proCfg.heroSub;
+  }
+});
+</script>
+  
+
 </body>
 </html>
