@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EstateQuoter Pro – Your Branded Intake & Quoting Link (Free)</title>
-  <meta name="description" content="Your own professional intake link that collects every detail you need and can return a pre-calculated quote range in minutes. Used daily by top estate sale companies and cleanout teams.">
+  <title>EstateQuoter Pro | Your Branded Intake & Quoting Link (Free)</title>
+  <meta name="description" content="Your own professional intake link that collects every detail you need and can return a pre-calculated quote range based on your rules. Built for estate sale companies and cleanout teams.">
   <link rel="canonical" href="https://estatequoter.com/pro">
   <style>
     :root {
@@ -16,20 +16,31 @@
       --text-muted: #475569;
       --border: #e2e8f0;
     }
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--gray-bg);
       color: var(--text);
       line-height: 1.6;
     }
-    a { color: inherit; text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
 
     header {
       background: white;
       border-bottom: 1px solid var(--border);
-      padding: 24px 0;
+      padding: 20px 0;
     }
     .header-inner {
       display: flex;
@@ -38,18 +49,23 @@
     }
     .logo {
       font-weight: 800;
-      font-size: 24px;
+      font-size: 22px;
       color: var(--green);
     }
-    .logo span { font-weight: 400; font-size: 15px; color: #64748b; }
+    .logo span {
+      display: block;
+      font-weight: 400;
+      font-size: 14px;
+      color: #64748b;
+    }
 
     .hero {
       text-align: center;
-      padding: 80px 20px 100px;
+      padding: 56px 20px 70px;
       background: white;
-      margin-top: 40px;
+      margin-top: 32px;
       border-radius: 24px;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.07);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.07);
     }
     .badge {
       display: inline-flex;
@@ -57,118 +73,155 @@
       gap: 10px;
       background: #0f172a;
       color: white;
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 50px;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 500;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     .badge-dot {
-      width: 11px; height: 11px; background: #22c55e; border-radius: 50%; }
+      width: 10px;
+      height: 10px;
+      background: #22c55e;
+      border-radius: 50%;
+    }
     h1 {
-      font-size: 46px;
+      font-size: 32px;
       font-weight: 800;
-      margin: 20px 0 20px;
-      line-height: 1.15;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 14px auto 16px;
+      line-height: 1.2;
+      max-width: 780px;
     }
     .lead {
-      font-size: 22px;
+      font-size: 18px;
       color: var(--text-muted);
-      max-width: 760px;
-      margin: 0 auto 40px;
+      max-width: 720px;
+      margin: 0 auto 28px;
     }
     .cta-primary {
       display: inline-block;
       background: var(--green);
       color: white;
-      font-size: 21px;
-      font-weight: 600;
-      padding: 20px 48px;
-      border-radius: 60px;
-      box-shadow: 0 12px 30px rgba(21,128,61,0.3);
-    }
-    .cta-primary:hover { background: #166534; }
-    .cta-note {
-      margin-top: 16px;
       font-size: 17px;
+      font-weight: 600;
+      padding: 15px 34px;
+      border-radius: 999px;
+      box-shadow: 0 12px 30px rgba(21, 128, 61, 0.3);
+    }
+    .cta-primary:hover {
+      background: #166534;
+    }
+    .cta-note {
+      margin-top: 12px;
+      font-size: 14px;
       color: var(--text-muted);
     }
     .example {
-      margin: 60px auto;
-      padding: 40px;
+      margin: 40px auto 0;
+      padding: 28px;
       background: var(--green-light);
       border: 2px solid var(--green-border);
       border-radius: 20px;
       max-width: 740px;
-      font-size: 20px;
+      font-size: 16px;
       line-height: 1.5;
+      text-align: left;
     }
     .example strong {
       color: var(--green);
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 700;
     }
 
     .use-cases {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-      gap: 32px;
-      margin: 100px auto;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin: 60px auto 70px;
       max-width: 1000px;
     }
     .case {
       background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+      padding: 28px;
+      border-radius: 18px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
       text-align: left;
     }
     .case h3 {
-      font-size: 24px;
-      margin-bottom: 16px;
+      font-size: 20px;
+      margin-bottom: 10px;
       color: var(--green);
     }
-    .case ul {
-      margin: 20px 0;
-      font-size: 18px;
+    .case p {
+      font-size: 15px;
       color: var(--text-muted);
     }
-    .case li { margin-bottom: 12px; }
+    .case ul {
+      margin: 14px 0 0;
+      font-size: 14px;
+      color: var(--text-muted);
+      padding-left: 18px;
+    }
+    .case li {
+      margin-bottom: 8px;
+    }
 
     .bottom-cta {
       background: linear-gradient(135deg, #0f172a, #052e16);
       color: white;
       text-align: center;
-      padding: 90px 40px;
+      padding: 60px 24px;
       border-radius: 24px;
-      margin: 100px 0 60px;
+      margin: 0 0 50px;
     }
-    .bottom-cta h2 { font-size: 40px; margin-bottom: 20px; }
-    .bottom-cta p { font-size: 21px; opacity: 0.95; max-width: 700px; margin: 0 auto 36px; }
+    .bottom-cta h2 {
+      font-size: 28px;
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .bottom-cta p {
+      font-size: 16px;
+      opacity: 0.95;
+      max-width: 650px;
+      margin: 0 auto 24px;
+    }
     .btn-white {
       background: white;
       color: #022c22;
-      padding: 22px 52px;
-      border-radius: 60px;
-      font-size: 21px;
+      padding: 15px 34px;
+      border-radius: 999px;
+      font-size: 17px;
       font-weight: 600;
+      display: inline-block;
     }
 
     footer {
       text-align: center;
-      padding: 50px 0;
+      padding: 32px 0 40px;
       color: #64748b;
-      font-size: 15px;
+      font-size: 13px;
     }
 
     @media (max-width: 780px) {
-      h1 { font-size: 36px; }
-      .lead { font-size: 19px; }
-      .cta-primary, .btn-white { width: 100%; padding: 20px; }
-      .use-cases { grid-template-columns: 1fr; }
+      h1 {
+        font-size: 26px;
+      }
+      .lead {
+        font-size: 16px;
+      }
+      .hero {
+        padding: 40px 18px 50px;
+        margin-top: 20px;
+      }
+      .cta-primary,
+      .btn-white {
+        width: 100%;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      .use-cases {
+        margin: 40px auto 50px;
+      }
     }
   </style>
 </head>
@@ -176,8 +229,11 @@
 
   <header>
     <div class="container header-inner">
-      <a href="/" class="logo">EstateQuoter <span>Professional intake & quoting</span></a>
-      <div style="font-weight:600;color:var(--green)">EstateQuoter Pro</div>
+      <a href="/" class="logo">
+        EstateQuoter
+        <span>Professional intake and quoting</span>
+      </a>
+      <div style="font-weight:600;color:var(--green);font-size:14px;">EstateQuoter Pro</div>
     </div>
   </header>
 
@@ -186,63 +242,74 @@
     <section class="hero">
       <div class="badge">
         <div class="badge-dot"></div>
-        Free for every licensed estate sale & cleanout company
+        Free for licensed estate sale and cleanout companies
       </div>
 
-      <h1>Your own branded intake & quoting link<br>used daily by the industry’s top operators</h1>
+      <h1>Your own branded intake and quoting link for every estate conversation</h1>
+
       <p class="lead">
-        Give clients one professional link — on the phone, in a text, on your site, or with referral partners — and receive every detail you need with your quote range already calculated.
+        Give clients one professional link on the phone, in a text, on your site, or through referral partners and receive every detail you need with your quote range ready based on your rules.
       </p>
 
-      <a href="mailto:estatequoter@gmail.com?subject=Activate%20my%20free%20EstateQuoter%20Pro%20link&body=Hi%20team%2C%0A%0APlease%20create%20my%20free%20branded%20intake%20%26%20quoting%20link.%0A%0ACompany%20name%3A%0AService%20area%20(cities%2Fstates)%3A%0ABest%20email%20for%20incoming%20requests%3A%0AOptional%3A%20Approx%20jobs%20per%20month%3A%0A%0AThank%20you!"
-         class="cta-primary">
+      <!-- This should trigger the Pro intake flow in your app -->
+      <a href="#pro-intake-start" class="cta-primary">
         Get My Free Professional Link
       </a>
-      <p class="cta-note">We’ll reply within 24 hours with your live link + examples. No cost · No contract · Ready the same day</p>
+      <p class="cta-note">
+        This starts your professional intake with EstateQuoter. No cost and no contract.
+      </p>
 
       <div class="example">
         Your link will look like:<br>
         <strong>estatequoter.com/go/apex-estate-services</strong><br><br>
-        Clients see “Get a quote from Apex Estate Services” and complete the same proven intake used by thousands of families nationwide.<br>
-        You receive a complete summary + optional pre-calculated quote range based on your pricing rules.
+        Clients see “Get a quote from Apex Estate Services” and complete the same calm intake used on EstateQuoter, labeled for your company.<br>
+        You receive a complete summary and can use optional quote ranges based on your pricing rules.
       </div>
     </section>
 
     <section class="use-cases">
       <div class="case">
         <h3>On the phone or at the property</h3>
-        <p>Send your link in a quick text or email while you’re still talking to the client. They complete it in 5–7 minutes and you can often quote on the spot — or arrive tomorrow already knowing exactly what to expect.</p>
+        <p>
+          Send your link in a quick text or email while you are still talking to the client. They can complete it in about five to seven minutes and you can often quote on the spot, or arrive already knowing what to expect.
+        </p>
         <ul>
-          <li>Perfect for calls, texts, or walk-ins</li>
-          <li>No more back-and-forth about square footage, access, or deadlines</li>
-          <li>Quote ranges can be pre-baked using your cost parameters</li>
+          <li>Ideal for calls, texts, or walk ins</li>
+          <li>No more back and forth about square footage, access, or deadlines</li>
+          <li>Quote ranges can be set using your cost parameters</li>
         </ul>
       </div>
 
       <div class="case">
-        <h3>Referral partners & marketing</h3>
-        <p>Give attorneys, realtors, fiduciaries, and senior-living facilities one link to share with every family. They send you complete, consistent requests instead of partial information.</p>
+        <h3>Referral partners and marketing</h3>
+        <p>
+          Give attorneys, realtors, fiduciaries, and senior living facilities one link to share with every family. They send you complete, consistent requests instead of partial information.
+        </p>
         <ul>
           <li>Professional impression with every referral</li>
           <li>Works on your website, email signature, and business cards</li>
-          <li>Optional: receive additional matched leads from the main EstateQuoter site</li>
+          <li>Optional: receive matched leads from the main EstateQuoter site</li>
         </ul>
       </div>
     </section>
 
     <section class="bottom-cta">
-      <h2>Start using your professional link today<br>— at no cost and with zero setup on your end</h2>
-      <p>Top companies across the country already rely on their EstateQuoter Pro link every single day.</p>
-      <a href="mailto:estatequoter@gmail.com?subject=Activate%20my%20free%20EstateQuoter%20Pro%20link&body=Hi%20team%2C%0A%0APlease%20create%20my%20free%20branded%20intake%20%26%20quoting%20link.%0A%0ACompany%20name%3A%0AService%20area%20(cities%2Fstates)%3A%0ABest%20email%20for%20incoming%20requests%3A%0AOptional%3A%20Approx%20jobs%20per%20month%3A%0A%0AThank%20you!"
-         class="btn-white">
-        Yes — Activate My Free Link Now
+      <h2>Start using your professional link today at no cost</h2>
+      <p>
+        Many companies already rely on their EstateQuoter Pro link every day to keep intake calm for families and clear for their own teams.
+      </p>
+      <a href="#pro-intake-start" class="btn-white">
+        Activate My Free Link
       </a>
     </section>
+
+    <!-- Placeholder anchor for where your Pro intake form begins -->
+    <div id="pro-intake-start"></div>
 
   </div>
 
   <footer>
-    © 2025 EstateQuoter • Trusted daily by leading estate sale companies and cleanout teams nationwide
+    © 2025 EstateQuoter · EstateQuoter is owned by Surplus Haven LLC
   </footer>
 
 </body>
