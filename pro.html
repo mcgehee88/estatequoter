@@ -499,16 +499,10 @@
         document.body.style.overflow = '';
       };
 
-      openBtns.forEach(btn => {
-        btn.addEventListener('click', openModal);
-      });
-      closeBtns.forEach(btn => {
-        btn.addEventListener('click', closeModal);
-      });
+      openBtns.forEach(btn => btn.addEventListener('click', openModal));
+      closeBtns.forEach(btn => btn.addEventListener('click', closeModal));
       modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeModal();
-        }
+        if (e.target === modal) closeModal();
       });
     }
 
@@ -521,7 +515,8 @@
     const copyBtn     = document.getElementById('pro-copy-btn');
     const upgradeTeaser = document.getElementById('pro-upgrade-teaser');
 
-    // TODO: create a Make.com webhook just for pro onboarding
+    // Put your REAL Make webhook here when you're ready.
+    // If this stays as-is, we simply skip the webhook call.
     const PRO_WEBHOOK_URL = "https://hook.us2.make.com/YOUR_PRO_WEBHOOK_HERE";
 
     form.addEventListener('submit', async (e) => {
@@ -535,7 +530,7 @@
         return;
       }
 
-      // small normalization: lowercase, keep letters/numbers/dashes
+      // normalize slug: lowercase, letters/numbers/dashes only
       let slug = rawSlug.toLowerCase().replace(/[^a-z0-9\-]/g, '-');
       slug = slug.replace(/\-+/g, '-').replace(/^\-+|\-+$/g, '');
 
@@ -548,10 +543,10 @@
 
       const payload = {
         type: "proOnboarding",
-        company: (fd.get('company') || '').toString().trim().slice(0, 160),
+        company:     (fd.get('company')     || '').toString().trim().slice(0, 160),
         contactName: (fd.get('contactName') || '').toString().trim().slice(0, 120),
-        email: (fd.get('email') || '').toString().trim().slice(0, 200),
-        phone: (fd.get('phone') || '').toString().trim().slice(0, 40),
+        email:       (fd.get('email')       || '').toString().trim().slice(0, 200),
+        phone:       (fd.get('phone')       || '').toString().trim().slice(0, 40),
         serviceArea: (fd.get('serviceArea') || '').toString().trim().slice(0, 160),
         slug,
         proLink,
@@ -563,27 +558,26 @@
       submitBtn.disabled = true;
       submitBtn.textContent = "Creating your link...";
 
-      try {
-        await fetch(PRO_WEBHOOK_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (err) {
-        console.error("Pro onboarding failed", err);
-        alert("Something went wrong while creating your link. Please try again in a moment.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Create my free link";
-        return;
+      // Try to hit Make ONLY if a real webhook URL is set
+      if (PRO_WEBHOOK_URL && !PRO_WEBHOOK_URL.includes("YOUR_PRO_WEBHOOK_HERE")) {
+        try {
+          await fetch(PRO_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.error("Pro onboarding webhook failed (continuing anyway)", err);
+          // We do NOT show an alert or bail out; front-end still succeeds.
+        }
       }
 
-      // Front-end success: show link, hide form
+      // Front-end success: show link, hide form no matter what
       form.style.display = 'none';
       if (note) note.style.display = 'none';
       successBox.style.display = 'block';
       linkBox.textContent = proLink;
 
-      // Copy link + show upsell teaser after they actually copy
       if (copyBtn && navigator.clipboard) {
         copyBtn.addEventListener('click', async () => {
           try {
@@ -593,6 +587,7 @@
               copyBtn.textContent = "Copy link";
             }, 1500);
 
+            // reveal the upgrade teaser after first successful copy
             if (upgradeTeaser && upgradeTeaser.style.display !== 'block') {
               upgradeTeaser.style.display = 'block';
             }
@@ -603,7 +598,7 @@
       }
     });
   });
-  </script>
+</script>
 
 </body>
 </html>
