@@ -1,421 +1,264 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>EstateQuoter – For Estate Sale Companies & Cleanout Pros</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- SEO basics -->
-  <meta name="description" content="EstateQuoter helps estate sale companies, liquidators and cleanout crews get better qualified leads and a simple online intake they can share with families and referral partners.">
-  <link rel="canonical" href="https://estatequoter.com/professionals.html">
-  <meta name="robots" content="index,follow">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="EstateQuoter – For Estate Sale Companies & Cleanout Pros">
-  <meta property="og:description" content="Better qualified leads and a simple online intake you can use with your own clients and referral partners.">
-  <meta property="og:url" content="https://estatequoter.com/professionals.html">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="EstateQuoter">
-  <meta property="og:image" content="https://estatequoter.com/og-image.jpg">
-
-  <!-- Twitter card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="EstateQuoter – For Estate Professionals">
-  <meta name="twitter:description" content="EstateQuoter helps estate sale companies and cleanout crews get qualified leads and an intake flow that respects everyone’s time.">
-
-  <!-- Simple Service schema for pros -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": "EstateQuoter for Estate Professionals",
-    "url": "https://estatequoter.com/professionals.html",
-    "description": "EstateQuoter provides qualified estate leads and a shared intake flow for estate sale companies, liquidators and cleanout crews.",
-    "serviceType": [
-      "Lead generation",
-      "Online intake form",
-      "Estate liquidation",
-      "Estate sale coordination",
-      "Cleanout services"
-    ],
-    "provider": {
-      "@type": "Organization",
-      "name": "EstateQuoter"
-    }
-  }
-  </script>
-
-  <!-- Icons / styles -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <style>
-  :root{
-    --p:#2153ff;
-    --g:#0d9d6a;
-    --bg:#f8fafc;
-    --t:#0f172a;
-    --m:#64748b;
-    --r:24px;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family:system-ui,-apple-system,sans-serif;
-    background:var(--bg);
-    color:var(--t);
-    line-height:1.6;
-    min-height:100dvh;
-  }
-  .page {
-    padding:32px 16px 80px;
-    max-width:960px;
-    margin:0 auto;
-  }
-
-  /* Logo (same as homepage) */
-  .logo {
-    font-weight:800;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:24px;
-    text-decoration:none;
-    color:inherit;
-  }
-  .logo-mark {
-    width:44px;
-    height:44px;
-    border-radius:999px;
-    background:var(--g);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-    box-shadow:0 10px 26px rgba(13,157,106,.35);
-  }
-  .logo-mark i {
-    font-size:22px;
-  }
-  .logo-word {
-    font-size:26px;
-    letter-spacing:.03em;
-  }
-
-  /* Hero */
-  .hero {
-    text-align:left;
-    max-width:720px;
-    margin-bottom:32px;
-  }
-  .hero h1 {
-    font-size:34px;
-    font-weight:800;
-    margin-bottom:12px;
-  }
-  .hero h1 span {
-    color:var(--p);
-  }
-  .hero-sub {
-    font-size:18px;
-    color:#475569;
-    margin-bottom:16px;
-  }
-  .hero-tag {
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    font-size:13px;
-    color:var(--g);
-    background:#ecfdf5;
-    border-radius:999px;
-    padding:6px 12px;
-    margin-bottom:12px;
-  }
-  .hero-meta {
-    font-size:13px;
-    color:#64748b;
-  }
-
-  /* Layout */
-  .layout {
-    display:flex;
-    flex-direction:column;
-    gap:24px;
-  }
-  @media (min-width: 900px) {
-    .layout {
-      flex-direction:row;
-      align-items:flex-start;
-    }
-    .main-col {
-      flex:2;
-    }
-    .side-col {
-      flex:1.2;
-    }
-  }
-
-  /* Cards */
-  .card {
-    background:#fff;
-    border-radius:var(--r);
-    padding:20px 18px;
-    box-shadow:0 12px 40px rgba(15,23,42,.06);
-    margin-bottom:16px;
-  }
-  .card h2 {
-    font-size:18px;
-    font-weight:700;
-    margin-bottom:6px;
-  }
-  .card h3 {
-    font-size:15px;
-    font-weight:600;
-    margin:16px 0 4px;
-  }
-  .card p {
-    font-size:14px;
-    color:#475569;
-    margin-bottom:6px;
-  }
-  .pill-list {
-    list-style:none;
-    padding-left:0;
-    margin-top:8px;
-  }
-  .pill-list li {
-    display:inline-block;
-    font-size:13px;
-    padding:6px 10px;
-    border-radius:999px;
-    background:#f1f5f9;
-    color:#0f172a;
-    margin:0 6px 6px 0;
-  }
-  .bullet-list {
-    font-size:14px;
-    color:#475569;
-    padding-left:18px;
-    margin-top:4px;
-  }
-
-  /* CTA box */
-  .cta-box {
-    background:#0f172a;
-    color:#e2e8f0;
-    border-radius:var(--r);
-    padding:20px 18px;
-  }
-  .cta-box h2 {
-    font-size:18px;
-    margin-bottom:8px;
-  }
-  .cta-box p {
-    font-size:14px;
-    margin-bottom:12px;
-  }
-  .cta-actions {
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    margin-top:8px;
-  }
-  .btn-primary,
-  .btn-secondary {
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    padding:10px 16px;
-    border-radius:999px;
-    font-size:14px;
-    font-weight:600;
-    border:none;
-    cursor:pointer;
-    text-decoration:none;
-  }
-  .btn-primary {
-    background:#2153ff;
-    color:#fff;
-    box-shadow:0 10px 30px rgba(33,83,255,.35);
-  }
-  .btn-secondary {
-    background:#e2e8f0;
-    color:#0f172a;
-  }
-
-  /* Small section label */
-  .section-label {
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:.14em;
-    color:#94a3b8;
-    margin-bottom:6px;
-  }
-
-  /* Footer */
-  footer {
-    padding:24px 16px 40px;
-    text-align:center;
-    font-size:13px;
-    color:#64748b;
-  }
-  footer a {
-    color:#64748b;
-    text-decoration:underline;
-  }
-  </style>
-</head>
-<body>
-
-<div class="page">
-  <!-- Logo -->
-  <a href="/" class="logo">
-    <div class="logo-mark">
-      <i class="fas fa-house-chimney"></i>
-    </div>
-    <span class="logo-word">EstateQuoter</span>
-  </a>
-
-  <!-- Hero -->
-  <section class="hero" aria-labelledby="pro-hero-title">
-    <div class="hero-tag">
-      <i class="fas fa-briefcase"></i>
-      Built for estate professionals
-    </div>
-    <h1 id="pro-hero-title">
-      Estate leads & intake,<br><span>without the chaos.</span>
-    </h1>
-    <p class="hero-sub">
-      EstateQuoter helps estate sale companies, liquidators, and cleanout crews
-      get better qualified leads and a simple online intake they can share with
-      families, agents, and attorneys.
+<main class="pro-page">
+  <!-- HERO -->
+  <section class="pro-hero">
+    <div class="pro-eyebrow">For estate sale companies, cleanout crews, and liquidators</div>
+    <h1>Turn messy phone calls into clean, qualified estate leads.</h1>
+    <p>
+      EstateQuoter gives you a simple intake link, automated quote rules, and a light dashboard so you can stop chasing details and start closing better estate jobs with less back and forth.
     </p>
-    <p class="hero-meta">
-      Currently focused on Hampton Roads &amp; Virginia Beach while we grow into more markets.
-    </p>
+
+    <div class="pro-hero-cta">
+      <a href="#pro-signup" class="btn-pro-primary">Start free</a>
+      <a href="#pro-pricing" class="btn-pro-secondary">View plans</a>
+    </div>
+
+    <div class="pro-hero-note">
+      Use your own link, like <strong>estatequoter.com/todd</strong>, so every new lead starts in the right lane.
+    </div>
+
+    <div class="pro-stats">
+      <div class="pro-stat">
+        <div class="pro-stat-label">Built for</div>
+        <div class="pro-stat-value">Estate pros, not software tourists</div>
+      </div>
+      <div class="pro-stat">
+        <div class="pro-stat-label">Handles</div>
+        <div class="pro-stat-value">Whole-house, partial, and cleanouts</div>
+      </div>
+      <div class="pro-stat">
+        <div class="pro-stat-label">Works with</div>
+        <div class="pro-stat-value">Phone, site, and offsite referrals</div>
+      </div>
+    </div>
   </section>
 
-  <!-- Main layout -->
-  <div class="layout">
-    <div class="main-col">
-      <div class="card">
-        <div class="section-label">How it works for you</div>
-        <h2>One intake, less back-and-forth</h2>
-        <p>
-          Families answer a clear set of questions about the property, how full it is,
-          and their timeline. We send those details to you in a single, organized summary,
-          so you spend less time chasing basic info and more time deciding if it is a fit.
-        </p>
+  <!-- WHO THIS IS FOR -->
+  <section class="pro-section" id="pro-who">
+    <h2>Who EstateQuoter Pro is for</h2>
+    <p>
+      If you help families empty houses, run estate sales, or handle heavy cleanouts, EstateQuoter wraps your intake questions, ballpark pricing, and follow up into one calm flow.
+    </p>
+    <div class="pro-pill-row">
+      <span class="pro-pill">Estate sale companies</span>
+      <span class="pro-pill">Estate liquidators</span>
+      <span class="pro-pill">Whole-house cleanout teams</span>
+      <span class="pro-pill">Buyout and haul-away services</span>
+      <span class="pro-pill">Real estate partners and referral agents</span>
+    </div>
+  </section>
 
-        <h3>What you receive from each request</h3>
-        <ul class="bullet-list">
-          <li>Property basics (ZIP, type, square footage, beds/baths)</li>
-          <li>How full the home is and any extra spaces (garage, attic, basement, sheds)</li>
-          <li>Notes about high-value or specialty items</li>
-          <li>Timeline, access notes, and any tricky items (pianos, safes, hot tubs, etc.)</li>
-          <li>Contact info plus any extra context the family wants you to know</li>
-        </ul>
+  <!-- HOW IT WORKS -->
+  <section class="pro-section" id="pro-how">
+    <h2>How it works for your business</h2>
+    <p>
+      Instead of texting back and forth for weeks, you send one link. The client fills it out, EstateQuoter applies your rules, and you decide what to take and what to pass on.
+    </p>
+
+    <div class="pro-how-grid">
+      <article class="pro-how-card">
+        <div class="pro-how-step">Step 1</div>
+        <h3>Set your rules once</h3>
+        <p>
+          Tell EstateQuoter how you price jobs, what size homes you accept, what areas you cover, and which jobs are an automatic no. You control your own margin.
+        </p>
+      </article>
+
+      <article class="pro-how-card">
+        <div class="pro-how-step">Step 2</div>
+        <h3>Share your link</h3>
+        <p>
+          Send people to <strong>estatequoter.com/yourname</strong> from your site, email signature, business cards, or referral partners. Every lead lands in the same, clean format.
+        </p>
+      </article>
+
+      <article class="pro-how-card">
+        <div class="pro-how-step">Step 3</div>
+        <h3>Collect photos and details</h3>
+        <p>
+          Families answer your pre-built questions, upload pictures, and share timing, access, and special situations so you are never walking in blind again.
+        </p>
+      </article>
+
+      <article class="pro-how-card">
+        <div class="pro-how-step">Step 4</div>
+        <h3>Review the estimate and reply fast</h3>
+        <p>
+          EstateQuoter gives you a structured summary and a suggested range based on your rules. You decide the final quote, send it, and track if the job is won or not.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="pro-section" id="pro-features">
+    <h2>What you get with EstateQuoter Pro</h2>
+    <p>
+      We built EstateQuoter after being inside real estate situations ourselves. The product is simple on purpose so you and your clients are not fighting software.
+    </p>
+
+    <div class="pro-feature-grid">
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">🔗</div>
+        <h3>Your own intake link</h3>
+        <p>
+          Give every caller the same link so you never lose notes on scrap paper or voicemail.
+        </p>
+        <span class="pro-feature-tag">estatequoter.com/yourname</span>
+      </article>
+
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">📊</div>
+        <h3>Quote rules that match your business</h3>
+        <p>
+          Set simple sliders and ranges for square footage, access, timing, and cleanout levels. Protect your time and margin.
+        </p>
+        <span class="pro-feature-tag">Auto-pricing templates</span>
+      </article>
+
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">📁</div>
+        <h3>Leads in one light dashboard</h3>
+        <p>
+          See new leads, mark them as won, lost, or waiting, and export to your systems if you need to.
+        </p>
+        <span class="pro-feature-tag">No heavy CRM required</span>
+      </article>
+
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">📍</div>
+        <h3>Optional directory and featured spots</h3>
+        <p>
+          When you are ready, turn on visibility in the EstateQuoter directory so families can find you directly.
+        </p>
+        <span class="pro-feature-tag">Local and regional options</span>
+      </article>
+
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">🤝</div>
+        <h3>Works for referrals and partners</h3>
+        <p>
+          Give your link to realtors, attorneys, senior move managers, and anyone who sends you work so they can send the details without calling you first.
+        </p>
+        <span class="pro-feature-tag">Off-site intake</span>
+      </article>
+
+      <article class="pro-feature-card">
+        <div class="pro-feature-icon">🧾</div>
+        <h3>Clear paper trail for each job</h3>
+        <p>
+          Keep the original request, your notes, and the price in one place so you can answer questions later without digging through texts.
+        </p>
+        <span class="pro-feature-tag">Client-ready records</span>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRICING SNAPSHOT -->
+  <section class="pro-section" id="pro-pricing">
+    <div class="pro-pricing">
+      <div class="pro-pricing-header">
+        <div>
+          <h2>Simple plans that start free</h2>
+          <p>
+            Start with a free link for your business, then upgrade when you want more automation and visibility. No contracts, no setup fees.
+          </p>
+        </div>
+        <a href="#pro-signup" class="btn-pro-secondary">Start free</a>
       </div>
 
-      <div class="card">
-        <div class="section-label">Using EstateQuoter with your own clients</div>
-        <h2>Share your own link with families</h2>
-        <p>
-          If you already work with EstateQuoter, you can send families a direct link
-          to the same intake flow you see on our homepage, but tied to you as the pro.
-        </p>
-        <p style="font-size:13px; color:#64748b; margin-top:6px;">
-          Example: Todd can tell a family, “Fill this out and I will review it,” and send
-          them a custom URL like <strong>estatequoter.com/?pro=todd</strong>. Their answers
-          show up on his side with his name attached.
-        </p>
-        <p style="font-size:13px; color:#64748b; margin-top:6px;">
-          We will set up your pro slug and routing with you directly so it stays simple.
-        </p>
+      <div class="pro-pricing-grid">
+        <!-- Starter -->
+        <article class="pro-plan">
+          <div class="pro-plan-label">Get started</div>
+          <div class="pro-plan-name">Starter</div>
+          <div class="pro-plan-price">$0 <span>/ month</span></div>
+          <div class="pro-plan-note">For trying EstateQuoter with real families.</div>
+          <ul>
+            <li>Personal intake link</li>
+            <li>Up to 20 leads each month</li>
+            <li>Standard intake questions</li>
+            <li>Email notifications only</li>
+          </ul>
+          <a href="#pro-signup" class="pro-plan-cta">Start with Starter</a>
+        </article>
+
+        <!-- Essential -->
+        <article class="pro-plan pro-plan-featured">
+          <div class="pro-plan-label">Most used</div>
+          <div class="pro-plan-name">Essential</div>
+          <div class="pro-plan-price">$49 <span>/ month</span></div>
+          <div class="pro-plan-note">For established companies that want cleaner intake.</div>
+          <ul>
+            <li>Unlimited leads</li>
+            <li>One auto-pricing template</li>
+            <li>Basic lead dashboard</li>
+            <li>Service area and job filters</li>
+          </ul>
+          <a href="#pro-signup" class="pro-plan-cta">Start Essential</a>
+        </article>
+
+        <!-- Pro -->
+        <article class="pro-plan">
+          <div class="pro-plan-label">For operators</div>
+          <div class="pro-plan-name">Pro</div>
+          <div class="pro-plan-price">$149 <span>/ month</span></div>
+          <div class="pro-plan-note">For teams who live in estates and cleanouts.</div>
+          <ul>
+            <li>Unlimited auto-pricing templates</li>
+            <li>Priority directory placement</li>
+            <li>SMS alerts and AI summaries</li>
+            <li>Support for multi-user teams</li>
+          </ul>
+          <a href="#pro-signup" class="pro-plan-cta">Talk about Pro</a>
+        </article>
       </div>
 
-      <div class="card">
-        <div class="section-label">Who this is for</div>
-        <h2>Built around how real estate work actually happens</h2>
-        <p>
-          EstateQuoter is designed for companies who handle whole-house situations, not one-off items.
-        </p>
-        <ul class="pill-list">
-          <li>Estate sale companies</li>
-          <li>Estate liquidators</li>
-          <li>Cleanout &amp; haul-away crews</li>
-          <li>Senior move managers</li>
-          <li>Buyout / contents buyers</li>
-          <li>Real estate teams with in-house estate services</li>
-        </ul>
-        <p style="margin-top:10px;">
-          If you are used to whole houses, heavy labor, and emotional situations, this is built with you in mind.
-        </p>
+      <div class="pro-pricing-footnote">
+        Need multiple locations or white label intake for a franchise or network?  
+        <a href="#pro-contact">Contact us about Enterprise.</a>  
+        For a deeper breakdown later, we can link a full comparison at <strong>/professionals/pricing.html</strong>.
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pro-section pro-faq" id="pro-faq">
+    <h2>Questions pros ask before they sign up</h2>
+
+    <div class="pro-faq-item">
+      <div class="pro-faq-question">Is this replacing my website?</div>
+      <div class="pro-faq-answer">
+        No. EstateQuoter sits next to your website. You can link to it from your site, social profiles, email signature, and referral partners so every job starts in the same clean intake flow.
       </div>
     </div>
 
-    <aside class="side-col">
-      <div class="cta-box">
-        <div class="section-label" style="color:#9ca3af;">Next steps</div>
-        <h2>Talk with us about your territory</h2>
-        <p>
-          We are currently working hands-on with a small group of companies in Hampton Roads
-          and Virginia Beach while we build out more markets.
-        </p>
-        <p style="font-size:13px; color:#cbd5f5;">
-          If you want to see how EstateQuoter could work with your routes, pricing,
-          and margin targets, send a quick note and we will follow up.
-        </p>
-
-        <div class="cta-actions">
-          <a class="btn-primary"
-             href="mailto:estatequoter@gmail.com?subject=EstateQuoter%20for%20my%20estate%20business&body=Tell%20us%20a%20bit%20about%20your%20company%2C%20where%20you%20operate%2C%20and%20what%20kinds%20jobs%20you%20prefer.">
-            <i class="fas fa-envelope"></i>
-            Email EstateQuoter
-          </a>
-          <a class="btn-secondary" href="/" >
-            <i class="fas fa-arrow-left"></i>
-            View family intake
-          </a>
-        </div>
+    <div class="pro-faq-item">
+      <div class="pro-faq-question">Do you send me new clients or just organize my leads?</div>
+      <div class="pro-faq-answer">
+        Both. Every plan gives you a private intake link for your own leads. Paid plans can also appear in the EstateQuoter directory so families can discover you directly when they request quotes.
       </div>
+    </div>
 
-      <div class="card" style="margin-top:16px;">
-        <div class="section-label">What we are not</div>
-        <h2>Simple, not another dashboard</h2>
-        <p>
-          EstateQuoter is not a heavy software platform you have to learn.
-          We keep things light:
-        </p>
-        <ul class="bullet-list">
-          <li>No monthly logins to babysit.</li>
-          <li>No complicated reports you never look at.</li>
-          <li>No pressure for you or the families.</li>
-        </ul>
-        <p style="margin-top:6px;">
-          You get organized requests, clear contact info, and space to run your business the way you already know how.
-        </p>
+    <div class="pro-faq-item">
+      <div class="pro-faq-question">Can I control what kinds of jobs I see?</div>
+      <div class="pro-faq-answer">
+        Yes. You set your service area, home size ranges, timing, and other filters so you spend less time on jobs that are too small, too far away, or not a fit.
       </div>
-    </aside>
-  </div>
-</div>
+    </div>
 
-<footer>
-  <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
-  <div style="margin-top:8px;">
-    <a href="/">Back to main site</a>
-    &nbsp;&middot;&nbsp;
-    <a href="/privacy.html">Privacy</a>
-    &nbsp;&middot;&nbsp;
-    <a href="/terms.html">Terms</a>
-  </div>
-</footer>
+    <div class="pro-faq-item">
+      <div class="pro-faq-question">What happens after someone fills out my form?</div>
+      <div class="pro-faq-answer">
+        You receive a structured summary by email, and in paid plans it also appears in your light dashboard. From there you can review the details, adjust the estimate, and follow up with the family.
+      </div>
+    </div>
+  </section>
 
-<script>
-  const y = document.getElementById('eq-year');
-  if (y) y.textContent = new Date().getFullYear();
-</script>
-
-</body>
-</html>
+  <!-- BOTTOM CTA / SIGNUP ANCHOR -->
+  <section class="pro-bottom-cta" id="pro-signup">
+    <p>
+      Ready to stop chasing details by text and voicemail? Claim your EstateQuoter link and try it on your next few jobs.
+    </p>
+    <a href="/signup" class="btn-pro-primary">Get my EstateQuoter link</a>
+  </section>
+</main>
