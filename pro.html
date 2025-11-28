@@ -107,6 +107,8 @@
       padding: 15px 34px;
       border-radius: 999px;
       box-shadow: 0 12px 30px rgba(21, 128, 61, 0.3);
+      border: none;
+      cursor: pointer;
     }
     .cta-primary:hover {
       background: #166534;
@@ -193,6 +195,8 @@
       font-size: 17px;
       font-weight: 600;
       display: inline-block;
+      border: none;
+      cursor: pointer;
     }
 
     footer {
@@ -200,6 +204,46 @@
       padding: 32px 0 40px;
       color: #64748b;
       font-size: 13px;
+    }
+
+    /* Modal styles */
+    .pro-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .pro-modal-backdrop.active {
+      display: flex;
+    }
+    .pro-modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 20px;
+      padding: 26px 22px 22px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .pro-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .pro-modal-close:hover {
+      color: #e5e7eb;
     }
 
     @media (max-width: 780px) {
@@ -251,10 +295,10 @@
         Give clients <strong>one link</strong> on the phone, in a text, on your site, or through referral partners. Receive submissions based on <strong>your quote setup</strong> & <strong>your rules</strong>.
       </p>
 
-      <!-- This should trigger the Pro intake flow in your app -->
-      <a href="#pro-intake-start" class="cta-primary">
+      <!-- This opens the Pro intake modal -->
+      <button type="button" class="cta-primary" data-open-pro-modal>
         Get My Free Professional Link
-      </a>
+      </button>
       <p class="cta-note">
         Completely free, no strings.
       </p>
@@ -262,7 +306,7 @@
       <div class="example">
         Your link will look like:<br><br>
         <center><strong>EstateQuoter.com/YOUR-BUSINESS</strong></center><br>
-        <strong>→</strong> Clients see “Get a quote from [YOUR BUSINESS]”<br> 
+        <strong>→</strong> Clients see “Get a quote from [YOUR BUSINESS]”<br>
         <strong>→</strong> Use our proven EstateQuoter funnel with your branding.<br>
         <strong>→</strong> Receive quotes instantly and organized, based on YOUR unique pricing rules.
       </div>
@@ -299,216 +343,243 @@
       <p>
         Many companies already rely on EstateQuoter Pro to keep intake easy for you & your clients.
       </p>
-      <a href="#pro-intake-start" class="btn-white">
+      <button type="button" class="btn-white" data-open-pro-modal>
         Activate My Free Link
-      </a>
+      </button>
     </section>
-
-    <!-- Pro Intake Start -->
-    <section id="pro-intake-start" style="margin:0 auto 60px;max-width:720px;">
-  <div style="
-    background:#0f172a;
-    color:#e5e7eb;
-    border-radius:20px;
-    padding:26px 22px 22px;
-    text-align:left;
-  ">
-    <h2 style="font-size:20px; font-weight:700; margin-bottom:6px;">
-      Step 1: Claim your free professional link
-    </h2>
-    <p style="font-size:14px; color:#cbd5f5; margin-bottom:14px;">
-      Tell us where to send requests and what you want your link to be called. We will use this info to route
-      any submissions that come in through your link.
-    </p>
-
-    <form id="pro-onboard-form">
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Company name
-      </label>
-      <input name="company" type="text" required maxlength="160"
-             style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
-
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Your name
-      </label>
-      <input name="contactName" type="text" required maxlength="120"
-             style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
-
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Email for new requests
-      </label>
-      <input name="email" type="email" required maxlength="200"
-             style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
-
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Mobile or office phone
-      </label>
-      <input name="phone" type="tel" required maxlength="40"
-             style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
-
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Main service area (city / state)
-      </label>
-      <input name="serviceArea" type="text" required maxlength="160"
-             placeholder="e.g. Virginia Beach, VA and nearby Hampton Roads"
-             style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
-
-      <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
-        Preferred link ending
-      </label>
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="font-size:13px;color:#9ca3af;">
-          estatequoter.com/?pro=
-        </span>
-        <input name="slug" type="text" required maxlength="60"
-               placeholder="your-name"
-               style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid #1f2933;font-size:14px;">
-      </div>
-      <p style="font-size:12px;color:#9ca3af;margin-bottom:14px;">
-        Use only letters, numbers, and dashes. We will lowercase it for you.
-      </p>
-
-      <button type="submit" id="pro-onboard-submit"
-              style="width:100%;margin-top:4px;padding:12px 16px;border:none;border-radius:999px;
-                     font-size:15px;font-weight:700;background:#22c55e;color:#022c22;cursor:pointer;">
-        Create my free link
-      </button>
-
-      <p id="pro-onboard-note" style="font-size:12px;color:#9ca3af;margin-top:8px;">
-        We will email you a confirmation and route any future quote requests that come through this link.
-      </p>
-    </form>
-
-    <!-- Success state, hidden at first -->
-    <div id="pro-onboard-success" style="display:none;margin-top:10px;">
-      <h3 style="font-size:18px;font-weight:700;margin-bottom:6px;">Your link is ready</h3>
-      <p style="font-size:14px;margin-bottom:8px;">
-        Share this with families, realtors, attorneys, and senior living partners:
-      </p>
-      <div id="pro-link-box"
-           style="background:#020617;color:#f9fafb;border-radius:12px;padding:10px 12px;font-size:14px;word-break:break-all;margin-bottom:10px;">
-      </div>
-      <button type="button" id="pro-copy-btn"
-              style="padding:8px 14px;border:none;border-radius:999px;font-size:13px;font-weight:600;background:#e5e7eb;color:#020617;cursor:pointer;">
-        Copy link
-      </button>
-
-      <div style="margin-top:14px;font-size:13px;color:#cbd5f5;">
-        Next:
-        <ul style="margin:4px 0 0 18px;">
-          <li>Text this link to families after your first call</li>
-          <li>Add it to your email signature and website</li>
-          <li>Share it with realtors, attorneys, and senior living partners</li>
-        </ul>
-      </div>
-
-      <div style="margin-top:16px;font-size:13px;color:#cbd5f5;">
-        When you are ready, reply to the welcome email and we can:
-        <ul style="margin:4px 0 0 18px;">
-          <li>Send you matched leads from the main EstateQuoter site</li>
-          <li>Set up quote ranges based on your pricing rules</li>
-          <li>Help you track all requests in one place</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
 
   </div>
 
   <footer>
     © 2025 EstateQuoter · EstateQuoter is owned by Surplus Haven LLC
   </footer>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('pro-onboard-form');
-  if (!form) return;
 
-  const submitBtn = document.getElementById('pro-onboard-submit');
-  const note = document.getElementById('pro-onboard-note');
-  const successBox = document.getElementById('pro-onboard-success');
-  const linkBox = document.getElementById('pro-link-box');
-  const copyBtn = document.getElementById('pro-copy-btn');
+  <!-- Pro Intake Modal -->
+  <section id="pro-intake-modal" class="pro-modal-backdrop" aria-hidden="true">
+    <div class="pro-modal-card" role="dialog" aria-modal="true" aria-labelledby="pro-modal-title">
+      <button type="button" class="pro-modal-close" data-close-pro-modal aria-label="Close">
+        ×
+      </button>
 
-  // TODO: create a Make.com webhook just for pro onboarding
-  const PRO_WEBHOOK_URL = "https://hook.us2.make.com/YOUR_PRO_WEBHOOK_HERE";
+      <h2 id="pro-modal-title" style="font-size:20px; font-weight:700; margin-bottom:6px;">
+        Step 1: Claim your free professional link
+      </h2>
+      <p style="font-size:14px; color:#cbd5f5; margin-bottom:14px;">
+        Tell us where to send requests and what you want your link to be called. We will use this info to route
+        any submissions that come in through your link.
+      </p>
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+      <form id="pro-onboard-form">
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Company name
+        </label>
+        <input name="company" type="text" required maxlength="160"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
 
-    const fd = new FormData(form);
-    const rawSlug = (fd.get('slug') || '').toString().trim();
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Your name
+        </label>
+        <input name="contactName" type="text" required maxlength="120"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
 
-    if (!rawSlug) {
-      alert('Please choose a link ending.');
-      return;
-    }
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Email for new requests
+        </label>
+        <input name="email" type="email" required maxlength="200"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
 
-    // small normalization: lowercase, keep letters/numbers/dashes
-    let slug = rawSlug.toLowerCase().replace(/[^a-z0-9\-]/g, '-');
-    slug = slug.replace(/\-+/g, '-').replace(/^\-+|\-+$/g, '');
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Mobile or office phone
+        </label>
+        <input name="phone" type="tel" required maxlength="40"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
 
-    if (!slug) {
-      alert('Your link ending needs at least one letter or number.');
-      return;
-    }
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Main service area (city / state)
+        </label>
+        <input name="serviceArea" type="text" required maxlength="160"
+               placeholder="e.g. Virginia Beach, VA and nearby Hampton Roads"
+               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #1f2933;font-size:14px;margin-bottom:10px;">
 
-    const proLink = `https://estatequoter.com/?pro=${encodeURIComponent(slug)}`;
+        <label style="display:block;font-size:14px;font-weight:600;margin-bottom:4px;">
+          Preferred link ending
+        </label>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <span style="font-size:13px;color:#9ca3af;">
+            estatequoter.com/?pro=
+          </span>
+          <input name="slug" type="text" required maxlength="60"
+                 placeholder="your-name"
+                 style="flex:1;padding:8px 10px;border-radius:10px;border:1px solid #1f2933;font-size:14px;">
+        </div>
+        <p style="font-size:12px;color:#9ca3af;margin-bottom:14px;">
+          Use only letters, numbers, and dashes. We will lowercase it for you.
+        </p>
 
-    const payload = {
-      type: "proOnboarding",
-      company: (fd.get('company') || '').toString().trim().slice(0, 160),
-      contactName: (fd.get('contactName') || '').toString().trim().slice(0, 120),
-      email: (fd.get('email') || '').toString().trim().slice(0, 200),
-      phone: (fd.get('phone') || '').toString().trim().slice(0, 40),
-      serviceArea: (fd.get('serviceArea') || '').toString().trim().slice(0, 160),
-      slug,
-      proLink,
-      createdAt: new Date().toISOString(),
-      userAgent: navigator.userAgent || "",
-      pageUrl: window.location.href || ""
-    };
+        <button type="submit" id="pro-onboard-submit"
+                style="width:100%;margin-top:4px;padding:12px 16px;border:none;border-radius:999px;
+                       font-size:15px;font-weight:700;background:#22c55e;color:#022c22;cursor:pointer;">
+          Create my free link
+        </button>
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Creating your link...";
+        <p id="pro-onboard-note" style="font-size:12px;color:#9ca3af;margin-top:8px;">
+          We will email you a confirmation and route any future quote requests that come through this link.
+        </p>
+      </form>
 
-    try {
-      await fetch(PRO_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      <!-- Success state, hidden at first -->
+      <div id="pro-onboard-success" style="display:none;margin-top:10px;">
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:6px;">Your link is ready</h3>
+        <p style="font-size:14px;margin-bottom:8px;">
+          Share this with families, realtors, attorneys, and senior living partners:
+        </p>
+        <div id="pro-link-box"
+             style="background:#020617;color:#f9fafb;border-radius:12px;padding:10px 12px;font-size:14px;word-break:break-all;margin-bottom:10px;">
+        </div>
+        <button type="button" id="pro-copy-btn"
+                style="padding:8px 14px;border:none;border-radius:999px;font-size:13px;font-weight:600;background:#e5e7eb;color:#020617;cursor:pointer;">
+          Copy link
+        </button>
+
+        <div style="margin-top:14px;font-size:13px;color:#cbd5f5;">
+          Next:
+          <ul style="margin:4px 0 0 18px;">
+            <li>Text this link to families after your first call</li>
+            <li>Add it to your email signature and website</li>
+            <li>Share it with realtors, attorneys, and senior living partners</li>
+          </ul>
+        </div>
+
+        <div style="margin-top:16px;font-size:13px;color:#cbd5f5;">
+          When you are ready, reply to the welcome email and we can:
+          <ul style="margin:4px 0 0 18px;">
+            <li>Send you matched leads from the main EstateQuoter site</li>
+            <li>Set up quote ranges based on your pricing rules</li>
+            <li>Help you track all requests in one place</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('pro-onboard-form');
+    const modal = document.getElementById('pro-intake-modal');
+    const openBtns = document.querySelectorAll('[data-open-pro-modal]');
+    const closeBtns = document.querySelectorAll('[data-close-pro-modal]');
+
+    if (modal && openBtns.length) {
+      const openModal = (e) => {
+        if (e) e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+      const closeModal = (e) => {
+        if (e) e.preventDefault();
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      openBtns.forEach(btn => {
+        btn.addEventListener('click', openModal);
       });
-    } catch (err) {
-      console.error("Pro onboarding failed", err);
-      alert("Something went wrong while creating your link. Please try again in a moment.");
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Create my free link";
-      return;
-    }
-
-    // Front-end success: show link, hide form
-    form.style.display = 'none';
-    if (note) note.style.display = 'none';
-    successBox.style.display = 'block';
-    linkBox.textContent = proLink;
-
-    if (copyBtn && navigator.clipboard) {
-      copyBtn.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(proLink);
-          copyBtn.textContent = "Copied!";
-          setTimeout(() => {
-            copyBtn.textContent = "Copy link";
-          }, 1500);
-        } catch (e) {
-          console.error("Copy failed", e);
+      closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeModal);
+      });
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
         }
       });
     }
+
+    if (!form) return;
+
+    const submitBtn = document.getElementById('pro-onboard-submit');
+    const note = document.getElementById('pro-onboard-note');
+    const successBox = document.getElementById('pro-onboard-success');
+    const linkBox = document.getElementById('pro-link-box');
+    const copyBtn = document.getElementById('pro-copy-btn');
+
+    // TODO: create a Make.com webhook just for pro onboarding
+    const PRO_WEBHOOK_URL = "https://hook.us2.make.com/YOUR_PRO_WEBHOOK_HERE";
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fd = new FormData(form);
+      const rawSlug = (fd.get('slug') || '').toString().trim();
+
+      if (!rawSlug) {
+        alert('Please choose a link ending.');
+        return;
+      }
+
+      // small normalization: lowercase, keep letters/numbers/dashes
+      let slug = rawSlug.toLowerCase().replace(/[^a-z0-9\-]/g, '-');
+      slug = slug.replace(/\-+/g, '-').replace(/^\-+|\-+$/g, '');
+
+      if (!slug) {
+        alert('Your link ending needs at least one letter or number.');
+        return;
+      }
+
+      const proLink = `https://estatequoter.com/?pro=${encodeURIComponent(slug)}`;
+
+      const payload = {
+        type: "proOnboarding",
+        company: (fd.get('company') || '').toString().trim().slice(0, 160),
+        contactName: (fd.get('contactName') || '').toString().trim().slice(0, 120),
+        email: (fd.get('email') || '').toString().trim().slice(0, 200),
+        phone: (fd.get('phone') || '').toString().trim().slice(0, 40),
+        serviceArea: (fd.get('serviceArea') || '').toString().trim().slice(0, 160),
+        slug,
+        proLink,
+        createdAt: new Date().toISOString(),
+        userAgent: navigator.userAgent || "",
+        pageUrl: window.location.href || ""
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Creating your link...";
+
+      try {
+        await fetch(PRO_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Pro onboarding failed", err);
+        alert("Something went wrong while creating your link. Please try again in a moment.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Create my free link";
+        return;
+      }
+
+      // Front-end success: show link, hide form
+      form.style.display = 'none';
+      if (note) note.style.display = 'none';
+      successBox.style.display = 'block';
+      linkBox.textContent = proLink;
+
+      if (copyBtn && navigator.clipboard) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(proLink);
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => {
+              copyBtn.textContent = "Copy link";
+            }, 1500);
+          } catch (e) {
+            console.error("Copy failed", e);
+          }
+        });
+      }
+    });
   });
-});
-</script>
+  </script>
 
 </body>
 </html>
