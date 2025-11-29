@@ -2668,8 +2668,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!mediaBox) return;
 
+  // Re-render summary + thumbnails from cloudinaryFiles
+  function renderMediaUI() {
+    const filesArr = cloudinaryFiles || [];
+
+    if (!filesArr.length) {
+      mediaBox.classList.remove('ready');
+      if (mediaSummary) mediaSummary.textContent = "No photos or video added yet.";
+      if (mediaGrid) mediaGrid.innerHTML = "";
+      if (tcLabelEl) {
+        tcLabelEl.classList.remove('required');
+        tcLabelEl.style.display = 'none';
+      }
+      return;
+    }
+
+    mediaBox.classList.add('ready');
+
+    const hasVideo = filesArr.some(f => f.resource_type === 'video');
+
+    if (mediaSummary) {
+      mediaSummary.textContent =
+        `${filesArr.length} ${filesArr.length === 1 ? 'file' : 'files'} added` +
+        (hasVideo ? ' (incl. video)' : '');
+    }
+
+    if (mediaGrid) {
+      mediaGrid.innerHTML = filesArr.slice(0, 8).map(f => {
+        const thumbUrl = f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/');
+        return `
+          <div class="media-thumb-wrap" data-id="${f.public_id}">
+            <img class="media-thumb" src="${thumbUrl}" alt="">
+            <button type="button" class="media-thumb-delete" aria-label="Remove this file">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (tcLabelEl) {
+      tcLabelEl.style.display = 'block';
+      tcLabelEl.classList.add('required');
+    }
+  }
+
+  // Click on upload box -> open file picker
   mediaBox.addEventListener('click', () => {
-    // Show consent UI as soon as they try to add media
     if (tcLabelEl) {
       tcLabelEl.style.display = 'block';
       tcLabelEl.classList.add('required');
@@ -2685,7 +2728,7 @@ document.addEventListener('DOMContentLoaded', () => {
     input.onchange = () => {
       const files = Array.from(input.files || []);
       if (files.length) {
-        uploadTheseFiles(files, { mediaSummary, mediaGrid, tcLabelEl });
+        uploadTheseFiles(files);
       }
       input.remove();
     };
@@ -2693,9 +2736,27 @@ document.addEventListener('DOMContentLoaded', () => {
     input.click();
   });
 
-  async function uploadTheseFiles(files, ctx) {
-    if (ctx.mediaSummary) {
-      ctx.mediaSummary.textContent = `Uploading ${files.length}…`;
+  // Handle clicking the little "x" on any thumbnail
+  if (mediaGrid) {
+    mediaGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.media-thumb-delete');
+      if (!btn) return;
+
+      const wrap = btn.closest('.media-thumb-wrap');
+      if (!wrap) return;
+
+      const id = wrap.getAttribute('data-id');
+      if (!id) return;
+
+      cloudinaryFiles = (cloudinaryFiles || []).filter(f => f.public_id !== id);
+      window.cloudinaryFiles = cloudinaryFiles; // keep global in sync
+      renderMediaUI();
+    });
+  }
+
+  async function uploadTheseFiles(files) {
+    if (mediaSummary) {
+      mediaSummary.textContent = `Uploading ${files.length}…`;
     }
 
     for (const file of files) {
@@ -2718,28 +2779,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    const filesArr = cloudinaryFiles || [];
-    const hasVideo = filesArr.some(f => f.resource_type === 'video');
-
-    if (ctx.mediaSummary) {
-      ctx.mediaSummary.textContent =
-        `${filesArr.length} ${filesArr.length === 1 ? 'file' : 'files'} added` +
-        (hasVideo ? ' (incl. video)' : '');
-    }
-
-    if (ctx.mediaGrid) {
-      ctx.mediaGrid.innerHTML = filesArr.slice(0, 8).map(f =>
-        `<img class="media-thumb" src="${
-          f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/')
-        }" style="margin:4px;border-radius:8px;">`
-      ).join('');
-    }
-
-    if (tcLabelEl) {
-      tcLabelEl.style.display = 'block';
-      tcLabelEl.classList.add('required');
-    }
+    window.cloudinaryFiles = cloudinaryFiles; // ensure collectData() sees updates
+    renderMediaUI();
   }
+
+  // Initial render (in case there are any preloaded files later)
+  renderMediaUI();
 });
 </script>
 
