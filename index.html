@@ -2626,75 +2626,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// ——— CLOUDINARY — BIG, BEAUTIFUL, MOBILE-FRIENDLY VERSION ———
+// ——— FINAL GRANDMA-PROOF CLOUDINARY (ONE TAP = CAMERA/PHOTOS) ———
 let cloudinaryFiles = [];
 
-document.getElementById('media-box').onclick = () => {
-  // Custom big buttons instead of the default tiny widget
-  const html = `
-    <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:99999;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;box-sizing:border-box;">
-      <div style="background:white;border-radius:16px;overflow:hidden;margin-bottom:12px;">
-        <button id="eq-camera" style="width:100%;padding:20px;font-size:18px;border:none;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
-          Take Photo or Video
-        </button>
-        <button id="eq-library" style="width:100%;padding:20px;font-size:18px;border:none;background:white;">
-          Choose from Library (up to 20)
-        </button>
-        <button id="eq-cancel" style="width:100%;padding:20px;font-size:18px;border:none;background:white;color:#64748b;margin-top:8px;">
-          Cancel
-        </button>
-      </div>
-    </div>`;
+// This hidden input tricks the mobile browser into opening the native picker with ONE tap
+const hiddenInput = document.createElement('input');
+hiddenInput.type = 'file';
+hiddenInput.multiple = true;
+hiddenInput.accept = 'image/*,video/*';
+hiddenInput.capture = 'environment'; // optional: forces camera on first tap if you want
+hiddenInput.style.display = 'none';
+document.body.appendChild(hiddenInput);
 
-  const overlay = document.createElement('div');
-  overlay.innerHTML = html;
-  document.body.appendChild(overlay);
+// When user taps the big beautiful box → trigger the hidden native picker
+document.getElementById('media-box').onclick = () => hiddenInput.click();
 
-  overlay.querySelector('#eq-cancel').onclick = () => overlay.remove();
+// When files are selected → upload them silently to Cloudinary
+hiddenInput.onchange = async (e) => {
+  const files = Array.from(e.target.files);
+  if (files.length === 0) return;
 
-  // Take photo/video with camera
-  overlay.querySelector('#eq-camera').onclick = () => {
-    overlay.remove();
-    cloudinary.openUploadWidget({
-      cloudName: 'dknb61uxx',
-      uploadPreset: 'ml_default',
-      sources: ['camera'],
-      multiple: true,
-      maxFiles: 20,
-      clientAllowedFormats: ['jpg','png','mp4','mov'],
-      cropping: false,
-      folder: 'estatequoter'
-    }, callback);
-  };
+  // Show uploading feedback
+  document.getElementById('media-summary').textContent = `Uploading ${files.length} file${files.length>1?'s':''}…`;
 
-  // Choose from library
-  overlay.querySelector('#eq-library').onclick = () => {
-    overlay.remove();
-    cloudinary.openUploadWidget({
-      cloudName: 'dknb61uxx',
-      uploadPreset: 'ml_default',
-      sources: ['local'],
-      multiple: true,
-      maxFiles: 20,
-      clientAllowedFormats: ['jpg','jpeg','png','gif','webp','mp4','mov','avi'],
-      cropping: false,
-      folder: 'estatequoter'
-    }, callback);
-  };
-};
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'ml_default');
+    formData.append('cloud_name', 'dknb61uxx');
+    formData.append('folder', 'estatequoter');
 
-// Same callback as before — keeps your preview + sends to Make.com
-const callback = (error, result) => {
-  if (!error && result && result.event === 'success') {
-    cloudinaryFiles.push(result.info);
-    updateMediaUI();
+    try {
+      const res = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      cloudinaryFiles.push(data);
+    } catch (err) {
+      console.error('Upload failed', err);
+    }
   }
-  if (result && result.event === 'close') {
-    // widget closed
-  }
-};
 
-function updateMediaUI() {
+  // Update preview exactly like before
   const count = cloudinaryFiles.length;
   const hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
   document.getElementById('media-summary').textContent = 
@@ -2709,7 +2683,7 @@ function updateMediaUI() {
 
   document.getElementById('tc-label').style.display = 'block';
   document.getElementById('tc-label').classList.add('required');
-}
+};
 </script>  
 
 </body>
