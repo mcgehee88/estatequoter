@@ -896,25 +896,29 @@
       <input type="text" id="access-other" placeholder="Describe access challenges" style="margin-top:12px; display:none;" maxlength="300">
     </div>
 
-    <!-- 12. Optional media (photos or video) -->
-    <div class="q" data-step="10" data-required="false">
-      <label>Optional photos or a quick video</label>
-      <p class="helper">This is optional but helps liquidators give the most accurate quote. You can add up to 20 photos and/or a short video.</p>
-      <div class="video-box" id="media-box" onclick="document.getElementById('media-upload').click()">
-        <i class="fas fa-photo-video fa-3x" style="color:#94a3b8;margin-bottom:12px;"></i>
-        <div style="font-size:18px;font-weight:600;">Tap to add photos or a quick walk-through video</div>
-        <div style="font-size:14px;color:#64748b;margin-top:8px;">
-          No need to tidy. A few room photos or a 30–60 second walk-through is enough.
-        </div>
-        <div id="media-summary">No photos or video added yet.</div>
+      <!-- 12. Optional media – CLOUDINARY (FREE & WORKING) -->
+  <div class="q" data-step="10" data-required="false">
+    <label>Optional photos or a quick video</label>
+    <p class="helper">This is optional but helps liquidators give the most accurate quote. You can add up to 20 photos and/or a short video.</p>
+    
+    <div class="video-box" id="media-box">
+      <i class="fas fa-photo-video fa-3x" style="color:#94a3b8;margin-bottom:12px;"></i>
+      <div style="font-size:18px;font-weight:600;">Tap to add photos or a quick walk-through video</div>
+      <div style="font-size:14px;color:#64748b;margin-top:8px;">
+        No need to tidy. A few room photos or a 30–60 second walk-through is enough.
       </div>
-      <div id="media-preview-grid"></div>
-      <input type="file" id="media-upload" accept="image/*,video/*" multiple style="display:none">
-      <label style="margin-top:20px;display:none;" id="tc-label">
-        <input type="checkbox" id="tc-check">
-        I’m okay sharing this media for my quote, and understand it may be viewed by local pros.
-      </label>
+      <div id="media-summary">No photos or video added yet.</div>
     </div>
+    <div id="media-preview-grid"></div>
+
+    <!-- Cloudinary widget (loads automatically -->
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
+    <label style="margin-top:20px;display:none;" id="tc-label">
+      <input type="checkbox" id="tc-check">
+      I’m okay sharing this media for my quote, and understand it may be viewed by local pros.
+    </label>
+  </div>
 
     <!-- 13. Estimated Home Value -->
     <div class="q" data-step="11" data-required="true">
@@ -1568,18 +1572,20 @@ data.zip = document.getElementById('zip').value.trim();
     : '';
   data.accessOther = document.getElementById('access-other').value.trim().slice(0, 300);
 
-  // Step 12: Optional media (photos/video)
-  const mediaInput = document.getElementById('media-upload');
-  const files = (mediaInput && mediaInput.files) ? Array.from(mediaInput.files) : [];
-  data.mediaCount = files.length;
-  const typesSet = new Set();
-  files.forEach(f => {
-    if (f.type.startsWith('image/')) typesSet.add('image');
-    else if (f.type.startsWith('video/')) typesSet.add('video');
-  });
-  data.mediaTypes = Array.from(typesSet).join(', ');
-  data.hasMedia = files.length > 0;
-  data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
+    // Step 12: Real media via Cloudinary (free)
+    data.uploadedMedia = cloudinaryFiles.map(f => ({
+      public_id: f.public_id,
+      url: f.secure_url,
+      thumbnail_url: f.secure_url.replace('/upload/', '/upload/w_600,h_600,c_limit/'),
+      name: f.original_filename || f.public_id,
+      size: f.bytes,
+      type: f.resource_type === 'video' ? 'video' : 'image'
+    }));
+    data.mediaCount = data.uploadedMedia.length;
+    data.hasMedia = data.mediaCount > 0;
+    data.hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
+    data.videoProvided = data.hasMedia ? "Yes" : "No";
+    data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
 
   // Backwards compatibility: keep hasVideo/videoProvided flags
   data.hasVideo = typesSet.has('video');
@@ -2617,7 +2623,51 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-  
+
+
+<script>
+// ——— CLOUDINARY — FREE & WORKING (cloud name: dknb61uxx) ———
+let cloudinaryFiles = [];
+
+document.getElementById('media-box').onclick = () => {
+  cloudinary.openUploadWidget({
+    cloudName: 'dknb61uxx',
+    uploadPreset: 'ml_default',           // works out of the box on free accounts
+    sources: ['local', 'camera', 'url'],
+    multiple: true,
+    maxFiles: 20,
+    maxFileSize: 100000000,               // 100 MB
+    clientAllowedFormats: ['jpg','jpeg','png','gif','webp','mp4','mov','avi'],
+    folder: 'estatequoter',
+    theme: 'minimal'
+  }, (error, result) => {
+    if (!error && result && result.event === 'success') {
+      cloudinaryFiles.push(result.info);
+      updateMediaUI();
+    }
+  });
+};
+
+function updateMediaUI() {
+  const count = cloudinaryFiles.length;
+  const hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
+  const summary = document.getElementById('media-summary');
+  const grid = document.getElementById('media-preview-grid');
+  const tc = document.getElementById('tc-label');
+
+  summary.textContent = `${count} ${count===1?'file':'files'} added ${hasVideo?'(incl. video)':''}`;
+
+  grid.innerHTML = cloudinaryFiles.slice(0,8).map(f => {
+    const thumb = f.resource_type === 'video'
+      ? f.secure_url.replace('/upload/', '/w_150,h_150,c_fill/')
+      : f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/');
+    return `<img class="media-thumb" src="${thumb}">`;
+  }).join('');
+
+  tc.style.display = 'block';
+  tc.classList.add('required');
+}
+</script>  
 
 </body>
 </html>
