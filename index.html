@@ -2626,52 +2626,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// ONE TAP → NATIVE IPHONE/ANDROID PHOTO + VIDEO PICKER
+// ONE TAP → 100% NATIVE PICKER (iOS + Android)
 let cloudinaryFiles = [];
 
 document.getElementById('media-box').onclick = () => {
-  const picker = document.createElement('input');
-  picker.type = 'file';
-  picker.multiple = true;
-  picker.accept = 'image/*,video/*';
-  picker.capture = 'environment';           // shows "Take Photo or Video" first on iOS
-  picker.style.display = 'none';
-  document.body.appendChild(picker);
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.accept = 'image/*,video/*';
+  // This line is the magic — it forces the menu, never jumps to camera
+  input.removeAttribute('capture');
+  input.style.display = 'none';
+  document.body.appendChild(input);
 
-  picker.onchange = () => {
-    uploadTheseFiles(Array.from(picker.files));
-    picker.remove();
+  input.onchange = () => {
+    if (input.files.length) uploadTheseFiles(Array.from(input.files));
+    input.remove();
   };
-  picker.click();
+
+  input.click();   // opens the EXACT native picker you want
 };
 
 async function uploadTheseFiles(files) {
-  if (!files.length) return;
   document.getElementById('media-summary').textContent = `Uploading ${files.length}…`;
-
   for (const file of files) {
     const fd = new FormData();
     fd.append('file', file);
     fd.append('upload_preset', 'ml_default');
     fd.append('folder', 'estatequoter');
-
-    const res = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
-      method: 'POST',
-      body: fd
-    });
-    const data = await res.json();
+    const r = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {method:'POST', body:fd});
+    const data = await r.json();
     cloudinaryFiles.push(data);
   }
 
-  // Show thumbnails + update text (your existing code, just shorter)
+  // Show thumbnails + consent
   const hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
   document.getElementById('media-summary').textContent = 
-    `${cloudinaryFiles.length} ${cloudinaryFiles.length === 1 ? 'file' : 'files'} added ${hasVideo ? '(incl. video)' : ''}`;
-
-  document.getElementById('media-preview-grid').innerHTML = cloudinaryFiles.slice(0,8).map(f => `
-    <img class="media-thumb" src="${f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/')}" style="margin:4px;border-radius:8px;">
-  `).join('');
-
+    `${cloudinaryFiles.length} ${cloudinaryFiles.length===1?'file':'files'} added ${hasVideo?'(incl. video)':''}`;
+  document.getElementById('media-preview-grid').innerHTML = cloudinaryFiles.slice(0,8).map(f =>
+    `<img class="media-thumb" src="${f.secure_url.replace('/upload/','/upload/w_150,h_150,c_fill/')}" style="margin:4px;border-radius:8px;">`
+  ).join('');
   document.getElementById('tc-label').style.display = 'block';
   document.getElementById('tc-label').classList.add('required');
 }
