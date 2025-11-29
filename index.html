@@ -1327,13 +1327,30 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 12: { // Optional media (Cloudinary)
+        case 12: { // Optional media (Cloudinary)
       const hasMedia = Array.isArray(cloudinaryFiles) && cloudinaryFiles.length > 0;
-      const consentChecked = document.getElementById('tc-check').checked;
-      if (hasMedia && !consentChecked) {
+      if (!hasMedia) return true; // nothing uploaded → nothing to enforce
+
+      const tcLabelEl = document.getElementById('tc-label');
+      const tcCheckEl = document.getElementById('tc-check');
+
+      // Force the consent UI to be visible
+      if (tcLabelEl) {
+        tcLabelEl.style.display = 'block';
+        tcLabelEl.classList.add('required');
+      }
+
+      const consentChecked = tcCheckEl && tcCheckEl.checked;
+
+      if (!consentChecked) {
+        // Scroll it into view so it’s obvious
+        if (tcLabelEl && typeof tcLabelEl.scrollIntoView === 'function') {
+          tcLabelEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         alert('Please check the media consent box so we can use your photos/video for the quote.');
         return false;
       }
+
       return true;
     }
     case 13: { // Estimated home value
