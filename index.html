@@ -1502,15 +1502,14 @@ function hydrateFormFromData(data) {
 
 /* Collect data for review + Make */
 function collectData() {
-const data = {};
+  const data = {};
 
-// Pro slug (if present)
-const proInput = document.getElementById('proSlug');
-data.proSlug = proInput ? (proInput.value || '').trim() : "";
+  // Pro slug (if present)
+  const proInput = document.getElementById('proSlug');
+  data.proSlug = proInput ? (proInput.value || '').trim() : "";
 
-// ZIP
-data.zip = document.getElementById('zip').value.trim();
-
+  // ZIP
+  data.zip = document.getElementById('zip').value.trim();
 
   // Step 0: Your role
   const roleStep = qs[0];
@@ -1588,8 +1587,9 @@ data.zip = document.getElementById('zip').value.trim();
     : '';
   data.accessOther = document.getElementById('access-other').value.trim().slice(0, 300);
 
-  // Step 12: Real media via Cloudinary (free)
-  data.uploadedMedia = cloudinaryFiles.map(f => ({
+  // Step 12: Real media via Cloudinary (no undefined typesSet nonsense)
+  const mediaArr = Array.isArray(cloudinaryFiles) ? cloudinaryFiles : [];
+  data.uploadedMedia = mediaArr.map(f => ({
     public_id: f.public_id,
     url: f.secure_url,
     thumbnail_url: f.secure_url.replace('/upload/', '/upload/w_600,h_600,c_limit/'),
@@ -1599,10 +1599,9 @@ data.zip = document.getElementById('zip').value.trim();
   }));
   data.mediaCount = data.uploadedMedia.length;
   data.hasMedia = data.mediaCount > 0;
-  data.hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
+  data.hasVideo = mediaArr.some(f => f.resource_type === 'video');
   data.videoProvided = data.hasMedia ? "Yes" : "No";
   data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
-
 
   // Step 13: Home value
   data.homeValue = parseInt(document.getElementById('value-range').value, 10);
@@ -1631,17 +1630,8 @@ data.zip = document.getElementById('zip').value.trim();
 
   const ispLower = (meta.isp || "").toLowerCase();
   const vpnHints = [
-    "vpn",
-    "hosting",
-    "digitalocean",
-    "ovh",
-    "aws",
-    "amazon",
-    "microsoft",
-    "azure",
-    "google",
-    "cloud",
-    "hetzner"
+    "vpn","hosting","digitalocean","ovh","aws","amazon",
+    "microsoft","azure","google","cloud","hetzner"
   ];
   data.likelyVPN = vpnHints.some(k => ispLower.includes(k)) ? "Yes" : "No";
 
