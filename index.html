@@ -2643,11 +2643,17 @@ document.addEventListener('DOMContentLoaded', () => {
 let cloudinaryFiles = [];
 
 document.getElementById('media-box').onclick = () => {
+  // Always surface the consent UI as soon as they go to add media
+  const tcLabel = document.getElementById('tc-label');
+  if (tcLabel) {
+    tcLabel.style.display = 'block';
+    tcLabel.classList.add('required');
+  }
+
   const input = document.createElement('input');
   input.type = 'file';
   input.multiple = true;
   input.accept = 'image/*,video/*';
-  // This line is the magic — it forces the menu, never jumps to camera
   input.removeAttribute('capture');
   input.style.display = 'none';
   document.body.appendChild(input);
@@ -2656,6 +2662,9 @@ document.getElementById('media-box').onclick = () => {
     if (input.files.length) uploadTheseFiles(Array.from(input.files));
     input.remove();
   };
+
+  input.click();
+};
 
   input.click();   // opens the EXACT native picker you want
 };
