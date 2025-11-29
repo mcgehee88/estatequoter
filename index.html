@@ -2626,92 +2626,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// ——— PERFECT GRANDMA-PROOF UPLOAD (ONE TAP → BIG NATIVE CHOICES) ———
+// ONE TAP → NATIVE IPHONE/ANDROID PHOTO + VIDEO PICKER
 let cloudinaryFiles = [];
 
 document.getElementById('media-box').onclick = () => {
-  const overlay = document.createElement('div');
-  overlay.innerHTML = `
-    <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;flex-direction:column;justify-content:flex-end;padding:20px 20px 40px;box-sizing:border-box;">
-      <button onclick="this.parentNode.parentNode.remove(); takePhoto()" style="background:#fff;color:#000;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
-        Take Photo
-      </button>
-      <button onclick="this.parentNode.parentNode.remove(); recordVideo()" style="background:#fff;color:#000;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
-        Record Video
-      </button>
-      <button onclick="this.parentNode.parentNode.remove(); chooseFromLibrary()" style="background:#0d9d6a;color:#fff;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
-        Choose from Library (up to 20)
-      </button>
-      <button onclick="this.parentNode.parentNode.remove()" style="background:transparent;color:#fff;font-size:18px;padding:16px;border:1px solid #555;border-radius:16px;">
-        Cancel
-      </button>
-    </div>`;
-  document.body.appendChild(overlay);
+  const picker = document.createElement('input');
+  picker.type = 'file';
+  picker.multiple = true;
+  picker.accept = 'image/*,video/*';
+  picker.capture = 'environment';           // shows "Take Photo or Video" first on iOS
+  picker.style.display = 'none';
+  document.body.appendChild(picker);
+
+  picker.onchange = () => {
+    uploadTheseFiles(Array.from(picker.files));
+    picker.remove();
+  };
+  picker.click();
 };
 
-// Take photo with camera
-function takePhoto() {
-  triggerUpload({ accept: 'image/*', capture: 'environment' });
-}
-
-// Record video with camera
-function recordVideo() {
-  triggerUpload({ accept: 'video/*', capture: 'environment' });
-}
-
-// Choose from library (multi-select)
-function chooseFromLibrary() {
-  triggerUpload({ accept: 'image/*,video/*', multiple: true });
-}
-
-// Shared uploader
-function triggerUpload(options) {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.style.display = 'none';
-  if (options.multiple) input.multiple = true;
-  if (options.accept) input.accept = options.accept;
-  if (options.capture) input.capture = options.capture;
-  document.body.appendChild(input);
-
-  input.onchange = () => uploadToCloudinary(Array.from(input.files));
-  input.click();
-}
-
-// Upload files to Cloudinary (silent, fast)
-async function uploadToCloudinary(files) {
-  if (files.length === 0) return;
+async function uploadTheseFiles(files) {
+  if (!files.length) return;
   document.getElementById('media-summary').textContent = `Uploading ${files.length}…`;
 
   for (const file of files) {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'ml_default');
-    formData.append('cloud_name', 'dknb61uxx');
-    formData.append('folder', 'estatequoter');
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', 'ml_default');
+    fd.append('folder', 'estatequoter');
 
-    try {
-      const res = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
-      cloudinaryFiles.push(data);
-    } catch (e) { console.error(e); }
+    const res = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
+      method: 'POST',
+      body: fd
+    });
+    const data = await res.json();
+    cloudinaryFiles.push(data);
   }
 
-  // Update preview (same as before)
-  const count = cloudinaryFiles.length;
+  // Show thumbnails + update text (your existing code, just shorter)
   const hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
   document.getElementById('media-summary').textContent = 
-    `${count} ${count===1?'file':'files'} added ${hasVideo?'(incl. video)':''}`;
+    `${cloudinaryFiles.length} ${cloudinaryFiles.length === 1 ? 'file' : 'files'} added ${hasVideo ? '(incl. video)' : ''}`;
 
-  document.getElementById('media-preview-grid').innerHTML = cloudinaryFiles.slice(0,8).map(f => {
-    const thumb = f.resource_type === 'video'
-      ? f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/')
-      : f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/');
-    return `<img class="media-thumb" src="${thumb}" style="margin:4px;border-radius:8px;">`;
-  }).join('');
+  document.getElementById('media-preview-grid').innerHTML = cloudinaryFiles.slice(0,8).map(f => `
+    <img class="media-thumb" src="${f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/')}" style="margin:4px;border-radius:8px;">
+  `).join('');
 
   document.getElementById('tc-label').style.display = 'block';
   document.getElementById('tc-label').classList.add('required');
