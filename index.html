@@ -2626,28 +2626,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>
-// ——— FINAL GRANDMA-PROOF CLOUDINARY (ONE TAP = CAMERA/PHOTOS) ———
+// ——— PERFECT GRANDMA-PROOF UPLOAD (ONE TAP → BIG NATIVE CHOICES) ———
 let cloudinaryFiles = [];
 
-// This hidden input tricks the mobile browser into opening the native picker with ONE tap
-const hiddenInput = document.createElement('input');
-hiddenInput.type = 'file';
-hiddenInput.multiple = true;
-hiddenInput.accept = 'image/*,video/*';
-hiddenInput.capture = 'environment'; // optional: forces camera on first tap if you want
-hiddenInput.style.display = 'none';
-document.body.appendChild(hiddenInput);
+document.getElementById('media-box').onclick = () => {
+  const overlay = document.createElement('div');
+  overlay.innerHTML = `
+    <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;flex-direction:column;justify-content:flex-end;padding:20px 20px 40px;box-sizing:border-box;">
+      <button onclick="this.parentNode.parentNode.remove(); takePhoto()" style="background:#fff;color:#000;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
+        Take Photo
+      </button>
+      <button onclick="this.parentNode.parentNode.remove(); recordVideo()" style="background:#fff;color:#000;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
+        Record Video
+      </button>
+      <button onclick="this.parentNode.parentNode.remove(); chooseFromLibrary()" style="background:#0d9d6a;color:#fff;font-size:20px;padding:20px;border-radius:16px;margin-bottom:12px;font-weight:600;">
+        Choose from Library (up to 20)
+      </button>
+      <button onclick="this.parentNode.parentNode.remove()" style="background:transparent;color:#fff;font-size:18px;padding:16px;border:1px solid #555;border-radius:16px;">
+        Cancel
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+};
 
-// When user taps the big beautiful box → trigger the hidden native picker
-document.getElementById('media-box').onclick = () => hiddenInput.click();
+// Take photo with camera
+function takePhoto() {
+  triggerUpload({ accept: 'image/*', capture: 'environment' });
+}
 
-// When files are selected → upload them silently to Cloudinary
-hiddenInput.onchange = async (e) => {
-  const files = Array.from(e.target.files);
+// Record video with camera
+function recordVideo() {
+  triggerUpload({ accept: 'video/*', capture: 'environment' });
+}
+
+// Choose from library (multi-select)
+function chooseFromLibrary() {
+  triggerUpload({ accept: 'image/*,video/*', multiple: true });
+}
+
+// Shared uploader
+function triggerUpload(options) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.style.display = 'none';
+  if (options.multiple) input.multiple = true;
+  if (options.accept) input.accept = options.accept;
+  if (options.capture) input.capture = options.capture;
+  document.body.appendChild(input);
+
+  input.onchange = () => uploadToCloudinary(Array.from(input.files));
+  input.click();
+}
+
+// Upload files to Cloudinary (silent, fast)
+async function uploadToCloudinary(files) {
   if (files.length === 0) return;
-
-  // Show uploading feedback
-  document.getElementById('media-summary').textContent = `Uploading ${files.length} file${files.length>1?'s':''}…`;
+  document.getElementById('media-summary').textContent = `Uploading ${files.length}…`;
 
   for (const file of files) {
     const formData = new FormData();
@@ -2663,12 +2697,10 @@ hiddenInput.onchange = async (e) => {
       });
       const data = await res.json();
       cloudinaryFiles.push(data);
-    } catch (err) {
-      console.error('Upload failed', err);
-    }
+    } catch (e) { console.error(e); }
   }
 
-  // Update preview exactly like before
+  // Update preview (same as before)
   const count = cloudinaryFiles.length;
   const hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
   document.getElementById('media-summary').textContent = 
@@ -2683,8 +2715,8 @@ hiddenInput.onchange = async (e) => {
 
   document.getElementById('tc-label').style.display = 'block';
   document.getElementById('tc-label').classList.add('required');
-};
-</script>  
+}
+</script>
 
 </body>
 </html>
