@@ -1327,9 +1327,8 @@ function validateStep(stepIndex) {
       }
       return true;
     }
-    case 12: { // Optional media
-      const mediaInput = document.getElementById('media-upload');
-      const hasMedia = mediaInput && mediaInput.files && mediaInput.files.length > 0;
+    case 12: { // Optional media (Cloudinary)
+      const hasMedia = Array.isArray(cloudinaryFiles) && cloudinaryFiles.length > 0;
       const consentChecked = document.getElementById('tc-check').checked;
       if (hasMedia && !consentChecked) {
         alert('Please check the media consent box so we can use your photos/video for the quote.');
@@ -1572,24 +1571,21 @@ data.zip = document.getElementById('zip').value.trim();
     : '';
   data.accessOther = document.getElementById('access-other').value.trim().slice(0, 300);
 
-    // Step 12: Real media via Cloudinary (free)
-    data.uploadedMedia = cloudinaryFiles.map(f => ({
-      public_id: f.public_id,
-      url: f.secure_url,
-      thumbnail_url: f.secure_url.replace('/upload/', '/upload/w_600,h_600,c_limit/'),
-      name: f.original_filename || f.public_id,
-      size: f.bytes,
-      type: f.resource_type === 'video' ? 'video' : 'image'
-    }));
-    data.mediaCount = data.uploadedMedia.length;
-    data.hasMedia = data.mediaCount > 0;
-    data.hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
-    data.videoProvided = data.hasMedia ? "Yes" : "No";
-    data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
-
-  // Backwards compatibility: keep hasVideo/videoProvided flags
-  data.hasVideo = typesSet.has('video');
+  // Step 12: Real media via Cloudinary (free)
+  data.uploadedMedia = cloudinaryFiles.map(f => ({
+    public_id: f.public_id,
+    url: f.secure_url,
+    thumbnail_url: f.secure_url.replace('/upload/', '/upload/w_600,h_600,c_limit/'),
+    name: f.original_filename || f.public_id,
+    size: f.bytes,
+    type: f.resource_type === 'video' ? 'video' : 'image'
+  }));
+  data.mediaCount = data.uploadedMedia.length;
+  data.hasMedia = data.mediaCount > 0;
+  data.hasVideo = cloudinaryFiles.some(f => f.resource_type === 'video');
   data.videoProvided = data.hasMedia ? "Yes" : "No";
+  data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
+
 
   // Step 13: Home value
   data.homeValue = parseInt(document.getElementById('value-range').value, 10);
