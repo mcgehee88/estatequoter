@@ -185,18 +185,14 @@
 </head>
 <body>
 
-<div id="login-container" class="login-form" style="display: none;">
-  <h2>Admin Login</h2>
+<div id="login-container" class="login-form">
+  <h2>Admin Dashboard</h2>
   <div class="form-group">
-    <label>Email</label>
-    <input type="email" id="login-email" placeholder="your@email.com">
+    <label>Admin Password</label>
+    <input type="password" id="admin-password" placeholder="Enter admin password">
   </div>
   <div class="form-group">
-    <label>Password</label>
-    <input type="password" id="login-password" placeholder="••••••••">
-  </div>
-  <div class="form-group">
-    <button onclick="handleLogin()">Sign In</button>
+    <button onclick="handleAdminLogin()">Access Dashboard</button>
   </div>
   <div id="login-error" class="error" style="display: none; margin-top: 16px;"></div>
 </div>
@@ -256,11 +252,12 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
 
-async function checkAuth() {
-  const { data: { user } } = await supabase.auth.getUser();
-  currentUser = user;
+const ADMIN_PASSWORD = 'estatequoter2025';
+
+function checkAuth() {
+  const isAuthenticated = sessionStorage.getItem('estatequoter-admin-auth') === 'true';
   
-  if (user) {
+  if (isAuthenticated) {
     document.getElementById('login-container').style.display = 'none';
     document.getElementById('dashboard-container').style.display = 'block';
     loadLeads();
@@ -270,35 +267,23 @@ async function checkAuth() {
   }
 }
 
-async function handleLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
+function handleAdminLogin() {
+  const password = document.getElementById('admin-password').value;
   const errorDiv = document.getElementById('login-error');
   
-  if (!email || !password) {
-    errorDiv.textContent = 'Please enter email and password';
-    errorDiv.style.display = 'block';
-    return;
-  }
-
-  try {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-    
-    currentUser = data.user;
-    document.getElementById('login-email').value = '';
-    document.getElementById('login-password').value = '';
+  if (password === ADMIN_PASSWORD) {
+    sessionStorage.setItem('estatequoter-admin-auth', 'true');
+    document.getElementById('admin-password').value = '';
     errorDiv.style.display = 'none';
     checkAuth();
-  } catch (err) {
-    errorDiv.textContent = err.message || 'Login failed';
+  } else {
+    errorDiv.textContent = 'Invalid password';
     errorDiv.style.display = 'block';
   }
 }
 
-async function handleLogout() {
-  await supabase.auth.signOut();
-  currentUser = null;
+function handleLogout() {
+  sessionStorage.removeItem('estatequoter-admin-auth');
   checkAuth();
 }
 
@@ -366,4 +351,5 @@ checkAuth();
 
 </body>
 </html>
+
 
