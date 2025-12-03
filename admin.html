@@ -9,9 +9,28 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
     
-    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .login-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
+    .login-box h1 { font-size: 28px; margin-bottom: 10px; color: #2c5282; }
+    .login-box p { color: #718096; margin-bottom: 30px; font-size: 14px; }
+    
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 12px; color: #4a5568; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
+    .form-group input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    
+    .form-group button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .form-group button:hover { background: #5568d3; }
+    .form-group button:disabled { background: #cbd5e0; cursor: not-allowed; }
+    
+    .error { color: #e53e3e; font-size: 12px; margin-top: 8px; }
+    .loading { display: none; }
+    
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
+    .container.authenticated { display: block; }
+    
     header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-    h1 { font-size: 24px; color: #2c5282; }
+    h2 { font-size: 24px; color: #2c5282; }
     .logout-btn { background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
     .logout-btn:hover { background: #c53030; }
     
@@ -36,9 +55,6 @@
     .status.quoted { background: #c6f6d5; color: #22543d; }
     .status.closed { background: #fed7d7; color: #742a2a; }
     
-    .lead-row-details { cursor: pointer; }
-    .lead-row-details:hover { color: #2c5282; text-decoration: underline; }
-    
     .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
     .modal-content { background: white; border-radius: 8px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
@@ -50,91 +66,105 @@
     .field-value { font-size: 14px; color: #2d3748; }
     
     .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
-    .empty-state p { font-size: 16px; margin-bottom: 10px; }
-
-    .auth-required {
-      display: flex;
-    }
-
-    .dashboard {
-      display: none;
-    }
-
-    .dashboard.authenticated {
-      display: block;
-    }
   </style>
 </head>
 <body>
-  <div id="auth-login" class="auth-required">
-    <div class="container">
-      <header>
-        <h1>EstateQuoter – Professional Dashboard</h1>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      </header>
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-container">
+    <div class="login-box">
+      <h1>EstateQuoter</h1>
+      <p>Professional Dashboard Login</p>
       
-      <div class="stats" id="stats">
-        <div class="stat-card">
-          <div class="stat-label">Total Leads</div>
-          <div class="stat-value" id="total-leads">0</div>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="login-email" required>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Open</div>
-          <div class="stat-value" id="open-leads">0</div>
+        
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" required>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Quoted</div>
-          <div class="stat-value" id="quoted-leads">0</div>
+        
+        <div class="form-group">
+          <button type="submit" id="login-btn">Sign In</button>
+          <div class="loading" id="login-loading">Signing in...</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Closed</div>
-          <div class="stat-value" id="closed-leads">0</div>
-        </div>
-      </div>
+        
+        <div class="error" id="login-error"></div>
+      </form>
       
-      <div class="filters">
-        <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
-        <select id="status-filter" onchange="filterLeads()">
-          <option value="">All Status</option>
-          <option value="open">Open</option>
-          <option value="quoted">Quoted</option>
-          <option value="closed">Closed</option>
-        </select>
-        <button onclick="refreshData()">Refresh</button>
-      </div>
-      
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>ZIP</th>
-              <th>Property Type</th>
-              <th>Needs</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="leads-table">
-            <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-    <div class="modal" id="detail-modal">
-      <div class="modal-content">
-        <span class="modal-close" onclick="closeModal()">&times;</span>
-        <h2 id="modal-name"></h2>
-        <div id="modal-details"></div>
-      </div>
+      <p style="margin-top: 20px; text-align: center; font-size: 12px; color: #718096;">
+        Don't have an account? <a href="#" onclick="toggleSignup(); return false;" style="color: #667eea; text-decoration: none;">Sign up here</a>
+      </p>
     </div>
   </div>
 
-  <div id="dashboard" class="dashboard">
+  <!-- DASHBOARD SCREEN -->
+  <div id="dashboard-screen" class="container">
+    <header>
+      <h2>EstateQuoter – Professional Dashboard</h2>
+      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </header>
+    
+    <div class="stats" id="stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Leads</div>
+        <div class="stat-value" id="total-leads">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Open</div>
+        <div class="stat-value" id="open-leads">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Quoted</div>
+        <div class="stat-value" id="quoted-leads">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Closed</div>
+        <div class="stat-value" id="closed-leads">0</div>
+      </div>
+    </div>
+    
+    <div class="filters">
+      <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
+      <select id="status-filter" onchange="filterLeads()">
+        <option value="">All Status</option>
+        <option value="open">Open</option>
+        <option value="quoted">Quoted</option>
+        <option value="closed">Closed</option>
+      </select>
+      <button onclick="refreshData()">Refresh</button>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>ZIP</th>
+            <th>Property Type</th>
+            <th>Needs</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="leads-table">
+          <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="modal" id="detail-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-name"></h2>
+      <div id="modal-details"></div>
+    </div>
   </div>
 
   <script>
@@ -142,23 +172,46 @@
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
-    const ADMIN_PASSWORD = 'estatequoter2025';
     let allLeads = [];
     
-    async function checkAuth() {
-      const authenticated = localStorage.getItem('eqAdminLogged-in');
-      if (!authenticated) {
-        const pwd = prompt('Enter admin password:');
-        if (pwd === ADMIN_PASSWORD) {
-          localStorage.setItem('eqAdminLogged-in', 'true');
-          loadLeads();
-        } else {
-          alert('Incorrect password');
-          location.reload();
-        }
-      } else {
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const loginBtn = document.getElementById('login-btn');
+      const errorDiv = document.getElementById('login-error');
+      
+      loginBtn.style.display = 'none';
+      document.getElementById('login-loading').style.display = 'block';
+      errorDiv.textContent = '';
+      
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        
+        showDashboard();
         loadLeads();
+      } catch (err) {
+        errorDiv.textContent = err.message || 'Login failed';
+        loginBtn.style.display = 'block';
+        document.getElementById('login-loading').style.display = 'none';
       }
+    }
+    
+    async function handleLogout() {
+      await supabase.auth.signOut();
+      showLogin();
+      document.getElementById('login-form').reset();
+    }
+    
+    function showLogin() {
+      document.getElementById('login-screen').style.display = 'flex';
+      document.getElementById('dashboard-screen').classList.remove('authenticated');
+    }
+    
+    function showDashboard() {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard-screen').classList.add('authenticated');
     }
     
     async function loadLeads() {
@@ -206,7 +259,7 @@
           <td>${lead.needs || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" class="lead-row-details" onclick="viewDetails(${lead.id}); return false;">View</a></td>
+          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
@@ -241,7 +294,7 @@
           <td>${lead.needs || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" class="lead-row-details" onclick="viewDetails(${lead.id}); return false;">View</a></td>
+          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
@@ -292,14 +345,20 @@
       loadLeads();
     }
     
-    function logout() {
-      localStorage.removeItem('eqAdminLogged-in');
-      location.reload();
+    function toggleSignup() {
+      alert('Contact your administrator to create an account.');
     }
     
-    checkAuth();
+    // Check if user is already logged in
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        showDashboard();
+        loadLeads();
+      } else {
+        showLogin();
+      }
+    });
   </script>
 </body>
 </html>
-
 
