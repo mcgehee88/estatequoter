@@ -1,5 +1,5 @@
 [build]
-  command = "npm install"
+  command = "npm install && node inject-secrets.js"
   publish = "."
   functions = "netlify/functions"
 
@@ -24,7 +24,7 @@
   status = 200
 
 # Environment variables are set in Netlify UI, not here
-# Force rebuild Wed Dec  3 17:01:47 UTC 2025
-# Force rebuild 2 Wed Dec  3 17:06:00 UTC 2025
+
 
 # Force clean rebuild Wed Dec  3 18:00:40 UTC 2025
+
