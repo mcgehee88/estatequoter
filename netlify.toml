@@ -28,3 +28,4 @@
     SUPABASE_URL = "https://dzqjvsabwijgwbhfjzqq.supabase.co"
     SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI"
     SITE_URL = "https://staging--astounding-fox-aec820.netlify.app"
+# Force rebuild Wed Dec  3 17:01:47 UTC 2025
