@@ -205,8 +205,25 @@
       document.getElementById('login-error').textContent = '';
       
       try {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        const res = await fetch('/.netlify/functions/auth-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+        
+        // Store session token
+        localStorage.setItem('estatequoter_session', JSON.stringify(data.session));
+        localStorage.setItem('estatequoter_user', JSON.stringify(data.user));
+        
+        // Show dashboard
+        showDashboard();
+        loadLeads();
       } catch (error) {
         document.getElementById('login-error').textContent = error.message;
         document.getElementById('login-btn').disabled = false;
@@ -215,7 +232,19 @@
     }
 
     async function handleLogout() {
-      await supabase.auth.signOut();
+      localStorage.removeItem('estatequoter_session');
+      localStorage.removeItem('estatequoter_user');
+      showLogin();
+    }
+
+    function checkAuth() {
+      const session = localStorage.getItem('estatequoter_session');
+      if (session) {
+        showDashboard();
+        loadLeads();
+      } else {
+        showLogin();
+      }
     }
 
     function showLogin() {
@@ -394,15 +423,10 @@
       `).join('');
     }
 
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        showDashboard();
-        loadLeads();
-      } else {
-        showLogin();
-      }
-    });
+    checkAuth();
   </script>
 </body>
 </html>
+
+
 
