@@ -259,14 +259,12 @@
 
     async function loadLeads() {
       try {
-        const { data, error } = await supabase
-          .from('leads')
-          .select('*')
-          .order('created_at', { ascending: false });
+        const res = await fetch('/.netlify/functions/admin-get-leads');
+        const data = await res.json();
         
-        if (error) throw error;
+        if (!res.ok) throw new Error(data.error || 'Failed to load leads');
         
-        allLeads = data || [];
+        allLeads = data.leads || [];
         updateStats();
         renderLeads();
       } catch (error) {
@@ -319,54 +317,70 @@
       document.getElementById('modal-name').textContent = `${lead.customer_name} – Lead #${lead.id.substring(0, 8)}`;
       
       const sections = {
-        'Contact Information': [
+        '📋 Contact Information': [
           ['Name', lead.customer_name],
           ['Email', lead.customer_email],
           ['Phone', lead.customer_phone],
           ['ZIP Code', lead.zip],
         ],
-        'Property Details': [
+        '🏠 Property Details': [
           ['Property Type', lead.property_type],
           ['Square Footage', lead.square_footage],
           ['Bedrooms', lead.bedrooms],
           ['Bathrooms', lead.bathrooms],
-          ['Home Value', lead.home_value ? `$${lead.home_value.toLocaleString()}` : 'N/A'],
+          ['Estimated Home Value', lead.home_value ? `$${lead.home_value.toLocaleString()}` : 'Not provided'],
         ],
-        'Service Needs': [
+        '💼 Service Needs': [
           ['Primary Need', lead.needs],
+          ['Secondary Needs', lead.needs_other],
           ['Role/Relationship', lead.role],
-          ['Clear Out Needed', lead.clear_out],
+          ['Role Details', lead.role_other],
+          ['Clear Out Required', lead.clear_out],
           ['Timeline', lead.timeline],
+        ],
+        '🎯 Item Assessment': [
           ['High Value Items', lead.high_value],
+          ['High Value Details', lead.high_value_other],
           ['Oversized Items', lead.oversized],
+          ['Oversized Details', lead.oversized_other],
+          ['Extra Room Items', lead.extra_rooms],
+          ['Extra Room Details', lead.extra_rooms_other],
         ],
-        'Property Condition': [
+        '🔍 Property Condition': [
           ['Fullness Level', lead.fullness],
-          ['Extra Rooms', lead.extra_rooms],
           ['Access Issues', lead.access],
-          ['Extra Notes', lead.extra_rooms_other],
+          ['Access Details', lead.access_other],
+          ['Media Files Attached', lead.media_count ? `${lead.media_count} file(s)` : 'None'],
+          ['Has Media', lead.has_media ? 'Yes' : 'No'],
         ],
-        'Additional Information': [
-          ['Status', lead.status],
-          ['Notes/Message', lead.notes],
-          ['Date Submitted', new Date(lead.created_at).toLocaleString()],
-          ['Professional Assigned', lead.professional_id ? `ID: ${lead.professional_id}` : 'Not assigned'],
-        ],
-        'Geolocation Data': [
+        '🌍 Geolocation Data': [
           ['IP Address', lead.ip],
           ['City', lead.city],
-          ['Region', lead.region],
+          ['Region/State', lead.region],
           ['Country', lead.country],
-          ['Coordinates', lead.latitude && lead.longitude ? `${lead.latitude}, ${lead.longitude}` : 'N/A'],
+          ['Postal Code', lead.postal],
+          ['Coordinates', lead.latitude && lead.longitude ? `${lead.latitude.toFixed(4)}, ${lead.longitude.toFixed(4)}` : 'N/A'],
           ['ISP', lead.isp],
-          ['VPN Detected', lead.likely_vpn],
+          ['VPN Detected', lead.likely_vpn ? 'Yes - High Risk' : 'No'],
+        ],
+        '💻 Device & Browser': [
+          ['Device Type', lead.device],
+          ['User Agent', lead.user_agent],
+          ['Referrer', lead.referrer],
+          ['Page URL', lead.page_url],
+        ],
+        '📊 Lead Status': [
+          ['Status', lead.status],
+          ['Date Submitted', lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'],
+          ['Professional Assigned', lead.professional_id ? `ID: ${lead.professional_id}` : 'Not assigned yet'],
+          ['Notes/Message', lead.notes],
         ],
       };
       
       let html = '';
       for (const [sectionTitle, fields] of Object.entries(sections)) {
         const sectionContent = fields
-          .filter(([_, val]) => val && val !== 'N/A' && val !== '' && val !== 'null' && val !== '0')
+          .filter(([_, val]) => val && val !== 'N/A' && val !== '' && val !== 'null' && val !== '0' && val !== 'Not provided' && val !== 'None')
           .map(([label, value]) => `
             <div class="field">
               <div class="field-label">${label}</div>
@@ -377,6 +391,10 @@
         if (sectionContent) {
           html += `<div class="detail-section"><h3>${sectionTitle}</h3>${sectionContent}</div>`;
         }
+      }
+      
+      if (!html) {
+        html = '<div class="empty-state"><p>No detailed information available</p></div>';
       }
       
       document.getElementById('modal-details').innerHTML = html;
@@ -427,6 +445,7 @@
   </script>
 </body>
 </html>
+
 
 
 
