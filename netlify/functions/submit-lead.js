@@ -2,18 +2,11 @@ const { createClient } = require('@supabase/supabase-js');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 
-const MAKE_COM_WEBHOOK = process.env.MAKE_COM_WEBHOOK_URL;
-
 exports.handler = async (event) => {
-  console.log('DEBUG: SUPABASE_URL =', process.env.SUPABASE_URL);
-  console.log('DEBUG: SUPABASE_SECRET_KEY =', process.env.SUPABASE_SECRET_KEY ? 'SET' : 'UNDEFINED');
-  
-  const supabase = createClient(
-    'https://dzqjvsabwijgwbhfjzqq.supabase.co',
-    'sb_secret_QovMs9AGtFX5D_Jc7RFL5Q_z4ozbDEx'
-  );
+  const supabaseUrl = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
+  const supabaseKey = 'sb_secret_QovMs9AGtFX5D_Jc7RFL5Q_z4ozbDEx';
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-  // CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -32,23 +25,13 @@ exports.handler = async (event) => {
   try {
     const body = JSON.parse(event.body);
 
-    // Validate required fields
-    const required = [
-      'customer_name',
-      'customer_email',
-      'property_type',
-      'estate_location',
-    ];
+    const required = ['customer_name', 'customer_email', 'property_type', 'estate_location'];
     for (const field of required) {
       if (!body[field]) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ error: `Missing required field: ${field}` }),
-        };
+        return { statusCode: 400, body: JSON.stringify({ error: `Missing: ${field}` }) };
       }
     }
 
-    // Insert into Supabase
     const { data: lead, error: dbError } = await supabase
       .from('leads')
       .insert({
@@ -65,27 +48,10 @@ exports.handler = async (event) => {
       .select();
 
     if (dbError) {
-      console.error('Database error:', dbError);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to save lead' }),
-      };
+      console.error('DB error:', dbError);
+      return { statusCode: 500, body: JSON.stringify({ error: 'Failed to save lead' }) };
     }
 
-    // Send to Make.com (dual logging - don't fail if Make fails)
-    if (MAKE_COM_WEBHOOK) {
-      fetch(MAKE_COM_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...body,
-          lead_id: lead[0].id,
-          timestamp: new Date().toISOString(),
-        }),
-      }).catch((err) => console.error('Make.com webhook error:', err));
-    }
-
-    // Log activity
     await supabase.from('activity_log').insert({
       entity_type: 'lead',
       entity_id: lead[0].id,
@@ -110,11 +76,7 @@ exports.handler = async (event) => {
     return {
       statusCode: 500,
       headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Internal server error' }),
+      body: JSON.stringify({ error: 'Internal server error', details: error.message }),
     };
   }
 };
-
-
-
-
