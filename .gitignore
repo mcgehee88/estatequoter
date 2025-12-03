@@ -2,6 +2,9 @@ node_modules/
 *.log
 .DS_Store
 .vscode/
-netlify/
-*.env
-.env*
+.env
+.env.production
+.env.*.local
+dist/
+build/
+*.tmp

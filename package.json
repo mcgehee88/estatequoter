@@ -1,0 +1,17 @@
+{
+  "name": "estatequoter",
+  "version": "1.0.0",
+  "description": "Estate liquidation and planning quote platform",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["estate", "liquidation", "quotes"],
+  "author": "Michael McGehee",
+  "license": "All Rights Reserved",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "uuid": "^9.0.0",
+    "node-fetch": "^2.7.0"
+  }
+}
