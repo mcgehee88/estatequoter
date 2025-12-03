@@ -30,8 +30,9 @@ exports.handler = async (event) => {
     }
 
     // Simple hardcoded admin check
-    const ADMIN_EMAIL = 'estatequoter@gmail.com';
-    if (email === ADMIN_EMAIL && password.length > 0) {
+    const ADMIN_EMAIL = 'contact@estatequoter.com';
+    const ADMIN_PASSWORD = 'GreenPastures';
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
       // Generate a simple session token
       const token = Buffer.from(`${email}:${Date.now()}`).toString('base64');
       
@@ -60,5 +61,6 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
