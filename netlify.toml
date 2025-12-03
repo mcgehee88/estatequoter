@@ -1,8 +1,7 @@
 [build]
-  command = "npm install && node inject-secrets.js"
+  command = "npm install"
   publish = "."
   functions = "netlify/functions"
-  environment = { SECRETS_SCAN_ENABLED = "false" }
 
 [[redirects]]
   from = "/api/*"
@@ -23,4 +22,5 @@
   from = "/pro-dashboard"
   to = "/pro-dashboard.html"
   status = 200
+
 
