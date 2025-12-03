@@ -5,6 +5,9 @@ const fetch = require('node-fetch');
 const MAKE_COM_WEBHOOK = process.env.MAKE_COM_WEBHOOK_URL;
 
 exports.handler = async (event) => {
+  console.log('DEBUG: SUPABASE_URL =', process.env.SUPABASE_URL);
+  console.log('DEBUG: SUPABASE_SECRET_KEY =', process.env.SUPABASE_SECRET_KEY ? 'SET' : 'UNDEFINED');
+  
   const supabase = createClient(
     'https://dzqjvsabwijgwbhfjzqq.supabase.co',
     'sb_secret_QovMs9AGtFX5D_Jc7RFL5Q_z4ozbDEx'
@@ -111,6 +114,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
