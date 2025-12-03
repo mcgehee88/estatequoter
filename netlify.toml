@@ -2,6 +2,8 @@
   command = "npm install && node inject-secrets.js"
   publish = "."
   functions = "netlify/functions"
+  environment:
+    SECRETS_SCAN_OMIT_KEYS = "SUPABASE_ANON_KEY"
 
 [[redirects]]
   from = "/api/*"
@@ -27,4 +29,5 @@
 
 
 # Force clean rebuild Wed Dec  3 18:00:40 UTC 2025
+
 
