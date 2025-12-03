@@ -6,8 +6,8 @@ const MAKE_COM_WEBHOOK = process.env.MAKE_COM_WEBHOOK_URL;
 
 exports.handler = async (event) => {
   const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SECRET_KEY
+    'https://dzqjvsabwijgwbhfjzqq.supabase.co',
+    'sb_secret_QovMs9AGtFX5D_Jc7RFL5Q_z4ozbDEx'
   );
 
   // CORS
@@ -111,5 +111,6 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
