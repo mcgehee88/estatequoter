@@ -1909,44 +1909,55 @@ window.addEventListener('popstate', (event) => {
 /* Send to Make.com – JSON only, no file upload */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
-  const apiURL = "/api/submit-lead";
+  
+  mainBtn.disabled = true;
+  mainBtn.textContent = "Submitting...";
 
-  // Track how many leads this browser has sent
-  let leadCount = 0;
+  // Map form data to database schema
+  const dbPayload = {
+    customer_name: leadData.customerName || '',
+    customer_email: leadData.customerEmail || '',
+    customer_phone: leadData.customerPhone || '',
+    property_type: leadData.propertyType || '',
+    property_value_range: leadData.propertyValue || null,
+    estate_location: leadData.location || '',
+    urgency: leadData.timeline || '',
+    notes: leadData.additionalInfo || '',
+    referral_source: leadData.referralSource || 'organic'
+  };
+
   try {
-    leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
-  } catch (e) {
-    leadCount = 0;
-  }
-  leadCount += 1;
-
-  // Save back to localStorage
-  try {
-    localStorage.setItem('eqLeadCount', String(leadCount));
-  } catch (e) {
-    console.warn("Unable to store lead count", e);
-  }
-
-  // Give this lead an ID + timestamp so we can manage it later
-  const leadId = "EQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-  leadData.leadId = leadId;
-  leadData.createdAt = new Date().toISOString();
-
-  // Save to Supabase
-  try {
+    // Send to Supabase
     const { error } = await supabase
       .from('leads')
-      .insert(leadData);
-    if (error) throw error;
-  } catch (err) {
-    console.error('Supabase insert failed', err);
-    alert('Something went wrong. Please try again.');
-    return;
-  }
+      .insert([dbPayload]);
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      throw new Error(error.message);
+    }
 
-  // Reset button
-  mainBtn.textContent = "Submit request";
-  mainBtn.disabled = false;
+    // Send to Make.com for compatibility
+    await fetch(webhookURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(leadData)
+    }).catch(err => console.warn("Make.com send failed (non-critical)", err));
+
+    // Track lead count
+    let leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
+    localStorage.setItem('eqLeadCount', String(leadCount + 1));
+
+    // Show success
+    mainBtn.textContent = "✓ Request submitted!";
+    mainBtn.disabled = true;
+    
+  } catch (err) {
+    console.error('Submission failed:', err);
+    alert('Submission failed: ' + err.message + '\n\nPlease try again.');
+    mainBtn.textContent = "Submit request";
+    mainBtn.disabled = false;
+  }
 }
 
 /* Collect all form data into a single object */
