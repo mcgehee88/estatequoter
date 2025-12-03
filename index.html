@@ -1478,9 +1478,9 @@ function hydrateFormFromData(data) {
     const slider = document.getElementById('fullness-range');
     let val = 2;
     if (data.fullness === 'Light') val = 1;
-    else if (data.fullness === 'Medium') val = 2;
-    else if (data.fullness === 'Full') val = 3;
-    else if (data.fullness === 'Really full') val = 4;
+    if (data.fullness === 'Medium') val = 2;
+    if (data.fullness === 'Full') val = 3;
+    if (data.fullness === 'Really full') val = 4;
     slider.value = val;
     slider.dispatchEvent(new Event('input'));
   }
@@ -1523,121 +1523,6 @@ function hydrateFormFromData(data) {
   if (data.email) document.getElementById('email').value = data.email.slice(0, 200);
   if (data.phone) document.getElementById('phone').value = data.phone.slice(0, 40);
   if (typeof data.notes === 'string') document.getElementById('notes').value = data.notes.slice(0, 1000);
-
-  // Media cannot be re-populated (browser security) – but summary in review will still show Yes/No + count
-}
-
-/* Collect data for review + Make */
-function collectData() {
-  const data = {};
-
-  // Pro slug (if present)
-  const proInput = document.getElementById('proSlug');
-  data.proSlug = proInput ? (proInput.value || '').trim() : "";
-
-  // ZIP
-  data.zip = document.getElementById('zip').value.trim();
-
-  // Step 0: Your role
-  const roleStep = qs[0];
-  const roleChips = roleStep.querySelectorAll('.chip.active');
-  data.role = roleChips.length
-    ? Array.from(roleChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : '';
-  data.roleOther = document.getElementById('role-other').value.trim().slice(0, 200);
-
-  // Step 1: What you need most
-  const needsStep = qs[1];
-  const needsChips = needsStep.querySelectorAll('.chip.active');
-  data.needs = needsChips.length
-    ? Array.from(needsChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : '';
-  data.needsOther = document.getElementById('needs-other').value.trim().slice(0, 200);
-
-  // Step 2: Property type
-  const step2Chip = qs[2].querySelector('.chip.active');
-  data.propertyType = step2Chip ? (step2Chip.dataset.val || step2Chip.textContent.trim()) : '';
-
-  // Step 3: Square footage
-  data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10);
-
-  // Step 4: Beds & baths
-  data.bedrooms = document.getElementById('beds').value;
-  data.bathrooms = document.getElementById('baths').value;
-
-  // Step 5: Extra rooms
-  const step5 = qs[5];
-  const extraChips = step5.querySelectorAll('.chip.active');
-  data.extraRooms = extraChips.length
-    ? Array.from(extraChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : 'None';
-  data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim().slice(0, 200);
-
-  // Step 6: Fullness
-  const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
-  let fullnessLabel = 'Medium';
-  if (fullnessVal === 1) fullnessLabel = 'Light';
-  if (fullnessVal === 2) fullnessLabel = 'Medium';
-  if (fullnessVal === 3) fullnessLabel = 'Full';
-  if (fullnessVal === 4) fullnessLabel = 'Really full';
-  data.fullness = fullnessLabel;
-
-  // Step 7: High value items
-  const step7 = qs[7];
-  const hvChips = step7.querySelectorAll('.chip.active');
-  data.highValue = hvChips.length
-    ? Array.from(hvChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : 'None or not sure';
-  data.highValueOther = document.getElementById('highvalue-other').value.trim().slice(0, 200);
-
-  // Step 8: Clear-out needs
-  const step8Chip = qs[8].querySelector('.chip.active');
-  data.clearOut = step8Chip ? (step8Chip.dataset.val || step8Chip.textContent.trim()) : '';
-
-  // Step 9: Timeline
-  const step9Chip = qs[9].querySelector('.chip.active');
-  data.timeline = step9Chip ? (step9Chip.dataset.val || step9Chip.textContent.trim()) : '';
-
-  // Step 10: Oversized / difficult
-  const step10 = qs[10];
-  const osChips = step10.querySelectorAll('.chip.active');
-  data.oversized = osChips.length
-    ? Array.from(osChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : 'None';
-  data.oversizedOther = document.getElementById('oversized-other').value.trim().slice(0, 200);
-
-  // Step 11: Access
-  const step11 = qs[11];
-  const accChips = step11.querySelectorAll('.chip.active');
-  data.access = accChips.length
-    ? Array.from(accChips).map(c => c.dataset.val || c.textContent.trim()).join(', ')
-    : '';
-  data.accessOther = document.getElementById('access-other').value.trim().slice(0, 300);
-
-  // Step 12: Real media via Cloudinary (no undefined typesSet nonsense)
-  const mediaArr = Array.isArray(cloudinaryFiles) ? cloudinaryFiles : [];
-  data.uploadedMedia = mediaArr.map(f => ({
-    public_id: f.public_id,
-    url: f.secure_url,
-    thumbnail_url: f.secure_url.replace('/upload/', '/upload/w_600,h_600,c_limit/'),
-    name: f.original_filename || f.public_id,
-    size: f.bytes,
-    type: f.resource_type === 'video' ? 'video' : 'image'
-  }));
-  data.mediaCount = data.uploadedMedia.length;
-  data.hasMedia = data.mediaCount > 0;
-  data.hasVideo = mediaArr.some(f => f.resource_type === 'video');
-  data.videoProvided = data.hasMedia ? "Yes" : "No";
-  data.mediaConsentChecked = document.getElementById('tc-check').checked ? "Yes" : "No";
-
-  // Step 13: Home value
-  data.homeValue = parseInt(document.getElementById('value-range').value, 10);
-
-  // Step 14: Contact + notes
-  data.name = document.getElementById('name').value.trim().slice(0, 120);
-  data.email = document.getElementById('email').value.trim().slice(0, 200);
-  data.phone = document.getElementById('phone').value.trim().slice(0, 40);
-  data.notes = document.getElementById('notes').value.trim().slice(0, 1000);
 
   // Meta
   const meta = window._eqMeta || {};
@@ -2014,6 +1899,7 @@ window.addEventListener('popstate', (event) => {
 /* Send to Make.com – JSON only, no file upload */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+  const apiURL = "/api/submit-lead";
 
   // Track how many leads this browser has sent
   let leadCount = 0;
@@ -2060,7 +1946,23 @@ async function sendLeadToMake(leadData) {
   mainBtn.textContent = "Submitting...";
   mainBtn.disabled = true;
 
-  // Send JSON-only payload to Make.com (no files)
+  // Prepare data for new backend (map form fields to API schema)
+  const backendPayload = {
+    customer_name: leadData.name || "",
+    customer_email: leadData.email || "",
+    customer_phone: leadData.phone || "",
+    property_type: leadData.propertyType || "",
+    property_value_range: leadData.propertyValue || "",
+    estate_location: leadData.location || "",
+    urgency: leadData.urgency || "",
+    notes: leadData.additionalDetails || "",
+    referral_source: leadData.referralSource || "organic"
+  };
+
+  // Send to both Make.com and new backend (dual logging)
+  let makeSuccess = false;
+  let apiSuccess = false;
+
   try {
     await fetch(webhookURL, {
       method: "POST",
@@ -2069,8 +1971,26 @@ async function sendLeadToMake(leadData) {
       },
       body: JSON.stringify(leadData)
     });
+    makeSuccess = true;
   } catch (err) {
     console.error("Make.com failed:", err);
+  }
+
+  try {
+    const response = await fetch(apiURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(backendPayload)
+    });
+    if (response.ok) {
+      apiSuccess = true;
+      const result = await response.json();
+      console.log("Backend lead created:", result.lead_id);
+    }
+  } catch (err) {
+    console.error("Backend API failed:", err);
   }
 
   // Reset button
