@@ -2,9 +2,7 @@
   command = "npm install"
   publish = "."
   functions = "netlify/functions"
-
-[functions]
-  SECRETS_SCAN_ENABLED = "false"
+  environment = { SECRETS_SCAN_ENABLED = "false" }
 
 [[redirects]]
   from = "/api/*"
@@ -25,6 +23,7 @@
   from = "/pro-dashboard"
   to = "/pro-dashboard.html"
   status = 200
+
 
 
 
