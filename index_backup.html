@@ -1,0 +1,2766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EstateQuoter – Free Estate Liquidation & Estate Sale Quotes</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- SEO basics -->
+  <meta name="description" content="EstateQuoter helps families, heirs, and executors get fast, free quotes from local estate sale companies and estate liquidators for whole-house cleanouts, downsizing, and estate sales. Answer a few questions and compare options without pressure.">
+  <link rel="canonical" href="https://estatequoter.com/">
+  <meta name="robots" content="index,follow">
+
+  <!-- Open Graph (for link previews / AI context) -->
+  <meta property="og:title" content="EstateQuoter – Free Estate Liquidation & Estate Sale Quotes">
+  <meta property="og:description" content="Get fast, no-pressure quotes from trusted local estate liquidators and estate sale companies for cleanouts, downsizing, and full estate sales.">
+  <meta property="og:url" content="https://estatequoter.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="EstateQuoter">
+  <meta property="og:image" content="https://estatequoter.com/og-image.jpg">
+
+  <!-- Twitter card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EstateQuoter – Free Estate Liquidation & Estate Sale Quotes">
+  <meta name="twitter:description" content="Answer a few questions and get quotes from local estate liquidators, estate sale companies, and cleanout crews. Free and no pressure.">
+
+  <!-- Structured data: Service -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "EstateQuoter",
+    "url": "https://estatequoter.com/",
+    "description": "Online intake that helps families, heirs, and executors get fast quotes from local estate liquidators and estate sale companies for cleanouts, downsizing and estate sales.",
+    "serviceType": [
+      "Estate liquidation",
+      "Estate sale coordination",
+      "Estate cleanout",
+      "Downsizing help"
+    ],
+    "areaServed": {
+      "@type": "Place",
+      "name": "United States"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "EstateQuoter"
+    }
+  }
+  </script>
+
+  <!-- Structured data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does EstateQuoter work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You answer a short set of questions about the property, timeline, and how full it is. EstateQuoter uses that to match you with local estate liquidators and estate sale companies, who then review your details and provide quotes or follow-up questions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What kinds of estate services can I get quotes for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can get quotes for estate sales, whole-house cleanouts, buyouts of contents, donation and haul-away, and help with downsizing or moving a family member into assisted living."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does EstateQuoter charge me for getting quotes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. EstateQuoter is free for families and heirs who are requesting quotes. Local professionals pay us to receive leads so you can compare options without pressure."
+        }
+      }
+    ]
+  }
+  </script>
+
+    <!-- Structured data: Organization + founders -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "EstateQuoter",
+    "url": "https://estatequoter.com/",
+    "description": "EstateQuoter helps families, heirs, and executors get fast, no-pressure quotes from trusted local estate sale companies, estate liquidators, and cleanout crews.",
+    "founder": [
+      {
+        "@type": "Person",
+        "name": "Michael McGehee",
+        "jobTitle": "Co-Founder",
+        "description": "Co-founder of EstateQuoter and founder of FreeTrials.com, with over a decade of experience building consumer-focused online platforms.",
+        "homeLocation": {
+          "@type": "Place",
+          "name": "Virginia Beach, Virginia"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Todd Osborne",
+        "jobTitle": "Co-Founder",
+        "description": "Co-founder of EstateQuoter and owner of Caring Transitions of Chesapeake & Virginia Beach West, with extensive hands-on experience helping families with estate sales, cleanouts, and senior moves.",
+        "homeLocation": {
+          "@type": "Place",
+          "name": "Hampton Roads, Virginia"
+        }
+      }
+    ]
+  }
+  </script>
+
+
+  <!-- Icons / styles -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+  :root{
+    --p:#2153ff;
+    --g:#0d9d6a;
+    --bg:#f8fafc;
+    --t:#0f172a;
+    --m:#64748b;
+    --r:24px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--t);
+    line-height:1.6;
+    min-height:100dvh;
+  }
+  .page {
+    padding:32px 16px 120px;
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+  }
+
+  /* Updated logo */
+  .logo {
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-bottom:24px;
+  }
+  .logo-mark {
+    width:44px;
+    height:44px;
+    border-radius:999px;
+    background:var(--g);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    box-shadow:0 10px 26px rgba(13,157,106,.35);
+  }
+  .logo-mark i {
+    font-size:22px;
+  }
+  .logo-word {
+    font-size:26px;
+    letter-spacing:.03em;
+  }
+
+  /* Headline */
+  h1 { font-size:36px; font-weight:800; margin-bottom:16px; }
+  h1 span { color:var(--p); }
+  .sub { font-size:19px; color:#475569; margin-bottom:30px; }
+  .sub strong { color:var(--g); }
+
+  /* Compact header once form is active */
+  body.form-active .page { padding-top:20px; padding-bottom:60px; }
+  body.form-active h1 { font-size:28px; margin-bottom:8px; }
+  body.form-active .sub { font-size:15px; margin-bottom:16px; }
+
+  /* Form containers */
+  .form-container {
+    background:#fff;
+    border-radius:var(--r);
+    box-shadow:0 16px 50px rgba(0,0,0,.1);
+    padding:32px 24px;
+    text-align:left;
+    margin:0 auto;
+  }
+
+  /* Progress / steps */
+  #main-form { display:none; }
+  .progress {
+    height:10px;
+    background:#e2e8f0;
+    border-radius:5px;
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .bar {
+    height:100%;
+    background:var(--p);
+    width:0;
+    transition:width .3s ease;
+  }
+  .step-title { font-size:22px; font-weight:700; margin-bottom:4px; }
+  .encourager { font-size:13px; color:var(--m); margin-bottom:16px; }
+
+  .q {
+    display:none;
+    animation:fade .25s;
+  }
+  .q.active { display:block; }
+  @keyframes fade {
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:none}
+  }
+
+  label {
+    display:block;
+    font-weight:600;
+    margin:20px 0 8px;
+    font-size:16px;
+  }
+  input[type=text],
+  input[type=number],
+  input[type=email],
+  input[type=tel],
+  select,
+  textarea {
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    font-size:16px;
+  }
+
+  .helper {
+    font-size:13px;
+    color:var(--m);
+    margin-top:4px;
+  }
+
+  /* Range + editable bubble */
+  .range-wrap {
+    position:relative;
+    margin:24px 0 48px;
+  }
+  input[type=range] {
+    width:100%;
+    height:8px;
+    border-radius:8px;
+    background:#e2e8f0;
+    outline:none;
+    -webkit-appearance:none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--p);
+    cursor:pointer;
+  }
+  .range-value {
+    position:absolute;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--p);
+    color:#fff;
+    padding:8px 16px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:18px;
+    white-space:nowrap;
+    cursor:text;
+    z-index:2;
+  }
+  .range-value::after {
+    content:"";
+    position:absolute;
+    bottom:-6px;
+    left:50%;
+    margin-left:-6px;
+    border-width:6px;
+    border-style:solid;
+    border-color:var(--p) transparent transparent transparent;
+  }
+
+  /* Chips */
+  .chips {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:12px 0;
+  }
+  .chip {
+    padding:10px 18px;
+    border:2px solid #cbd5e1;
+    border-radius:999px;
+    background:#fff;
+    cursor:pointer;
+    transition:all .15s;
+    font-size:15px;
+  }
+  .chip.active {
+    border-color:var(--p);
+    background:#e0ebff;
+    color:var(--p);
+  }
+
+  /* Media box (photos / video) */
+  .video-box {
+    border:3px dashed #94a3b8;
+    border-radius:16px;
+    padding:32px 20px;
+    text-align:center;
+    background:#f8fafc;
+    cursor:pointer;
+  }
+  .video-box.ready {
+    border-color:var(--g);
+    background:#ecfdf5;
+  }
+  #media-summary {
+    margin-top:10px;
+    font-size:14px;
+    color:#64748b;
+  }
+  #media-preview-grid {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:12px;
+  }
+  .media-thumb {
+    width:72px;
+    height:72px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    object-fit:cover;
+  }
+    .media-thumb-wrap {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+  }
+  .media-thumb-wrap .media-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+  }
+
+  .media-thumb-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(15,23,42,.85);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .media-pill {
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid #cbd5e1;
+    font-size:12px;
+    color:#334155;
+    background:#f8fafc;
+  }
+
+  /* Fixed CTA bar */
+  .fixed-btn {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    padding:12px 16px;
+    background:#fff;
+    box-shadow:0 -8px 40px rgba(0,0,0,.12);
+    z-index:100;
+  }
+  .btn-row {
+    display:flex;
+    gap:10px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  .fixed-btn button {
+    padding:16px;
+    font-size:17px;
+    font-weight:700;
+    border:none;
+    border-radius:999px;
+    cursor:pointer;
+  }
+  #back-btn {
+    flex:1;
+    background:#e2e8f0;
+    color:#0f172a;
+  }
+  #main-btn {
+    flex:2;
+    background:linear-gradient(135deg,var(--p),#1641cc);
+    color:#fff;
+    box-shadow:0 10px 30px rgba(33,83,255,.3);
+  }
+  #back-btn[disabled] {
+    opacity:.4;
+    cursor:not-allowed;
+  }
+
+  /* On desktop, CTA bar sits under the card instead of fixed bottom */
+  @media(min-width:768px) {
+    .page { padding-bottom:40px; }
+    .fixed-btn {
+      position:static;
+      box-shadow:none;
+      padding:0;
+      margin-top:24px;
+    }
+  }
+
+  /* Modals */
+  .modal {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:1000;
+    padding:20px;
+  }
+  .modal.active { display:flex; }
+  .modal-content {
+    background:#fff;
+    border-radius:var(--r);
+    padding:32px;
+    text-align:center;
+    max-width:420px;
+  }
+  .modal-content button {
+    padding:12px 32px;
+    border-radius:999px;
+    border:none;
+    background:var(--g);
+    color:#fff;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+  }
+
+  /* Review page */
+  #review {
+    display:none;
+  }
+  .review-title {
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .review-sub {
+    font-size:14px;
+    color:var(--m);
+    margin-bottom:20px;
+  }
+  .review-grid {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+  }
+  .review-item {
+    padding:10px 12px;
+    border-radius:12px;
+    background:#f8fafc;
+  }
+  .review-item dt {
+    font-size:13px;
+    font-weight:600;
+    color:#64748b;
+    margin-bottom:2px;
+  }
+  .review-item dd {
+    font-size:15px;
+    margin:0;
+    color:#0f172a;
+  }
+  #edit-btn {
+    margin-top:20px;
+    padding:14px 28px;
+    border-radius:999px;
+    border:none;
+    background:#e2e8f0;
+    color:#0f172a;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  /* Pointers on primary interactive elements */
+  button,
+  .video-box,
+  .chip,
+  #zip-submit {
+    cursor:pointer;
+  }
+
+  /* Make logo clickable without underline */
+  #logo-home {
+    text-decoration:none;
+    color:inherit;
+  }
+  #logo-home:hover {
+    text-decoration:none;
+  }
+
+  /* REQUIRED MEDIA CONSENT HIGHLIGHT STYLE */
+  #tc-label.required {
+    display:block !important;
+    background:#fff0f0;
+    border:1px solid #dc2626;
+    padding:12px;
+    border-radius:10px;
+  }
+
+  #tc-label.required::after {
+    content:" *";
+    color:#dc2626;
+    font-weight:900;
+    margin-left:4px;
+  }
+
+  .info-block {
+    margin-top:32px;
+    text-align:left;
+    font-size:15px;
+    color:#0f172a;
+    max-width:640px;
+    margin-left:auto;
+    margin-right:auto;
+    padding:0 16px 32px;
+  }
+  .info-block h2 {
+    font-size:20px;
+    margin-bottom:8px;
+  }
+  .info-block h3 {
+    font-size:16px;
+    margin:16px 0 4px;
+  }
+  .info-block p {
+    margin-bottom:4px;
+    color:#475569;
+  }
+
+   /* Our Team / Founders section */
+  .team-section {
+    margin-top:32px;
+    text-align:left;
+  }
+
+  .team-intro {
+    font-size:15px;
+    color:#475569;
+    margin-bottom:12px;
+  }
+
+  .team-grid {
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin-top:12px;
+  }
+
+  .team-member {
+    background:#ffffff;
+    border-radius:16px;
+    border:1px solid #e2e8f0;
+    padding:16px 14px;
+    box-shadow:0 8px 24px rgba(15,23,42,.04);
+  }
+
+  .team-member-header {
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:6px;
+  }
+
+  .team-avatar {
+    width:40px;
+    height:40px;
+    border-radius:999px;
+    background:var(--p);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-weight:700;
+    font-size:18px;
+    flex-shrink:0;
+  }
+
+  .team-title {
+    font-size:15px;
+    font-weight:700;
+    color:#0f172a;
+  }
+
+  .team-subtitle {
+    font-size:13px;
+    color:#64748b;
+  }
+
+  .team-member p {
+    font-size:14px;
+    color:#475569;
+    margin-bottom:4px;
+  }
+
+  .team-values {
+    font-size:14px;
+    color:#475569;
+    margin-top:8px;
+  }
+
+  @media (min-width:768px) {
+    .team-grid {
+      flex-direction:row;
+    }
+    .team-member {
+      flex:1;
+    }
+  }
+   
+
+   .social-bar {
+    margin:32px auto 8px;
+    max-width:640px;
+    text-align:center;
+  }
+  .social-bar-label {
+    font-size:13px;
+    color:var(--m);
+    margin-bottom:8px;
+  }
+  .social-links {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+  }
+  .social-link {
+    width:36px;
+    height:36px;
+    border-radius:999px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e2e8f0;
+    color:#0f172a;
+    font-size:16px;
+    text-decoration:none;
+    transition:transform .15s, box-shadow .15s, background .15s, color .15s;
+  }
+  .social-link:hover {
+    transform:translateY(-1px);
+    box-shadow:0 4px 12px rgba(15,23,42,.2);
+    background:var(--p);
+    color:#fff;
+  }
+
+  /* Hide socials while intake/review is active */
+  body.form-active .social-bar {
+    display:none;
+  }   
+    
+  /* Hide info/FAQ while form is active */
+  body.form-active .info-block {
+    display:none;
+  }
+
+  /* Last request banner */
+  #last-request-banner {
+    max-width:640px;
+    margin:0 auto 24px;
+    padding:16px 18px;
+    border-radius:18px;
+    background:#e0ebff;
+    color:#1e293b;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  #last-request-banner button {
+    padding:8px 16px;
+    border-radius:999px;
+    border:none;
+    background:var(--p);
+    color:#fff;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    white-space:nowrap;
+  }  
+
+  /* Hide banner while user is in the intake/review flow */
+  body.form-active #last-request-banner {
+    display:none;
+  }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <a href="/" class="logo" id="logo-home">
+    <div class="logo-mark">
+      <i class="fas fa-house-chimney"></i>
+    </div>
+    <span class="logo-word">EstateQuoter</span>
+  </a>
+
+  <h1>Estate liquidation quotes,<br><span>without the hassle.</span></h1>
+  <p class="sub">
+    Answer a few quick questions and get accurate quotes from trusted local pros – <strong>free and no pressure.</strong>
+  </p>
+
+  <p class="helper" style="text-align:center; margin-top:-4px; margin-bottom:20px; font-size:14px;">
+    Are you an estate professional?
+    <a href="/pro.html" style="color:#2153ff; text-decoration:underline;">
+      See how EstateQuoter works for you
+    </a>
+  </p>
+
+  <!-- ZIP Code First -->
+  <div id="zip-section" class="form-container" style="max-width:500px;">
+    <label for="zip">Property ZIP code</label>
+    <input type="text" id="zip" placeholder="e.g. 23451" maxlength="5" inputmode="numeric" autocomplete="postal-code">
+    <p class="helper">We use this info to get you the right help.</p>
+    <div style="margin-top:20px; text-align:right;">
+      <button id="zip-submit" style="padding:14px 28px; border:none; border-radius:999px; background:linear-gradient(135deg,var(--p),#1641cc); color:#fff; font-weight:700; font-size:16px;">
+        Continue
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <div id="main-form" class="form-container">
+    <input type="hidden" id="proSlug" name="proSlug" value="">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="step-title" id="step-title">Property type</div>
+    <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
+
+    <!-- 0. Your role (multi) -->
+    <div class="q active" data-required="true">
+      <label>Your role in this process</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Child or family member helping">Child or family member helping</div>
+        <div class="chip" data-val="Executor / personal representative">Executor / personal representative</div>
+        <div class="chip" data-val="Homeowner / selling my own items">Homeowner / selling my own items</div>
+        <div class="chip" data-val="Realtor helping a client">Realtor helping a client</div>
+        <div class="chip" data-val="Attorney / financial / estate professional">Attorney / financial / estate professional</div>
+        <div class="chip" data-val="Estate liquidator / cleanout pro">Estate liquidator / cleanout pro checking fit</div>
+        <div class="chip" data-val="Other">Other</div>
+      </div>
+      <input type="text" id="role-other" placeholder="Anything else about your role" style="margin-top:12px;" maxlength="200">
+    </div>
+
+    <!-- 1. What you need (multi) -->
+    <div class="q" data-required="true">
+      <label>What do you need help with most?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Full estate sale / tag sale">Full estate sale / tag sale</div>
+        <div class="chip" data-val="Buyout of most contents">Buyout of most contents</div>
+        <div class="chip" data-val="Whole-house cleanout / haul away">Whole-house cleanout / haul away</div>
+        <div class="chip" data-val="Help with move / downsizing">Help with move / downsizing</div>
+        <div class="chip" data-val="Help planning / pricing an estate sale">Help planning / pricing an estate sale</div>
+        <div class="chip" data-val="I'm not sure yet – need guidance">I'm not sure yet – need guidance</div>
+      </div>
+      <input type="text" id="needs-other" placeholder="Anything else you're hoping for" style="margin-top:12px;" maxlength="200">
+    </div>
+ 
+
+    <!-- 2. Property Type (single) -->
+    <div class="q" data-step="0" data-required="true">
+      <label>What type of property is it?</label>
+      <div class="chips" data-multi="false">
+        <div class="chip active" data-val="House">House</div>
+        <div class="chip" data-val="Condo/Townhouse">Condo / Townhouse</div>
+        <div class="chip" data-val="Apartment">Apartment</div>
+        <div class="chip" data-val="Large estate">Large estate</div>
+      </div>
+      <p class="helper">Pick the closest option.</p>
+    </div>
+
+    <!-- 3. Square Footage -->
+    <div class="q" data-step="1" data-required="true">
+      <label>Square footage (estimate is fine)</label>
+      <div class="range-wrap">
+        <input type="range" id="sqft-range" min="400" max="6000" step="100" value="2500">
+        <div class="range-value" data-type="sqft" contenteditable="true">2,500 sq ft</div>
+      </div>
+      <p class="helper">Drag the slider or click the bubble to type a number.</p>
+    </div>
+
+    <!-- 4. Beds & Baths -->
+    <div class="q" data-step="2" data-required="true">
+      <label>Bedrooms</label>
+      <select id="beds">
+        <option value="">Select</option>
+        <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6+</option>
+      </select>
+      <label style="margin-top:20px">Bathrooms (including half baths)</label>
+      <select id="baths">
+        <option value="">Select</option>
+        <option>1</option><option>1.5</option><option>2</option><option>2.5</option><option>3</option><option>3.5</option><option>4+</option>
+      </select>
+    </div>
+
+    <!-- 5. Extra Rooms -->
+    <div class="q" data-step="3" data-required="true">
+      <label>Any of these spaces?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Attic">Attic</div>
+        <div class="chip" data-val="Basement">Basement</div>
+        <div class="chip" data-val="Garage">Garage</div>
+        <div class="chip" data-val="Shed/Outbuilding">Shed / outbuilding</div>
+        <div class="chip" data-val="Pool house">Pool house</div>
+        <div class="chip" data-val="None">None of these</div>
+      </div>
+      <input type="text" id="extra-rooms-other" placeholder="Other (e.g. workshop, mother-in-law suite)" style="margin-top:12px;" maxlength="200">
+    </div>
+
+    <!-- 6. Fullness Level -->
+    <div class="q" data-step="4" data-required="true">
+      <label>How full is the property?</label>
+      <div class="range-wrap">
+        <input type="range" id="fullness-range" min="1" max="4" value="2">
+        <div class="range-value" id="fullness-text" data-type="fullness">Medium</div>
+      </div>
+      <p class="helper">
+        1 = Light, 2 = Medium, 3 = Full, 4 = Really full.
+      </p>
+    </div>
+
+    <!-- 7. High-Value Items -->
+    <div class="q" data-step="5" data-required="true">
+      <label>Any high value or specialty items?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Antiques">Antiques</div>
+        <div class="chip" data-val="Fine art">Fine art</div>
+        <div class="chip" data-val="Jewelry">Jewelry</div>
+        <div class="chip" data-val="Collector cars">Collector cars</div>
+        <div class="chip" data-val="Firearms">Firearms</div>
+        <div class="chip" data-val="Coins or gold">Coins or gold</div>
+        <div class="chip" data-val="None or not sure">None or not sure</div>
+      </div>
+      <input type="text" id="highvalue-other" placeholder="Other high value items" style="margin-top:12px;" maxlength="200">
+    </div>
+
+    <!-- 8. Clear-out Needs (single) -->
+    <div class="q" data-step="6" data-required="true">
+      <label>Do you want it cleared & cleaned?</label>
+      <div class="chips" data-multi="false">
+        <div class="chip active" data-val="no clear-out">No Thanks</div>
+        <div class="chip" data-val="Partial clear-out">Partial clear out – some but not all</div>
+        <div class="chip" data-val="Full clear-out">Full clear out – everything gone</div>
+        <div class="chip" data-val="Not sure yet">Not sure yet</div>
+      </div>
+      <p class="helper">This helps liquidators understand how much hauling and disposal is needed.</p>
+    </div>
+
+    <!-- 9. Timeline (single) -->
+    <div class="q" data-step="7" data-required="true">
+      <label>How urgent is the timeline?</label>
+      <div class="chips" data-multi="false">
+        <div class="chip active" data-val="Flexible (30-90 days)">Flexible (about 30-90 days)</div>
+        <div class="chip" data-val="2-4 weeks">Somewhat urgent (around 2-4 weeks)</div>
+        <div class="chip" data-val="Under 2 weeks">Very urgent (under 2 weeks)</div>
+        <div class="chip" data-val="No set deadline">No set deadline</div>
+      </div>
+    </div>
+
+    <!-- 10. Oversized / Hazardous -->
+    <div class="q" data-step="8" data-required="true">
+      <label>Oversized or difficult items?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Grand piano">Grand piano</div>
+        <div class="chip" data-val="Gun safe / large safe">Gun safe / large safe</div>
+        <div class="chip" data-val="Hot tub">Hot tub</div>
+        <div class="chip" data-val="Chemicals / paint / propane">Chemicals / paint / propane</div>
+        <div class="chip" data-val="None">None of these</div>
+      </div>
+      <input type="text" id="oversized-other" placeholder="Other (e.g. very heavy machinery, hoard conditions)" style="margin-top:12px;" maxlength="200">
+    </div>
+
+    <!-- 11. Access Difficulty (multi + other) -->
+    <div class="q" data-step="9" data-required="true">
+      <label>How easy is access for trucks and crews?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip active" data-val="Easy ground-level access">Easy ground level access</div>
+        <div class="chip" data-val="Multiple flights of stairs">Multiple flights of stairs</div>
+        <div class="chip" data-val="Elevator">Elevator (may be small)</div>
+        <div class="chip" data-val="Long carry / narrow driveway">Long carry or narrow/gravel driveway</div>
+        <div class="chip" data-val="Gated community">Gated community</div>
+        <div class="chip" data-val="Other">Other</div>
+      </div>
+      <input type="text" id="access-other" placeholder="Describe access challenges" style="margin-top:12px; display:none;" maxlength="300">
+    </div>
+
+      <!-- 12. Optional media – CLOUDINARY (FREE & WORKING) -->
+  <div class="q" data-step="10" data-required="false">
+    <label>Optional photos or a quick video</label>
+    <p class="helper">This is optional but helps liquidators give the most accurate quote. You can add up to 20 photos and/or a short video.</p>
+    
+    <div class="video-box" id="media-box">
+      <i class="fas fa-photo-video fa-3x" style="color:#94a3b8;margin-bottom:12px;"></i>
+      <div style="font-size:18px;font-weight:600;">Tap to add photos or a quick walk-through video</div>
+      <div style="font-size:14px;color:#64748b;margin-top:8px;">
+        No need to tidy. A few room photos or a 30–60 second walk-through is enough.
+      </div>
+      <div id="media-summary">No photos or video added yet.</div>
+    </div>
+    <div id="media-preview-grid"></div>
+
+    <!-- Cloudinary widget (loads automatically -->
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
+    <label style="margin-top:20px;display:none;" id="tc-label">
+      <input type="checkbox" id="tc-check">
+      I’m okay sharing this media for my quote, and understand it may be viewed by local pros.
+    </label>
+  </div>
+
+    <!-- 13. Estimated Home Value -->
+    <div class="q" data-step="11" data-required="true">
+      <label>Estimated current home value (as-is, ballpark is fine)</label>
+      <div class="range-wrap">
+        <input type="range" id="value-range" min="50000" max="1500000" step="25000" value="400000">
+        <div class="range-value" id="value-bubble" data-type="value" contenteditable="true">$400,000</div>
+      </div>
+      <p class="helper">Drag or type the amount in the bubble. This helps set expectations on overall sale potential.</p>
+    </div>
+
+    <!-- 14. Contact Info (final step) -->
+    <div class="q" data-step="12" data-required="true">
+      <label>Your name</label>
+      <input type="text" id="name" placeholder="First and last name" required maxlength="120">
+      <label style="margin-top:16px">Email</label>
+      <input type="email" id="email" placeholder="We will send quotes here" required maxlength="200">
+      <label style="margin-top:16px">Phone</label>
+      <input type="tel" id="phone" placeholder="Mobile number" required maxlength="40">
+      <label style="margin-top:20px">Anything else we should know?</label>
+      <textarea id="notes" rows="3" placeholder="Timeline, attorney involvement, locked areas, special requests, etc." maxlength="1000"></textarea>
+    </div>
+  </div>
+
+  <!-- Review Page -->
+  <div id="review" class="form-container">
+    <div class="review-title">Review your request</div>
+    <div class="review-sub">
+      Here is a simple summary of what you shared. If something looks off, scroll down and click "edit answers" at the bottom and we'll update that info for your local pros.
+    </div>
+    <div class="review-grid" id="review-grid"></div>
+    <button id="edit-btn">Edit answers</button>
+  </div>
+</div>
+
+<section class="info-block" aria-labelledby="how-estatequoter-works">
+  <h2 id="how-estatequoter-works">How EstateQuoter helps with your estate needs</h2>
+  <p>
+    EstateQuoter is an online intake tool that connects families, heirs, and executors
+    with trusted local estate liquidators, estate sale companies, and cleanout crews.
+  </p>
+  <p>
+    You answer a few questions about the property, how full it is, and your timeline.
+    We share those details with vetted local professionals so they can review the
+    situation and provide quotes or follow-up questions, without pressure.
+  </p>
+
+  <h3>Situations we help with</h3>
+  <p>
+    EstateQuoter is often used for whole-house estate sales, downsizing a parent,
+    moving someone into assisted living, handling an inherited home, or clearing out
+    a property after a death in the family.
+  </p>
+
+  <h3>Where we operate</h3>
+  <p>
+    We currently focus on the Hampton Roads and Virginia Beach area while building a
+    wider network of estate liquidators and estate sale companies across the United States.
+  </p>
+</section>
+
+<section class="info-block" aria-labelledby="estate-faq">
+  <h2 id="estate-faq">Common questions</h2>
+
+  <h3>Is EstateQuoter free for families?</h3>
+  <p>
+    Yes. EstateQuoter is free for families, heirs, and executors requesting quotes.
+    Local estate professionals pay us for leads so you can compare options without extra cost.
+  </p>
+
+  <h3>What kinds of estate services can I get quotes for?</h3>
+  <p>
+    You can get quotes for estate sales, buyouts of contents, whole-house cleanouts,
+    donation and haul-away, and help with downsizing or preparing a home for sale.
+  </p>
+
+  <h3>Do I have to commit to any company?</h3>
+  <p>
+    No. You can review quotes, ask questions, and only move forward with a company
+    if it feels like the right fit for your situation.
+  </p>
+</section>
+
+
+<!-- Single Fixed Button Bar -->
+<div class="fixed-btn" id="cta-bar" style="display:none;">
+  <div class="btn-row">
+    <button id="back-btn">Back</button>
+    <button id="main-btn">Next</button>
+  </div>
+</div>
+
+<!-- Hampton Roads Modal -->
+<div class="modal" id="hr-modal">
+  <div class="modal-content">
+    <i class="fas fa-check-circle fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">Great news</h2>
+    <p style="font-size:16px; margin:8px 0 0;">
+      You are in the Hampton Roads area. We have in-network partners and can usually get you a detailed quote within 24 hours.
+    </p>
+    <button style="margin-top:24px;" onclick="closeHRModal()">Continue</button>
+  </div>
+</div>
+
+<!-- Completion Modal -->
+<div class="modal" id="complete-modal">
+  <div class="modal-content">
+    <i class="fas fa-thumbs-up fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">Thanks! You're all set.</h2>
+    <p style="font-size:16px; margin:8px 0 0;">
+      That's it! Check your email for confirmation, and expect quotes within 24 to 48 hours. Feel free to review and update your answers if needed!
+    </p>
+    <button style="margin-top:24px;" onclick="closeCompleteModal()">Review Submission</button>
+  </div>
+</div>
+
+<!-- Contact Modal (popup) -->
+<div class="modal" id="contact-modal">
+  <div class="modal-content" style="max-width:480px; text-align:left;">
+    <h2 style="margin-bottom:8px; text-align:center;">Contact EstateQuoter</h2>
+    <p style="font-size:14px; margin-bottom:16px; color:#475569; text-align:center;">
+      Have a question before you start, or about a quote you already submitted? Send a quick note and we’ll follow up by email.
+    </p>
+
+    <form id="contact-form">
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        Your name
+      </label>
+      <input type="text" name="name" required
+             style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;" maxlength="120">
+
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        Your email
+      </label>
+      <input type="email" name="email" required
+             style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:10px;" maxlength="200">
+
+      <label style="display:block; font-size:13px; font-weight:600; margin-bottom:4px;">
+        How can we help?
+      </label>
+      <textarea name="message" rows="3" required
+                style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; margin-bottom:14px;" maxlength="1000"></textarea>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+        <button type="button" id="contact-cancel"
+                style="padding:10px 18px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#e2e8f0; color:#0f172a; cursor:pointer;">
+          Cancel
+        </button>
+        <button type="submit" id="contact-submit"
+                style="padding:10px 20px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#2153ff; color:#fff; cursor:pointer;">
+          Send message
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Manage Requests Modal -->
+<div class="modal" id="manage-modal">
+  <div class="modal-content" style="max-width:520px; text-align:left;">
+    <h2 style="margin-bottom:8px; text-align:center;">My quote requests</h2>
+    <p style="font-size:14px; margin-bottom:16px; color:#475569; text-align:center;">
+      These are saved on this device only. You can view, edit, or remove them.
+    </p>
+
+    <div id="manage-list" style="max-height:320px; overflow:auto; margin-bottom:16px;"></div>
+
+    <div style="text-align:center; margin-top:8px;">
+      <button type="button" id="manage-close"
+        style="padding:10px 22px; border:none; border-radius:999px; font-size:14px; font-weight:600; background:#e2e8f0; color:#0f172a; cursor:pointer;">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    // Initialize Supabase client on the page
+    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA1MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
+<script>
+// -----------------------
+// Capture visitor metadata
+// -----------------------
+window._eqMeta = {};
+
+(async function () {
+  try {
+    const res = await fetch("https://ipapi.co/json/");
+    if (!res.ok) return;
+    const geo = await res.json();
+
+    window._eqMeta = {
+      ip: geo.ip || "",
+      city: geo.city || "",
+      region: geo.region || "",
+      country: geo.country_name || "",
+      postal: geo.postal || "",
+      latitude: geo.latitude || "",
+      longitude: geo.longitude || "",
+      isp: geo.org || "",
+      userAgent: navigator.userAgent || "",
+      referrer: document.referrer || "",
+      pageUrl: window.location.href || "",
+      device: /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent)
+        ? "Mobile"
+        : "Desktop"
+    };
+  } catch (e) {
+    console.error("Meta capture failed", e);
+  }
+})();
+
+// -----------------------
+// Form logic + history
+// -----------------------
+
+const MAX_MEDIA_MB_PER_FILE = 50;   // per-file size cap
+const MAX_MEDIA_FILES = 20;         // limit total files
+let currentLeadData = null;         // holds last submission in-session
+
+const hamptonRoadsZips = new Set([
+  "23451","23452","23453","23454","23455","23456","23457","23458","23459","23460","23461","23462","23463","23464","23465","23466","23467","23471","23479",
+  "23320","23321","23322","23323","23324","23325","23326","23327","23328",
+  "23502","23503","23504","23505","23507","23508","23509","23510","23511","23513","23517","23518","23523",
+  "23701","23702","23703","23704","23707","23708","23709",
+  "23661","23662","23663","23664","23665","23666","23667","23668","23669","23670","23681",
+  "23601","23602","23603","23604","23605","23606","23607","23608","23609","23612","23628","23630"
+]);
+
+let currentStep = 0;
+
+const qs = document.querySelectorAll('#main-form .q');
+const totalSteps = qs.length;
+const bar = document.getElementById('bar');
+const stepTitle = document.getElementById('step-title');
+const stepHelper = document.getElementById('step-helper');
+const ctaBar = document.getElementById('cta-bar');
+const backBtn = document.getElementById('back-btn');
+const mainBtn = document.getElementById('main-btn');
+
+const titles = [
+  "Your role",
+  "What you need most",
+  "Property type",
+  "Square footage",
+  "Bedrooms and baths",
+  "Extra rooms or spaces",
+  "How full it is",
+  "High value items",
+  "Clear out needs",
+  "Timeline",
+  "Oversized items",
+  "Access difficulty",
+  "Optional photos or video",
+  "Estimated home value",
+  "Final details"
+];
+
+const encouragements = [
+  "You’re in the right place. A couple of quick questions first.",
+  "Got it. This helps us match you to the right kind of pros.",
+  "Great. This gives pros a sense of the property.",
+  "Nice. This helps get realistic quotes.",
+  "Bedrooms and baths tell pros how many rooms to staff.",
+  "Any other extra rooms/spaces? You're doing great!",
+  "Almost there. This bit of legwork goes a long way!",
+  "This helps match you with the right kind of liquidator.",
+  "Knowing your clear out needs helps avoid any surprise costs later.",
+  "Timeline helps everyone plan ahead for a great experience.",
+  "This keeps crews safe and prepared to work great for you.",
+  "Access is an important factor for labor & hauling needs. You're close!",
+  "Optional, but it really helps. No need to tidy up.",
+  "You're so close! A ballpark estimate here is enough.",
+  "Last step, then you can review everything :)"
+];
+
+function updateProgress() {
+  const percent = ((currentStep + 1) / totalSteps) * 100;
+  bar.style.width = percent + '%';
+  stepTitle.textContent = titles[currentStep] || '';
+  stepHelper.textContent = encouragements[currentStep] || "You are doing great. A few more details and you will be done.";
+  backBtn.disabled = currentStep === 0;
+  mainBtn.textContent = currentStep === totalSteps - 1 ? "Submit request" : "Next";
+  window.scrollTo(0,0);
+}
+
+function showStep(step, pushHistory = false) {
+  qs[currentStep].classList.remove('active');
+  currentStep = step;
+  qs[currentStep].classList.add('active');
+
+  if (pushHistory) {
+    history.pushState({ eqStep: step }, "", "#step-" + step);
+  }
+
+  updateProgress();
+}
+
+function validateStep(stepIndex) {
+  const step = qs[stepIndex];
+  const required = step.getAttribute('data-required') === 'true';
+
+  // Only special-case the optional media step (index 12)
+  if (!required && stepIndex !== 12) return true;
+
+  switch (stepIndex) {
+    case 0: { // Your role
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us your role in this process.');
+        return false;
+      }
+      return true;
+    }
+    case 1: { // What you need
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us what you need help with.');
+        return false;
+      }
+      return true;
+    }
+    case 2: { // Property type
+      const activeChip = step.querySelector('.chip.active');
+      if (!activeChip) {
+        alert('Please select the property type.');
+        return false;
+      }
+      return true;
+    }
+    case 3: { // Square footage
+      const val = parseInt(document.getElementById('sqft-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an approximate square footage.');
+        return false;
+      }
+      return true;
+    }
+    case 4: { // Beds & baths
+      const beds = document.getElementById('beds').value;
+      const baths = document.getElementById('baths').value;
+      if (!beds || !baths) {
+        alert('Please select both bedrooms and bathrooms.');
+        return false;
+      }
+      return true;
+    }
+    case 5: { // Extra rooms
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select if there are extra spaces, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 6: { // Fullness
+      const val = parseInt(document.getElementById('fullness-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please tell us roughly how full the property is.');
+        return false;
+      }
+      return true;
+    }
+    case 7: { // High value items
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please select any high value items, or choose "None or not sure".');
+        return false;
+      }
+      return true;
+    }
+    case 8: { // Clear-out needs
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please tell us what kind of clear out you need.');
+        return false;
+      }
+      return true;
+    }
+    case 9: { // Timeline
+      const chip = step.querySelector('.chip.active');
+      if (!chip) {
+        alert('Please select a timeline.');
+        return false;
+      }
+      return true;
+    }
+    case 10: { // Oversized / hazardous
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us if there are any oversized items, or choose "None of these".');
+        return false;
+      }
+      return true;
+    }
+    case 11: { // Access difficulty
+      const chips = step.querySelectorAll('.chip.active');
+      if (chips.length === 0) {
+        alert('Please tell us about access difficulty.');
+        return false;
+      }
+      const otherChip = step.querySelector('.chip.active[data-val="Other"]');
+      if (otherChip) {
+        const txt = document.getElementById('access-other').value.trim();
+        if (!txt) {
+          alert('Please describe the access challenges.');
+          return false;
+        }
+      }
+      return true;
+    }
+            case 12: { // Optional photos / video (Cloudinary)
+      const hasMedia =
+        Array.isArray(window.cloudinaryFiles) && window.cloudinaryFiles.length > 0;
+      const tcCheckbox = document.getElementById('tc-check');
+      const consentChecked = tcCheckbox && tcCheckbox.checked;
+
+      // If they added media but didn't check consent, stop them
+      if (hasMedia && !consentChecked) {
+        const tcLabelEl = document.getElementById('tc-label');
+        if (tcLabelEl) {
+          tcLabelEl.style.display = 'block';
+          tcLabelEl.classList.add('required');
+          tcLabelEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        alert('Please check the media consent box so we can use your photos/video for the quote.');
+        return false;
+      }
+
+      // If no media, this step is optional – always allow
+      return true;
+    }
+    case 13: { // Estimated home value
+      const val = parseInt(document.getElementById('value-range').value, 10);
+      if (!val || isNaN(val)) {
+        alert('Please set an estimated home value.');
+        return false;
+      }
+      return true;
+    }
+    case 14: { // Contact info
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!name) {
+        alert('Please enter your name.');
+        return false;
+      }
+      if (!email) {
+        alert('Please enter your email so we can send quotes.');
+        return false;
+      }
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+      }
+      if (!phone) {
+        alert('Please enter a phone number.');
+        return false;
+      }
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
+/* Hydrate form from saved data (for Edit answers) */
+function hydrateFormFromData(data) {
+  if (!data) return;
+
+  function setMultiFromCSV(stepIndex, csv) {
+    if (!csv) return;
+    const step = qs[stepIndex];
+    if (!step) return;
+    const wanted = csv
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+    step.querySelectorAll('.chip').forEach(chip => {
+      const val = chip.dataset.val || chip.textContent.trim();
+      chip.classList.toggle('active', wanted.includes(val));
+    });
+  }
+
+  function setSingleFromValue(stepIndex, value) {
+    if (!value) return;
+    const step = qs[stepIndex];
+    if (!step) return;
+    step.querySelectorAll('.chip').forEach(chip => {
+      const val = chip.dataset.val || chip.textContent.trim();
+      chip.classList.toggle('active', val === value);
+    });
+  }
+
+  // Zip
+  if (data.zip) document.getElementById('zip').value = data.zip;
+
+  // 0 – Your role
+  setMultiFromCSV(0, data.role);
+  document.getElementById('role-other').value = (data.roleOther || '').slice(0, 200);
+
+  // 1 – What you need most
+  setMultiFromCSV(1, data.needs);
+  document.getElementById('needs-other').value = (data.needsOther || '').slice(0, 200);
+
+  // 2 – Property type
+  setSingleFromValue(2, data.propertyType);
+
+  // 3 – Square footage
+  if (data.squareFootage) {
+    const slider = document.getElementById('sqft-range');
+    slider.value = data.squareFootage;
+    slider.dispatchEvent(new Event('input'));
+  }
+
+  // 4 – Beds & baths
+  if (data.bedrooms) document.getElementById('beds').value = data.bedrooms;
+  if (data.bathrooms) document.getElementById('baths').value = data.bathrooms;
+
+  // 5 – Extra rooms
+  setMultiFromCSV(5, data.extraRooms);
+  document.getElementById('extra-rooms-other').value = (data.extraRoomsOther || '').slice(0, 200);
+
+  // 6 – Fullness
+  if (data.fullness) {
+    const slider = document.getElementById('fullness-range');
+    let val = 2;
+    if (data.fullness === 'Light') val = 1;
+    if (data.fullness === 'Medium') val = 2;
+    if (data.fullness === 'Full') val = 3;
+    if (data.fullness === 'Really full') val = 4;
+    slider.value = val;
+    slider.dispatchEvent(new Event('input'));
+  }
+
+  // 7 – High value items
+  setMultiFromCSV(7, data.highValue);
+  document.getElementById('highvalue-other').value = (data.highValueOther || '').slice(0, 200);
+
+  // 8 – Clear out needs
+  setSingleFromValue(8, data.clearOut);
+
+  // 9 – Timeline
+  setSingleFromValue(9, data.timeline);
+
+  // 10 – Oversized
+  setMultiFromCSV(10, data.oversized);
+  document.getElementById('oversized-other').value = (data.oversizedOther || '').slice(0, 200);
+
+  // 11 – Access
+  setMultiFromCSV(11, data.access);
+  const accessOther = document.getElementById('access-other');
+  accessOther.value = (data.accessOther || '').slice(0, 300);
+  const accessStep = qs[11];
+  const accessOtherChip = accessStep.querySelector('.chip[data-val="Other"]');
+  if (accessOtherChip && accessOtherChip.classList.contains('active')) {
+    accessOther.style.display = 'block';
+  } else {
+    accessOther.style.display = accessOther.value ? 'block' : 'none';
+  }
+
+  // 13 – Home value
+  if (data.homeValue) {
+    const slider = document.getElementById('value-range');
+    slider.value = data.homeValue;
+    slider.dispatchEvent(new Event('input'));
+  }
+
+  // 14 – Contact
+  if (data.name) document.getElementById('name').value = data.name.slice(0, 120);
+  if (data.email) document.getElementById('email').value = data.email.slice(0, 200);
+  if (data.phone) document.getElementById('phone').value = data.phone.slice(0, 40);
+  if (typeof data.notes === 'string') document.getElementById('notes').value = data.notes.slice(0, 1000);
+
+  // Meta
+  const meta = window._eqMeta || {};
+
+  data.ip = meta.ip || "";
+  data.city = meta.city || "";
+  data.region = meta.region || "";
+  data.country = meta.country || meta.country_name || "";
+  data.postal = meta.postal || "";
+  data.latitude = meta.latitude || "";
+  data.longitude = meta.longitude || "";
+  data.isp = meta.isp || "";
+  data.device = meta.device || "";
+  data.userAgent = meta.userAgent || "";
+  data.referrer = meta.referrer || "";
+  data.pageUrl = meta.pageUrl || "";
+
+  const ispLower = (meta.isp || "").toLowerCase();
+  const vpnHints = [
+    "vpn","hosting","digitalocean","ovh","aws","amazon",
+    "microsoft","azure","google","cloud","hetzner"
+  ];
+  data.likelyVPN = vpnHints.some(k => ispLower.includes(k)) ? "Yes" : "No";
+
+  return data;
+}
+
+/* Render review page */
+function renderReview(data) {
+  const grid = document.getElementById('review-grid');
+  const fmtMoney = n => n ? '$' + n.toLocaleString() : '';
+  const fmtSqft = n => n ? n.toLocaleString() + ' sq ft' : '';
+
+  const mediaLabel = data.hasMedia
+    ? `Yes (${data.mediaCount || 0} file${(data.mediaCount || 0) === 1 ? '' : 's'})`
+    : "No";
+
+  const items = [
+    { label: "ZIP code", value: data.zip || '-' },
+    { label: "Your role", value: [data.role, data.roleOther].filter(Boolean).join(' | ') || '-' },
+    { label: "What you need most", value: [data.needs, data.needsOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Property type", value: data.propertyType || '-' },
+    { label: "Square footage", value: fmtSqft(data.squareFootage) || '-' },
+    { label: "Bedrooms", value: data.bedrooms || '-' },
+    { label: "Bathrooms", value: data.bathrooms || '-' },
+    { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(' | ') || '-' },
+    { label: "How full it is", value: data.fullness || '-' },
+    { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Clear out needs", value: data.clearOut || '-' },
+    { label: "Timeline", value: data.timeline || '-' },
+    { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(' | ') || '-' },
+    { label: "Home value estimate", value: fmtMoney(data.homeValue) || '-' },
+    { label: "Name", value: data.name || '-' },
+    { label: "Email", value: data.email || '-' },
+    { label: "Phone", value: data.phone || '-' },
+    { label: "Notes", value: data.notes || 'None' },
+    { label: "Media uploaded (photos/video)", value: mediaLabel }
+  ];
+
+  grid.innerHTML = items.map(item => `
+    <div class="review-item">
+      <dl>
+        <dt>${item.label}</dt>
+        <dd>${item.value}</dd>
+      </dl>
+    </div>
+  `).join('');
+}
+
+/* ZIP submit */
+document.getElementById('zip-submit').onclick = () => {
+  const zip = document.getElementById('zip').value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    alert('Please enter a valid 5 digit ZIP code.');
+    return;
+  }
+  if (hamptonRoadsZips.has(zip)) {
+    document.getElementById('hr-modal').classList.add('active');
+  }
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  document.body.classList.add('form-active');
+  ctaBar.style.display = 'block';
+
+  // start intake at step 0 and push first history state
+  showStep(0, true);
+};
+
+function closeHRModal() {
+  document.getElementById('hr-modal').classList.remove('active');
+}
+function closeCompleteModal() {
+  document.getElementById('complete-modal').classList.remove('active');
+  document.getElementById('review').style.display = 'block';
+}
+function openContactModal() {
+  document.getElementById('contact-modal').classList.add('active');
+}
+function closeContactModal() {
+  document.getElementById('contact-modal').classList.remove('active');
+}
+
+window.closeHRModal = closeHRModal;
+window.closeCompleteModal = closeCompleteModal;
+window.closeContactModal = closeContactModal;
+
+/* Chips behavior */
+document.querySelectorAll('.chips').forEach(group => {
+  const multi = group.getAttribute('data-multi') === 'true';
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+
+    if (multi) {
+      chip.classList.toggle('active');
+
+      const noneValues = ["None", "None of these", "None or not sure"];
+      if (noneValues.includes(chip.dataset.val)) {
+        if (chip.classList.contains('active')) {
+          group.querySelectorAll('.chip').forEach(c => {
+            if (c !== chip) c.classList.remove('active');
+          });
+        }
+      } else {
+        group.querySelectorAll('.chip').forEach(c => {
+          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
+        });
+      }
+    } else {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
+    const parentStep = group.parentElement.getAttribute('data-step');
+    if (parentStep === '9') {
+      const otherInput = document.getElementById('access-other');
+      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
+      if (anyOtherActive) {
+        otherInput.style.display = 'block';
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.value = '';
+      }
+    }
+  });
+});
+
+/* Range sliders + editable bubbles */
+function formatRange(slider, bubble) {
+  const val = parseInt(slider.value, 10);
+  const type = bubble.getAttribute('data-type');
+
+  if (type === 'sqft') {
+    bubble.textContent = val.toLocaleString() + ' sq ft';
+  } else if (type === 'value') {
+    bubble.textContent = '$' + val.toLocaleString();
+  } else if (type === 'fullness') {
+    let label = 'Medium';
+    if (val === 1) label = 'Light';
+    if (val === 2) label = 'Medium';
+    if (val === 3) label = 'Full';
+    if (val === 4) label = 'Really full';
+    bubble.textContent = label;
+  }
+
+  const min = parseInt(slider.min, 10);
+  const max = parseInt(slider.max, 10);
+  const percent = (val - min) / (max - min) * 100;
+  bubble.style.left = percent + '%';
+}
+
+document.querySelectorAll('.range-wrap').forEach(wrap => {
+  const slider = wrap.querySelector('input[type=range]');
+  const bubble = wrap.querySelector('.range-value');
+  if (!slider || !bubble) return;
+
+  formatRange(slider, bubble);
+  slider.addEventListener('input', () => formatRange(slider, bubble));
+
+  bubble.addEventListener('blur', () => {
+    const raw = bubble.textContent;
+    const digits = raw.replace(/[^\d]/g, '');
+    if (!digits) {
+      formatRange(slider, bubble);
+      return;
+    }
+    let val = parseInt(digits, 10);
+    const min = parseInt(slider.min, 10);
+    const max = parseInt(slider.max, 10);
+    if (val < min) val = min;
+    if (val > max) val = max;
+    slider.value = val;
+    formatRange(slider, bubble);
+  });
+
+  bubble.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      bubble.blur();
+    }
+  });
+});
+
+/* Media upload (photos / video) – limits + consent UI */
+const mediaInput = document.getElementById('media-upload');
+const mediaBox = document.getElementById('media-box');
+const mediaSummary = document.getElementById('media-summary');
+const mediaGrid = document.getElementById('media-preview-grid');
+const tcLabel = document.getElementById('tc-label');
+const tcCheck = document.getElementById('tc-check');
+
+if (mediaInput) {
+  mediaInput.addEventListener('change', e => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) {
+      mediaBox.classList.remove('ready');
+      mediaSummary.textContent = "No photos or video added yet.";
+      mediaGrid.innerHTML = "";
+      tcLabel.classList.remove('required');
+      tcLabel.style.display = 'none';
+      tcCheck.checked = false;
+      return;
+    }
+
+    if (files.length > MAX_MEDIA_FILES) {
+      alert(`Please limit uploads to ${MAX_MEDIA_FILES} files so everything stays fast and reliable.`);
+      e.target.value = '';
+      mediaBox.classList.remove('ready');
+      mediaSummary.textContent = "No photos or video added yet.";
+      mediaGrid.innerHTML = "";
+      tcLabel.classList.remove('required');
+      tcLabel.style.display = 'none';
+      tcCheck.checked = false;
+      return;
+    }
+
+    for (const file of files) {
+      if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
+        alert('Please only upload photos or video files.');
+        e.target.value = '';
+        mediaBox.classList.remove('ready');
+        mediaSummary.textContent = "No photos or video added yet.";
+        mediaGrid.innerHTML = "";
+        tcLabel.classList.remove('required');
+        tcLabel.style.display = 'none';
+        tcCheck.checked = false;
+        return;
+      }
+      const maxBytes = MAX_MEDIA_MB_PER_FILE * 1024 * 1024;
+      if (file.size > maxBytes) {
+        alert(`Each file should be under ${MAX_MEDIA_MB_PER_FILE} MB so uploads stay smooth on most phones.`);
+        e.target.value = '';
+        mediaBox.classList.remove('ready');
+        mediaSummary.textContent = "No photos or video added yet.";
+        mediaGrid.innerHTML = "";
+        tcLabel.classList.remove('required');
+        tcLabel.style.display = 'none';
+        tcCheck.checked = false;
+        return;
+      }
+    }
+
+    // At this point: valid media list
+    mediaBox.classList.add('ready');
+    const imageFiles = files.filter(f => f.type.startsWith('image/'));
+    const videoFiles = files.filter(f => f.type.startsWith('video/'));
+
+    const parts = [];
+    if (imageFiles.length) parts.push(`${imageFiles.length} photo${imageFiles.length === 1 ? '' : 's'}`);
+    if (videoFiles.length) parts.push(`${videoFiles.length} video${videoFiles.length === 1 ? '' : 's'}`);
+
+    mediaSummary.textContent = parts.join(' and ');
+
+    mediaGrid.innerHTML = "";
+    imageFiles.slice(0, 8).forEach(file => {
+      const url = URL.createObjectURL(file);
+      const img = document.createElement('img');
+      img.className = 'media-thumb';
+      img.src = url;
+      mediaGrid.appendChild(img);
+    });
+    if (videoFiles.length) {
+      const pill = document.createElement('div');
+      pill.className = 'media-pill';
+      pill.textContent = `${videoFiles.length} video${videoFiles.length === 1 ? '' : 's'} added`;
+      mediaGrid.appendChild(pill);
+    }
+
+    tcLabel.classList.add('required');
+    tcLabel.style.display = 'block';
+    tcCheck.checked = false;
+  });
+}
+
+/* Navigation buttons (Next / Back) */
+mainBtn.onclick = () => {
+  if (!validateStep(currentStep)) return;
+
+  if (currentStep === totalSteps - 1) {
+    const data = collectData();
+    currentLeadData = data;
+
+    try {
+      localStorage.setItem('eqLastLead', JSON.stringify(data));
+    } catch(e) {
+      console.warn('Unable to store last lead', e);
+    }
+
+    sendLeadToMake(data);
+    renderReview(data);
+    document.getElementById('main-form').style.display = 'none';
+    ctaBar.style.display = 'none';
+    document.getElementById('complete-modal').classList.add('active');
+    return;
+  }
+  showStep(currentStep + 1, true);
+};
+
+backBtn.onclick = () => {
+  if (currentStep === 0) return;
+  showStep(currentStep - 1, true);
+};
+
+document.getElementById('edit-btn').onclick = () => {
+  let data = currentLeadData;
+
+  if (!data) {
+    try {
+      const raw = localStorage.getItem('eqLastLead');
+      if (raw) data = JSON.parse(raw);
+    } catch(e) {
+      console.warn('Unable to parse last lead', e);
+    }
+  }
+
+  if (data) {
+    hydrateFormFromData(data);
+  }
+
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('review').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  ctaBar.style.display = 'block';
+  document.body.classList.add('form-active');
+  showStep(0, true);
+};
+
+/* Back button integration: intercept popstate for step navigation */
+window.addEventListener('popstate', (event) => {
+  const state = event.state;
+
+  if (state && typeof state.eqStep === 'number') {
+    document.getElementById('zip-section').style.display = 'none';
+    document.getElementById('review').style.display = 'none';
+    document.getElementById('main-form').style.display = 'block';
+    ctaBar.style.display = 'block';
+    document.body.classList.add('form-active');
+
+    showStep(state.eqStep, false);
+    return;
+  }
+
+  if (state && state.eqRoot) {
+    document.getElementById('zip-section').style.display = 'block';
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('review').style.display = 'none';
+    ctaBar.style.display = 'none';
+    document.body.classList.remove('form-active');
+    window.scrollTo(0,0);
+  }
+});
+
+/* Send to Make.com – JSON only, no file upload */
+async function sendLeadToMake(leadData) {
+  const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+  const apiURL = "/api/submit-lead";
+
+  // Track how many leads this browser has sent
+  let leadCount = 0;
+  try {
+    leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
+  } catch (e) {
+    leadCount = 0;
+  }
+  leadCount += 1;
+
+  // Save back to localStorage
+  try {
+    localStorage.setItem('eqLeadCount', String(leadCount));
+  } catch (e) {
+    console.warn("Unable to store lead count", e);
+  }
+
+  // Give this lead an ID + timestamp so we can manage it later
+  const leadId = "EQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
+  leadData.leadId = leadId;
+  leadData.createdAt = new Date().toISOString();
+
+  // Save to Supabase
+  try {
+    const { error } = await supabase
+      .from('leads')
+      .insert(leadData);
+    if (error) throw error;
+  } catch (err) {
+    console.error('Supabase insert failed', err);
+    alert('Something went wrong. Please try again.');
+    return;
+  }
+
+  // Reset button
+  mainBtn.textContent = "Submit request";
+  mainBtn.disabled = false;
+}
+
+/* Collect all form data into a single object */
+function collectData() {
+  const data = {};
+
+  // ZIP
+  data.zip = document.getElementById('zip').value.trim();
+
+  // Step 0 – Your role
+  data.role = Array.from(qs[0].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.roleOther = document.getElementById('role-other').value.trim();
+
+  // Step 1 – What you need most
+  data.needs = Array.from(qs[1].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.needsOther = document.getElementById('needs-other').value.trim();
+
+  // Step 2 – Property type
+  const propTypeChip = qs[2].querySelector('.chip.active');
+  data.propertyType = propTypeChip ? (propTypeChip.dataset.val || propTypeChip.textContent) : '';
+
+  // Step 3 – Square footage
+  data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10) || 0;
+
+  // Step 4 – Beds & baths
+  data.bedrooms = document.getElementById('beds').value;
+  data.bathrooms = document.getElementById('baths').value;
+
+  // Step 5 – Extra rooms
+  data.extraRooms = Array.from(qs[5].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
+
+  // Step 6 – Fullness
+  const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
+  const fullnessLabels = ['', 'Light', 'Medium', 'Full', 'Really full'];
+  data.fullness = fullnessLabels[fullnessVal] || '';
+
+  // Step 7 – High value items
+  data.highValue = Array.from(qs[7].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.highValueOther = document.getElementById('highvalue-other').value.trim();
+
+  // Step 8 – Clear out needs
+  const clearOutChip = qs[8].querySelector('.chip.active');
+  data.clearOut = clearOutChip ? (clearOutChip.dataset.val || clearOutChip.textContent) : '';
+
+  // Step 9 – Timeline
+  const timelineChip = qs[9].querySelector('.chip.active');
+  data.timeline = timelineChip ? (timelineChip.dataset.val || timelineChip.textContent) : '';
+
+  // Step 10 – Oversized
+  data.oversized = Array.from(qs[10].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.oversizedOther = document.getElementById('oversized-other').value.trim();
+
+  // Step 11 – Access
+  data.access = Array.from(qs[11].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.accessOther = document.getElementById('access-other').value.trim();
+
+  // Step 12 – Media (optional)
+  const mediaFiles = window.cloudinaryFiles || [];
+  data.hasMedia = mediaFiles.length > 0;
+  data.mediaCount = mediaFiles.length;
+
+  // Step 13 – Home value
+  data.homeValue = parseInt(document.getElementById('value-range').value, 10) || 0;
+
+  // Step 14 – Contact info
+  data.name = document.getElementById('name').value.trim();
+  data.email = document.getElementById('email').value.trim();
+  data.phone = document.getElementById('phone').value.trim();
+  data.notes = document.getElementById('notes').value.trim();
+
+  // Metadata
+  const meta = window._eqMeta || {};
+  data.ip = meta.ip || "";
+  data.city = meta.city || "";
+  data.region = meta.region || "";
+  data.country = meta.country || "";
+  data.postal = meta.postal || "";
+  data.latitude = meta.latitude || "";
+  data.longitude = meta.longitude || "";
+  data.isp = meta.isp || "";
+  data.device = meta.device || "";
+  data.userAgent = meta.userAgent || "";
+  data.referrer = meta.referrer || "";
+  data.pageUrl = meta.pageUrl || "";
+
+  const ispLower = (meta.isp || "").toLowerCase();
+  const vpnHints = ["vpn", "hosting", "digitalocean", "ovh", "aws", "amazon", "microsoft", "azure", "google", "cloud", "hetzner"];
+  data.likelyVPN = vpnHints.some(k => ispLower.includes(k)) ? "Yes" : "No";
+
+  return data;
+}
+</script>
+
+<!-- Social links bar (homepage only, above footer) -->
+<div class="social-bar" aria-label="EstateQuoter social channels">
+  <div class="social-bar-label">Stay connected with EstateQuoter</div>
+  <div class="social-links">
+    <a class="social-link"
+       href="https://x.com/EstateQuoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on X (Twitter)">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.instagram.com/estatequoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.tiktok.com/@estatequoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on TikTok">
+      <i class="fab fa-tiktok"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.facebook.com/EstateQuoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.youtube.com/@EstateQuoter"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on YouTube">
+      <i class="fab fa-youtube"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.linkedin.com/company/estatequoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on LinkedIn">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+    <a class="social-link"
+       href="https://www.reddit.com/r/EstateQuoter/"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="EstateQuoter on Reddit">
+      <i class="fab fa-reddit-alien"></i>
+    </a>
+  </div>
+</div>
+
+<footer style="padding:24px 16px 40px; text-align:center; font-size:13px; color:#64748b;">
+  <div>&copy; <span id="eq-year"></span> EstateQuoter. All rights reserved.</div>
+    <div style="margin-top:8px;">
+    <a href="#" id="contact-link" style="color:#64748b; text-decoration:underline;">Contact</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#" id="manage-link" style="color:#64748b; text-decoration:underline;">My Submissions</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/pro.html" style="color:#64748b; text-decoration:underline;">For Professionals</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/our-team" style="color:#64748b; text-decoration:underline;">Our Team</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/privacy.html" style="color:#64748b; text-decoration:underline;">Privacy</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/terms.html" style="color:#64748b; text-decoration:underline;">Terms</a>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname.replace(/\/+$/, "") || "/";
+  const isVB = path === "/virginia-beach-estate-liquidation";
+
+  const GEO_CONFIG = {
+    default: {
+      title: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      description: "EstateQuoter helps families, heirs, and executors get fast, free quotes from local estate sale companies and estate liquidators for whole-house cleanouts, downsizing, and estate sales. Answer a few questions and compare options without pressure.",
+      canonical: "https://estatequoter.com/",
+      ogTitle: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      ogDescription: "Get fast, no-pressure quotes from trusted local estate liquidators and estate sale companies for cleanouts, downsizing, and estate sales.",
+      ogUrl: "https://estatequoter.com/",
+      twitterTitle: "EstateQuoter – Free Estate Liquidation & Estate Sale Quotes",
+      twitterDescription: "Answer a few questions and get quotes from local estate liquidators, estate sale companies, and cleanout crews. Free and no pressure.",
+      heroH1: "Estate liquidation quotes,<br><span>without the hassle.</span>",
+      heroSub: "Answer a few quick questions and get accurate quotes from trusted local pros – <strong>free and no pressure.</strong>",
+      infoHeading: "How EstateQuoter helps with your estate needs",
+      infoAreasHeading: "Where we operate",
+      infoAreasText: "We currently focus on the Hampton Roads and Virginia Beach area while building a wider network of estate liquidators and estate sale companies across the United States.",
+      localServiceSchema: null
+    },
+
+    vb: {
+      title: "EstateQuoter – Virginia Beach Estate Liquidation & Estate Sale Quotes",
+      description: "Get fast, free quotes from trusted Virginia Beach and Hampton Roads estate sale companies and estate liquidators. Whole-house cleanouts, downsizing, buyouts and full estate sales with no pressure.",
+      canonical: "https://estatequoter.com/virginia-beach-estate-liquidation",
+      ogTitle: "Virginia Beach Estate Liquidation & Estate Sale Quotes – EstateQuoter",
+      ogDescription: "Answer a few questions and get fast, free quotes from trusted Virginia Beach and Hampton Roads estate sale companies and estate liquidators.",
+      ogUrl: "https://estatequoter.com/virginia-beach-estate-liquidation",
+      twitterTitle: "Virginia Beach Estate Liquidation & Estate Sale Quotes – EstateQuoter",
+      twitterDescription: "Get fast, free Virginia Beach and Hampton Roads estate liquidation and estate sale quotes. Free, no pressure, and handled by trusted local pros.",
+      heroH1: "Virginia Beach estate liquidation,<br><span>without the hassle.</span>",
+      heroSub: "Answer a few quick questions and get accurate quotes from trusted Virginia Beach and Hampton Roads pros – <strong>free and no pressure.</strong>",
+      infoHeading: "Estate liquidation help in Virginia Beach and Hampton Roads",
+      infoAreasHeading: "Areas we cover",
+      infoAreasText: "On this page we focus on Virginia Beach and nearby parts of Hampton Roads including Chesapeake, Norfolk, Portsmouth, Suffolk, Hampton and Newport News. We are also building a wider network of estate liquidators and estate sale companies across the United States.",
+      localServiceSchema: {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "EstateQuoter Virginia Beach Estate Liquidation",
+        "url": "https://estatequoter.com/virginia-beach-estate-liquidation",
+        "description": "Online intake that helps families, heirs and executors in Virginia Beach and the greater Hampton Roads area get fast quotes from local estate liquidators, estate sale companies and cleanout crews.",
+        "serviceType": [
+          "Estate liquidation",
+          "Estate sale coordination",
+          "Estate cleanout",
+          "Downsizing help"
+        ],
+        "areaServed": [
+          { "@type": "Country", "name": "United States" },
+          { "@type": "City", "name": "Virginia Beach" },
+          { "@type": "City", "name": "Chesapeake" },
+          { "@type": "City", "name": "Norfolk" },
+          { "@type": "City", "name": "Hampton" },
+          { "@type": "City", "name": "Newport News" },
+          { "@type": "City", "name": "Suffolk" },
+          { "@type": "City", "name": "Portsmouth" }
+        ],
+        "provider": {
+          "@type": "Organization",
+          "name": "EstateQuoter"
+        }
+      }
+    }
+  };
+
+  const cfg = isVB ? GEO_CONFIG.vb : GEO_CONFIG.default;
+
+  function setAttr(selector, attr, value) {
+    if (!value) return;
+    const el = document.querySelector(selector);
+    if (el) el.setAttribute(attr, value);
+  }
+
+  // ---- Head tags ----
+  document.title = cfg.title;
+  setAttr('meta[name="description"]', 'content', cfg.description);
+  setAttr('link[rel="canonical"]', 'href', cfg.canonical);
+  setAttr('meta[property="og:title"]', 'content', cfg.ogTitle);
+  setAttr('meta[property="og:description"]', 'content', cfg.ogDescription);
+  setAttr('meta[property="og:url"]', 'content', cfg.ogUrl);
+  setAttr('meta[name="twitter:title"]', 'content', cfg.twitterTitle);
+  setAttr('meta[name="twitter:description"]', 'content', cfg.twitterDescription);
+
+  // ---- Hero text ----
+  const heroH1 = document.querySelector('.page h1');
+  if (heroH1 && cfg.heroH1) heroH1.innerHTML = cfg.heroH1;
+
+  const heroSub = document.querySelector('.page .sub');
+  if (heroSub && cfg.heroSub) heroSub.innerHTML = cfg.heroSub;
+
+  // ---- Info block localization ----
+  const infoBlocks = document.querySelectorAll('.info-block');
+  if (infoBlocks.length > 0) {
+    const firstBlock = infoBlocks[0];
+
+    const h2 = firstBlock.querySelector('h2');
+    if (h2 && cfg.infoHeading) h2.textContent = cfg.infoHeading;
+
+    const h3List = firstBlock.querySelectorAll('h3');
+    h3List.forEach(h3 => {
+      if (h3.textContent.trim().toLowerCase().includes("where we operate") && cfg.infoAreasHeading) {
+        h3.textContent = cfg.infoAreasHeading;
+      }
+    });
+
+    const ps = firstBlock.querySelectorAll('p');
+    if (ps.length && cfg.infoAreasText) {
+      ps[ps.length - 1].textContent = cfg.infoAreasText;
+    }
+  }
+
+  // ---- Extra local Service schema for VB ----
+  if (cfg.localServiceSchema) {
+    const schemaScript = document.createElement('script');
+    schemaScript.type = "application/ld+json";
+    schemaScript.textContent = JSON.stringify(cfg.localServiceSchema);
+    document.head.appendChild(schemaScript);
+  }
+});
+</script>
+
+  
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  history.replaceState({ eqRoot: true }, "", window.location.pathname + window.location.search);
+
+  const y = document.getElementById('eq-year');
+  if (y) y.textContent = new Date().getFullYear();
+
+  // Show "last request" banner if we have one
+  let last = null;
+  try {
+    const raw = localStorage.getItem('eqLastLead');
+    if (raw) last = JSON.parse(raw);
+  } catch(e) {
+    console.warn('Unable to read last lead', e);
+  }
+
+  if (last) {
+  const page = document.querySelector('.page');
+  if (page) {
+    const banner = document.createElement('div');
+    banner.id = 'last-request-banner';
+
+    // Count how many submissions this device has saved
+    let totalLeads = 0;
+    try {
+      const rawAll = localStorage.getItem('eqAllLeads');
+      if (rawAll) {
+        const arr = JSON.parse(rawAll) || [];
+        totalLeads = arr.length;
+      }
+    } catch (e) {
+      totalLeads = 0;
+    }
+
+    const showSubsLink = totalLeads >= 2;
+
+    const subsLinkHtml = showSubsLink ? `
+        <div style="margin-top:6px;">
+          <a href="#" id="view-submissions-link"
+             style="font-size:13px; text-decoration:underline; color:#2153ff;">
+            View my submissions
+          </a>
+        </div>
+    ` : '';
+
+    banner.innerHTML = `
+      <div>
+        <strong>Last quote request saved.</strong><br>
+        You can quickly review or edit the info you share with local pros.
+      </div>
+      <div style="text-align:right;">
+        <button type="button" id="view-last-request-btn">View my last submission</button>
+        ${subsLinkHtml}
+      </div>
+    `;
+
+    page.parentNode.insertBefore(banner, page.nextSibling);
+
+    const btn = document.getElementById('view-last-request-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        currentLeadData = last;
+        renderReview(last);
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('main-form').style.display = 'none';
+        document.getElementById('cta-bar').style.display = 'none';
+        document.getElementById('review').style.display = 'block';
+        document.body.classList.add('form-active');
+        history.pushState({ eqStep: 'review' }, "", "#review");
+        window.scrollTo(0,0);
+      });
+    }
+  }
+}
+
+  // Contact modal wiring
+  const contactLink = document.getElementById('contact-link');
+  const contactForm = document.getElementById('contact-form');
+  const contactCancel = document.getElementById('contact-cancel');
+  const contactSubmit = document.getElementById('contact-submit');
+
+  if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openContactModal();
+    });
+  }
+
+  if (contactCancel) {
+    contactCancel.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeContactModal();
+    });
+  }
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const payload = {
+        type: "contact",
+        name: form.name.value.trim().slice(0, 120),
+        email: form.email.value.trim().slice(0, 200),
+        message: form.message.value.trim().slice(0, 1000)
+      };
+
+      if (!payload.name || !payload.email || !payload.message) return;
+
+      if (contactSubmit) {
+        contactSubmit.disabled = true;
+        contactSubmit.textContent = "Sending...";
+      }
+
+      try {
+        await fetch("https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        form.reset();
+        alert("Thanks, your message has been sent. We’ll follow up by email as soon as possible.");
+        closeContactModal();
+      } catch (err) {
+        console.error("Contact submit failed", err);
+        alert("Something went wrong. Please try again in a minute.");
+      } finally {
+        if (contactSubmit) {
+          contactSubmit.disabled = false;
+          contactSubmit.textContent = "Send message";
+        }
+      }
+    });
+  }
+
+  // ---------------------------
+  // "My requests" manage modal
+  // ---------------------------
+  const manageLink = document.getElementById('manage-link');
+  const manageModal = document.getElementById('manage-modal');
+  const manageList = document.getElementById('manage-list'); 
+  const manageClose = document.getElementById('manage-close');
+
+  function getAllLeads() {
+    try {
+      const raw = localStorage.getItem('eqAllLeads');
+      if (!raw) return [];
+      const arr = JSON.parse(raw) || [];
+      // make sure each has an ID
+      arr.forEach((lead, idx) => {
+        if (!lead.leadId) {
+          lead.leadId = 'EQ-legacy-' + idx + '-' + (lead.createdAt || '');
+        }
+      });
+      // write back any added IDs
+      localStorage.setItem('eqAllLeads', JSON.stringify(arr));
+      return arr;
+    } catch (e) {
+      console.warn('Unable to read all leads', e);
+      return [];
+    }
+  }
+
+  function saveAllLeads(leads) {
+    try {
+      localStorage.setItem('eqAllLeads', JSON.stringify(leads || []));
+    } catch (e) {
+      console.warn('Unable to save all leads', e);
+    }
+  }
+
+function deleteLead(leadId) {
+  // read all saved leads
+  const all = getAllLeads();
+
+  // keep everything except the one with this id
+  const updated = all.filter(l => l.leadId !== leadId);
+
+  // write back to localStorage
+  localStorage.setItem('eqAllLeads', JSON.stringify(updated));
+}
+
+  
+    function renderManageList() {
+    // Oldest first so #1 is the first submission ever
+    const leads = getAllLeads().slice().reverse();
+
+    if (!leads.length) {
+      manageList.innerHTML = `
+        <p style="font-size:14px; color:#64748b; text-align:center; margin:12px 0;">
+          No saved requests on this device yet.
+        </p>
+      `;
+      return;
+    }
+
+    manageList.innerHTML = leads.map((lead, index) => {
+      // SIMPLE: #1, #2, #3 ...
+      const displayIndex = index + 1;
+      const title = `#${displayIndex} submission`;
+
+      const created = lead.createdAt ? new Date(lead.createdAt) : null;
+      const dateLabel = created ? created.toLocaleString() : 'Previous request';
+      const need = lead.needs || '';
+
+      return `
+        <div style="border:1px solid #e2e8f0; border-radius:12px; padding:10px 12px; margin-bottom:8px; position:relative; padding-right:36px;">
+          <button type="button"
+            data-action="delete"
+            data-id="${lead.leadId}"
+            aria-label="Delete this submission"
+            style="
+              position:absolute;
+              top:8px;
+              right:8px;
+              width:22px;
+              height:22px;
+              border-radius:999px;
+              border:none;
+              background:#fee2e2;
+              color:#b91c1c;
+              font-size:14px;
+              line-height:1;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              cursor:pointer;
+            ">
+            ×
+          </button>
+
+          <div style="font-size:13px; color:#64748b;">${dateLabel}</div>
+          <div style="font-size:15px; font-weight:600; margin-top:2px;">${title}</div>
+          <div style="font-size:13px; color:#64748b; margin-top:2px;">${need}</div>
+          <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" data-action="view" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#e0ebff; color:#1e293b; cursor:pointer;">
+              View summary
+            </button>
+            <button type="button" data-action="edit" data-id="${lead.leadId}"
+              style="padding:6px 10px; border:none; border-radius:999px; font-size:13px; font-weight:600; background:#0d9d6a; color:#fff; cursor:pointer;">
+              Edit &amp; resubmit
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // VIEW
+    manageList.querySelectorAll('button[data-action="view"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const leads = getAllLeads();
+        const lead = leads.find(l => l.leadId === id);
+        if (!lead) return;
+
+        currentLeadData = lead;
+        renderReview(lead);
+
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('main-form').style.display = 'none';
+        document.getElementById('cta-bar').style.display = 'none';
+        document.getElementById('review').style.display = 'block';
+        document.body.classList.add('form-active');
+        manageModal.classList.remove('active');
+        history.pushState({ eqStep: 'review' }, "", "#review");
+        window.scrollTo(0, 0);
+      });
+    });
+
+    // EDIT
+    manageList.querySelectorAll('button[data-action="edit"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const leads = getAllLeads();
+        const lead = leads.find(l => l.leadId === id);
+        if (!lead) return;
+
+        currentLeadData = lead;
+        hydrateFormFromData(lead);
+
+        document.getElementById('zip-section').style.display = 'none';
+        document.getElementById('review').style.display = 'none';
+        document.getElementById('main-form').style.display = 'block';
+        document.getElementById('cta-bar').style.display = 'block';
+        document.body.classList.add('form-active');
+        showStep(0, true);
+        manageModal.classList.remove('active');
+        window.scrollTo(0, 0);
+      });
+    });
+
+    // DELETE
+    manageList.querySelectorAll('button[data-action="delete"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const confirmed = window.confirm(
+          "Are you sure you want to delete this submission? It will be permanently deleted."
+        );
+        if (!confirmed) return;
+
+        let leads = getAllLeads();
+        leads = leads.filter(l => l.leadId !== id);
+        saveAllLeads(leads);
+        renderManageList();
+      });
+    });
+  }
+
+  if (manageLink && manageModal) {
+    manageLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      renderManageList();
+      manageModal.classList.add('active');
+    });
+  }
+
+  if (manageClose && manageModal) {
+    manageClose.addEventListener('click', () => {
+      manageModal.classList.remove('active');
+    });
+  }
+
+    // Also open "My requests" from the banner link
+  const viewSubsLink = document.getElementById('view-submissions-link');
+  if (viewSubsLink && manageModal) {
+    viewSubsLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      renderManageList();
+      manageModal.classList.add('active');
+    });
+  }  
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Read ?pro=todd or ?pro=todd-osborne, etc.
+  const params = new URLSearchParams(window.location.search);
+  const rawPro = params.get('pro');
+  if (!rawPro) return;
+
+  const slug = rawPro.trim();
+  if (!slug) return;
+
+  // Push into hidden input so it goes to Make.com
+  const proInput = document.getElementById('proSlug');
+  if (proInput) {
+    proInput.value = slug;
+  }
+
+  // Optional: body tag hook for future styling
+  document.body.classList.add('pro-mode');
+
+  // Simple mapping so copy looks human, not like "todd-osborne-va"
+  const PRO_CONFIG = {
+    "todd": {
+      displayName: "Todd Osborne",
+      heroH1: "Get an estate quote<br><span>from Todd.</span>",
+      heroSub: "You are filling this out for <strong>Todd Osborne</strong>. Answer a few quick questions so he can review the property and send a clear, no-pressure quote."
+    }
+    // You can add more later:
+    // "acme-estates": { displayName: "Acme Estate Services", heroH1: "...", heroSub: "..." }
+  };
+
+  // Resolve config or fall back to generic
+  const proCfg = PRO_CONFIG[slug.toLowerCase()] || {
+    displayName: slug,
+    heroH1: "Get an estate quote<br><span>from your local pro.</span>",
+    heroSub: "You are filling this out for <strong>" + slug + "</strong>. Answer a few quick questions so they can review the property and send a clear, no-pressure quote."
+  };
+
+  // Update hero heading + sub copy
+  const heroH1 = document.querySelector('.page h1');
+  if (heroH1) {
+    heroH1.innerHTML = proCfg.heroH1;
+  }
+
+  const heroSub = document.querySelector('.page .sub');
+  if (heroSub) {
+    heroSub.innerHTML = proCfg.heroSub;
+  }
+});
+</script>
+
+
+<script>
+// Cloudinary media upload + consent handling (desktop + mobile)
+window.cloudinaryFiles = window.cloudinaryFiles || [];
+var cloudinaryFiles = window.cloudinaryFiles; // so collectData() can read it
+
+document.addEventListener('DOMContentLoaded', () => {
+  const mediaBox     = document.getElementById('media-box');
+  const mediaSummary = document.getElementById('media-summary');
+  const mediaGrid    = document.getElementById('media-preview-grid');
+  const tcLabelEl    = document.getElementById('tc-label');
+
+  if (!mediaBox) return;
+
+  // Re-render summary + thumbnails from cloudinaryFiles
+  function renderMediaUI() {
+    const filesArr = cloudinaryFiles || [];
+
+    if (!filesArr.length) {
+      mediaBox.classList.remove('ready');
+      if (mediaSummary) mediaSummary.textContent = "No photos or video added yet.";
+      if (mediaGrid) mediaGrid.innerHTML = "";
+      if (tcLabelEl) {
+        tcLabelEl.classList.remove('required');
+        tcLabelEl.style.display = 'none';
+      }
+      return;
+    }
+
+    mediaBox.classList.add('ready');
+
+    const hasVideo = filesArr.some(f => f.resource_type === 'video');
+
+    if (mediaSummary) {
+      mediaSummary.textContent =
+        `${filesArr.length} ${filesArr.length === 1 ? 'file' : 'files'} added` +
+        (hasVideo ? ' (incl. video)' : '');
+    }
+
+    if (mediaGrid) {
+      mediaGrid.innerHTML = filesArr.slice(0, 8).map(f => {
+        const thumbUrl = f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/');
+        return `
+          <div class="media-thumb-wrap" data-id="${f.public_id}">
+            <img class="media-thumb" src="${thumbUrl}" alt="">
+            <button type="button" class="media-thumb-delete" aria-label="Remove this file">×</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (tcLabelEl) {
+      tcLabelEl.style.display = 'block';
+      tcLabelEl.classList.add('required');
+    }
+  }
+
+  // Click on upload box -> open file picker
+  mediaBox.addEventListener('click', () => {
+    if (tcLabelEl) {
+      tcLabelEl.style.display = 'block';
+      tcLabelEl.classList.add('required');
+    }
+
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = 'image/*,video/*';
+    input.style.display = 'none';
+    document.body.appendChild(input);
+
+    input.onchange = () => {
+      const files = Array.from(input.files || []);
+      if (files.length) {
+        uploadTheseFiles(files);
+      }
+      input.remove();
+    };
+
+    input.click();
+  });
+
+  // Handle clicking the little "x" on any thumbnail
+  if (mediaGrid) {
+    mediaGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.media-thumb-delete');
+      if (!btn) return;
+
+      const wrap = btn.closest('.media-thumb-wrap');
+      if (!wrap) return;
+
+      const id = wrap.getAttribute('data-id');
+      if (!id) return;
+
+      cloudinaryFiles = (cloudinaryFiles || []).filter(f => f.public_id !== id);
+      window.cloudinaryFiles = cloudinaryFiles; // keep global in sync
+      renderMediaUI();
+    });
+  }
+
+  async function uploadTheseFiles(files) {
+    if (mediaSummary) {
+      mediaSummary.textContent = `Uploading ${files.length}…`;
+    }
+
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', 'ml_default');
+      fd.append('folder', 'estatequoter');
+
+      try {
+        const r = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
+          method: 'POST',
+          body: fd
+        });
+        const data = await r.json();
+        if (data && data.secure_url) {
+          cloudinaryFiles.push(data);
+        }
+      } catch (err) {
+        console.error('Cloudinary upload failed', err);
+      }
+    }
+
+    window.cloudinaryFiles = cloudinaryFiles; // ensure collectData() sees updates
+    renderMediaUI();
+  }
+
+  // Initial render (in case there are any preloaded files later)
+  renderMediaUI();
+});
+</script>
+
+</body>
+</html>
