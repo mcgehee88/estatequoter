@@ -148,8 +148,12 @@
 
 <script>
 const ADMIN_PASSWORD = 'estatequoter2025';
-const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'MISSING_KEY';
+const SUPABASE_URL = '{{SUPABASE_URL}}';
+const SUPABASE_ANON_KEY = '{{SUPABASE_ANON_KEY}}';
+
+if (SUPABASE_ANON_KEY === '{{SUPABASE_ANON_KEY}}') {
+  document.getElementById('error-message').textContent = 'ERROR: Supabase keys not injected by build script. Contact admin.';
+}
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -217,5 +221,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
+
 
 
