@@ -1932,80 +1932,124 @@ async function sendLeadToMake(leadData) {
   leadData.leadId = leadId;
   leadData.createdAt = new Date().toISOString();
 
-  // Tag this lead in the payload for Make.com
-  leadData.leadCountOnDevice = leadCount;
-  leadData.submitterTypeHint = leadCount >= 2 ? "possible_pro" : "single_use";
-
-  // ALSO store this lead in a list for "My requests"
+  // Save to Supabase
   try {
-    let all = [];
-    const rawAll = localStorage.getItem("eqAllLeads");
-    if (rawAll) {
-      all = JSON.parse(rawAll) || [];
-    }
-    // put newest at the top
-    all.unshift(leadData);
-    // keep last 50 max so it doesn't grow forever
-    if (all.length > 50) all = all.slice(0, 50);
-    localStorage.setItem("eqAllLeads", JSON.stringify(all));
-  } catch (e) {
-    console.warn("Unable to store all leads", e);
-  }
-
-  // Button state
-  mainBtn.textContent = "Submitting...";
-  mainBtn.disabled = true;
-
-  // Prepare data for new backend (map form fields to API schema)
-  const backendPayload = {
-    customer_name: leadData.name || "",
-    customer_email: leadData.email || "",
-    customer_phone: leadData.phone || "",
-    property_type: leadData.propertyType || "",
-    property_value_range: leadData.propertyValue || "",
-    estate_location: leadData.location || "",
-    urgency: leadData.urgency || "",
-    notes: leadData.additionalDetails || "",
-    referral_source: leadData.referralSource || "organic"
-  };
-
-  // Send to both Make.com and new backend (dual logging)
-  let makeSuccess = false;
-  let apiSuccess = false;
-
-  try {
-    await fetch(webhookURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(leadData)
-    });
-    makeSuccess = true;
+    const { error } = await supabase
+      .from('leads')
+      .insert(leadData);
+    if (error) throw error;
   } catch (err) {
-    console.error("Make.com failed:", err);
-  }
-
-  try {
-    const response = await fetch(apiURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(backendPayload)
-    });
-    if (response.ok) {
-      apiSuccess = true;
-      const result = await response.json();
-      console.log("Backend lead created:", result.lead_id);
-    }
-  } catch (err) {
-    console.error("Backend API failed:", err);
+    console.error('Supabase insert failed', err);
+    alert('Something went wrong. Please try again.');
+    return;
   }
 
   // Reset button
   mainBtn.textContent = "Submit request";
   mainBtn.disabled = false;
+}
+
+/* Collect all form data into a single object */
+function collectData() {
+  const data = {};
+
+  // ZIP
+  data.zip = document.getElementById('zip').value.trim();
+
+  // Step 0 – Your role
+  data.role = Array.from(qs[0].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.roleOther = document.getElementById('role-other').value.trim();
+
+  // Step 1 – What you need most
+  data.needs = Array.from(qs[1].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.needsOther = document.getElementById('needs-other').value.trim();
+
+  // Step 2 – Property type
+  const propTypeChip = qs[2].querySelector('.chip.active');
+  data.propertyType = propTypeChip ? (propTypeChip.dataset.val || propTypeChip.textContent) : '';
+
+  // Step 3 – Square footage
+  data.squareFootage = parseInt(document.getElementById('sqft-range').value, 10) || 0;
+
+  // Step 4 – Beds & baths
+  data.bedrooms = document.getElementById('beds').value;
+  data.bathrooms = document.getElementById('baths').value;
+
+  // Step 5 – Extra rooms
+  data.extraRooms = Array.from(qs[5].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.extraRoomsOther = document.getElementById('extra-rooms-other').value.trim();
+
+  // Step 6 – Fullness
+  const fullnessVal = parseInt(document.getElementById('fullness-range').value, 10);
+  const fullnessLabels = ['', 'Light', 'Medium', 'Full', 'Really full'];
+  data.fullness = fullnessLabels[fullnessVal] || '';
+
+  // Step 7 – High value items
+  data.highValue = Array.from(qs[7].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.highValueOther = document.getElementById('highvalue-other').value.trim();
+
+  // Step 8 – Clear out needs
+  const clearOutChip = qs[8].querySelector('.chip.active');
+  data.clearOut = clearOutChip ? (clearOutChip.dataset.val || clearOutChip.textContent) : '';
+
+  // Step 9 – Timeline
+  const timelineChip = qs[9].querySelector('.chip.active');
+  data.timeline = timelineChip ? (timelineChip.dataset.val || timelineChip.textContent) : '';
+
+  // Step 10 – Oversized
+  data.oversized = Array.from(qs[10].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.oversizedOther = document.getElementById('oversized-other').value.trim();
+
+  // Step 11 – Access
+  data.access = Array.from(qs[11].querySelectorAll('.chip.active'))
+    .map(c => c.dataset.val || c.textContent)
+    .join(', ');
+  data.accessOther = document.getElementById('access-other').value.trim();
+
+  // Step 12 – Media (optional)
+  const mediaFiles = window.cloudinaryFiles || [];
+  data.hasMedia = mediaFiles.length > 0;
+  data.mediaCount = mediaFiles.length;
+
+  // Step 13 – Home value
+  data.homeValue = parseInt(document.getElementById('value-range').value, 10) || 0;
+
+  // Step 14 – Contact info
+  data.name = document.getElementById('name').value.trim();
+  data.email = document.getElementById('email').value.trim();
+  data.phone = document.getElementById('phone').value.trim();
+  data.notes = document.getElementById('notes').value.trim();
+
+  // Metadata
+  const meta = window._eqMeta || {};
+  data.ip = meta.ip || "";
+  data.city = meta.city || "";
+  data.region = meta.region || "";
+  data.country = meta.country || "";
+  data.postal = meta.postal || "";
+  data.latitude = meta.latitude || "";
+  data.longitude = meta.longitude || "";
+  data.isp = meta.isp || "";
+  data.device = meta.device || "";
+  data.userAgent = meta.userAgent || "";
+  data.referrer = meta.referrer || "";
+  data.pageUrl = meta.pageUrl || "";
+
+  const ispLower = (meta.isp || "").toLowerCase();
+  const vpnHints = ["vpn", "hosting", "digitalocean", "ovh", "aws", "amazon", "microsoft", "azure", "google", "cloud", "hetzner"];
+  data.likelyVPN = vpnHints.some(k => ispLower.includes(k)) ? "Yes" : "No";
+
+  return data;
 }
 </script>
 
