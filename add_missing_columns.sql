@@ -1,0 +1,42 @@
+-- Add all missing columns to leads table based on form collectData() function
+
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS zip text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS role text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS role_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS needs text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS needs_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS property_type text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS square_footage integer;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS bedrooms text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS bathrooms text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS extra_rooms text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS extra_rooms_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS fullness text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS high_value text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS high_value_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS clear_out text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS timeline text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS oversized text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS oversized_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS access text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS access_other text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS has_media boolean;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS media_count integer;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS home_value integer;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS name text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS email text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS phone text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS ip text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS city text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS region text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS country text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS postal text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS latitude text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS longitude text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS isp text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS device text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS user_agent text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS referrer text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS page_url text;
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS likely_vpn text;
+
