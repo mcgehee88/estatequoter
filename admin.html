@@ -2,223 +2,286 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EstateQuoter – Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstateQuoter – Professional Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: system-ui, -apple-system, sans-serif;
-      background: #f8fafc;
-      color: #0f172a;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 16px;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    h1 { font-size: 32px; font-weight: 800; }
-    .logout-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #e2e8f0;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .logout-btn:hover { background: #cbd5e1; }
-    .login-container {
-      max-width: 400px;
-      margin: 100px auto;
-      padding: 32px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .login-container h2 { margin-bottom: 24px; }
-    .login-container input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 16px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .login-container button:hover { background: #1d4ed8; }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .stat-card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .stat-value { font-size: 32px; font-weight: 800; color: #2563eb; }
-    .stat-label { font-size: 14px; color: #64748b; margin-top: 8px; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    th {
-      background: #f1f5f9;
-      padding: 16px;
-      text-align: left;
-      font-weight: 600;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    td {
-      padding: 16px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    tr:last-child td { border-bottom: none; }
-    .error { color: #dc2626; margin-top: 16px; }
-    .loading { color: #64748b; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
+    
+    .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+    header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+    h1 { font-size: 24px; color: #2c5282; }
+    .logout-btn { background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .logout-btn:hover { background: #c53030; }
+    
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+    .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .stat-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; }
+    .stat-value { font-size: 28px; font-weight: bold; color: #2c5282; margin-top: 8px; }
+    
+    .filters { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+    .filters input, .filters select { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
+    .filters button { background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .filters button:hover { background: #1e3a5f; }
+    
+    .table-container { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #edf2f7; padding: 15px; text-align: left; font-weight: 600; font-size: 12px; color: #4a5568; text-transform: uppercase; border-bottom: 1px solid #cbd5e0; }
+    td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+    tr:hover { background: #f7fafc; }
+    
+    .status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .status.open { background: #bee3f8; color: #2c5282; }
+    .status.quoted { background: #c6f6d5; color: #22543d; }
+    .status.closed { background: #fed7d7; color: #742a2a; }
+    
+    .lead-row-details { cursor: pointer; }
+    .lead-row-details:hover { color: #2c5282; text-decoration: underline; }
+    
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; border-radius: 8px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
+    .modal-close { float: right; font-size: 28px; font-weight: bold; color: #cbd5e0; cursor: pointer; }
+    .modal-close:hover { color: #a0aec0; }
+    
+    .field { margin-bottom: 20px; }
+    .field-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+    .field-value { font-size: 14px; color: #2d3748; }
+    
+    .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
+    .empty-state p { font-size: 16px; margin-bottom: 10px; }
   </style>
 </head>
 <body>
-<div id="login-ui" class="login-container">
-  <h2>Admin Dashboard</h2>
-  <input type="password" id="password-input" placeholder="Enter password" />
-  <button onclick="handleLogin()">Access Dashboard</button>
-  <div id="login-error" class="error"></div>
-</div>
-
-<div id="dashboard-ui" style="display:none;">
   <div class="container">
     <header>
-      <h1>EstateQuoter – Admin</h1>
-      <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
+      <h1>EstateQuoter – Professional Dashboard</h1>
+      <button class="logout-btn" onclick="logout()">Logout</button>
     </header>
-
-    <div class="stats">
+    
+    <div class="stats" id="stats">
       <div class="stat-card">
-        <div class="stat-value" id="total-leads">0</div>
         <div class="stat-label">Total Leads</div>
+        <div class="stat-value" id="total-leads">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="pending-quotes">0</div>
-        <div class="stat-label">Pending Quotes</div>
+        <div class="stat-label">Open</div>
+        <div class="stat-value" id="open-leads">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Quoted</div>
+        <div class="stat-value" id="quoted-leads">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Closed</div>
+        <div class="stat-value" id="closed-leads">0</div>
       </div>
     </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>ZIP</th>
-          <th>Status</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="leads-table">
-        <tr><td colspan="6" class="loading">Loading leads...</td></tr>
-      </tbody>
-    </table>
-    <div id="error-message" class="error"></div>
+    
+    <div class="filters">
+      <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
+      <select id="status-filter" onchange="filterLeads()">
+        <option value="">All Status</option>
+        <option value="open">Open</option>
+        <option value="quoted">Quoted</option>
+        <option value="closed">Closed</option>
+      </select>
+      <button onclick="refreshData()">Refresh</button>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>ZIP</th>
+            <th>Property Type</th>
+            <th>Needs</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="leads-table">
+          <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+  
+  <div class="modal" id="detail-modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-name"></h2>
+      <div id="modal-details"></div>
+    </div>
+  </div>
 
-<script>
-const ADMIN_PASSWORD = 'estatequoter2025';
-const SUPABASE_URL = '{{SUPABASE_URL}}';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
-
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-function handleLogin() {
-  const password = document.getElementById('password-input').value;
-  if (password === ADMIN_PASSWORD) {
-    localStorage.setItem('eq-admin-logged-in', 'true');
-    showDashboard();
-  } else {
-    document.getElementById('login-error').textContent = 'Invalid password';
-  }
-}
-
-function handleLogout() {
-  localStorage.removeItem('eq-admin-logged-in');
-  location.reload();
-}
-
-function showDashboard() {
-  document.getElementById('login-ui').style.display = 'none';
-  document.getElementById('dashboard-ui').style.display = 'block';
-  loadLeads();
-}
-
-async function loadLeads() {
-  try {
-    const { data, error } = await supabase.from('leads').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
-
-    document.getElementById('total-leads').textContent = data.length;
+  <script>
+    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
-    const tbody = document.getElementById('leads-table');
-    tbody.innerHTML = '';
+    const ADMIN_PASSWORD = 'estatequoter2025';
+    let allLeads = [];
     
-    if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="loading">No leads yet</td></tr>';
-      return;
+    async function checkAuth() {
+      const authenticated = localStorage.getItem('eqAdminLogged-in');
+      if (!authenticated) {
+        const pwd = prompt('Enter admin password:');
+        if (pwd === ADMIN_PASSWORD) {
+          localStorage.setItem('eqAdminLogged-in', 'true');
+          loadLeads();
+        } else {
+          alert('Incorrect password');
+          location.reload();
+        }
+      } else {
+        loadLeads();
+      }
     }
-
-    data.forEach(lead => {
-      const row = document.createElement('tr');
-      const date = new Date(lead.created_at).toLocaleDateString();
-      row.innerHTML = `
-        <td>${lead.customer_name || '–'}</td>
-        <td>${lead.customer_email || '–'}</td>
-        <td>${lead.customer_phone || '–'}</td>
-        <td>${lead.zip || '–'}</td>
-        <td>Open</td>
-        <td>${date}</td>
-      `;
-      tbody.appendChild(row);
-    });
-  } catch (err) {
-    document.getElementById('error-message').textContent = 'Failed to load leads: ' + err.message;
-  }
-}
-
-// Check if already logged in
-window.addEventListener('DOMContentLoaded', () => {
-  if (localStorage.getItem('eq-admin-logged-in')) {
-    showDashboard();
-  }
-});
-</script>
-
+    
+    async function loadLeads() {
+      try {
+        const { data, error } = await supabase
+          .from('leads')
+          .select('*')
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        allLeads = data || [];
+        updateStats();
+        renderTable();
+      } catch (err) {
+        document.getElementById('leads-table').innerHTML = `<tr><td colspan="9" class="empty-state"><p>Error loading leads: ${err.message}</p></td></tr>`;
+      }
+    }
+    
+    function updateStats() {
+      const total = allLeads.length;
+      const open = allLeads.filter(l => l.status === 'open').length;
+      const quoted = allLeads.filter(l => l.status === 'quoted').length;
+      const closed = allLeads.filter(l => l.status === 'closed').length;
+      
+      document.getElementById('total-leads').textContent = total;
+      document.getElementById('open-leads').textContent = open;
+      document.getElementById('quoted-leads').textContent = quoted;
+      document.getElementById('closed-leads').textContent = closed;
+    }
+    
+    function renderTable() {
+      const tbody = document.getElementById('leads-table');
+      if (allLeads.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads yet</p></td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = allLeads.map(lead => `
+        <tr>
+          <td>${lead.customer_name || 'N/A'}</td>
+          <td>${lead.customer_email || 'N/A'}</td>
+          <td>${lead.customer_phone || 'N/A'}</td>
+          <td>${lead.zip || 'N/A'}</td>
+          <td>${lead.property_type || 'N/A'}</td>
+          <td>${lead.needs || 'N/A'}</td>
+          <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
+          <td>${new Date(lead.created_at).toLocaleDateString()}</td>
+          <td><a href="#" class="lead-row-details" onclick="viewDetails(${lead.id}); return false;">View</a></td>
+        </tr>
+      `).join('');
+    }
+    
+    function filterLeads() {
+      const search = document.getElementById('search-box').value.toLowerCase();
+      const status = document.getElementById('status-filter').value;
+      
+      let filtered = allLeads.filter(lead => {
+        const matchesSearch = !search || 
+          (lead.customer_name && lead.customer_name.toLowerCase().includes(search)) ||
+          (lead.customer_email && lead.customer_email.toLowerCase().includes(search)) ||
+          (lead.customer_phone && lead.customer_phone.toLowerCase().includes(search));
+        
+        const matchesStatus = !status || lead.status === status;
+        return matchesSearch && matchesStatus;
+      });
+      
+      const tbody = document.getElementById('leads-table');
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads match your filters</p></td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = filtered.map(lead => `
+        <tr>
+          <td>${lead.customer_name || 'N/A'}</td>
+          <td>${lead.customer_email || 'N/A'}</td>
+          <td>${lead.customer_phone || 'N/A'}</td>
+          <td>${lead.zip || 'N/A'}</td>
+          <td>${lead.property_type || 'N/A'}</td>
+          <td>${lead.needs || 'N/A'}</td>
+          <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
+          <td>${new Date(lead.created_at).toLocaleDateString()}</td>
+          <td><a href="#" class="lead-row-details" onclick="viewDetails(${lead.id}); return false;">View</a></td>
+        </tr>
+      `).join('');
+    }
+    
+    function viewDetails(id) {
+      const lead = allLeads.find(l => l.id === id);
+      if (!lead) return;
+      
+      const modal = document.getElementById('detail-modal');
+      document.getElementById('modal-name').textContent = lead.customer_name || 'Unknown';
+      
+      const fields = [
+        ['Customer Name', lead.customer_name],
+        ['Email', lead.customer_email],
+        ['Phone', lead.customer_phone],
+        ['ZIP Code', lead.zip],
+        ['Property Type', lead.property_type],
+        ['Square Footage', lead.square_footage],
+        ['Bedrooms', lead.bedrooms],
+        ['Bathrooms', lead.bathrooms],
+        ['What They Need Most', lead.needs],
+        ['Role', lead.role],
+        ['Urgency', lead.urgency],
+        ['Accessible', lead.accessible],
+        ['High Value Items', lead.high_value_items],
+        ['Notes', lead.notes],
+        ['Status', lead.status],
+        ['Date Submitted', new Date(lead.created_at).toLocaleString()],
+      ];
+      
+      document.getElementById('modal-details').innerHTML = fields
+        .filter(([_, val]) => val)
+        .map(([label, value]) => `
+          <div class="field">
+            <div class="field-label">${label}</div>
+            <div class="field-value">${value}</div>
+          </div>
+        `).join('');
+      
+      modal.classList.add('active');
+    }
+    
+    function closeModal() {
+      document.getElementById('detail-modal').classList.remove('active');
+    }
+    
+    function refreshData() {
+      loadLeads();
+    }
+    
+    function logout() {
+      localStorage.removeItem('eqAdminLogged-in');
+      location.reload();
+    }
+    
+    checkAuth();
+  </script>
 </body>
 </html>
-
-
-
-
 
