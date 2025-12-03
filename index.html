@@ -1127,6 +1127,16 @@
   </div>
 </div>
 
+<!-- Supabase Client Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <script>
+    // Initialize Supabase client on the page
+    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA1MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  </script>
+
 <script>
 // -----------------------
 // Capture visitor metadata
