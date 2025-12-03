@@ -2,8 +2,8 @@ const { createClient } = require('@supabase/supabase-js');
 
 exports.handler = async (event) => {
   try {
-    const url = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
-    const key = 'sb_secret_QovMs9AGtFX5D_Jc7RFL5Q_z4ozbDEx';
+    const url = process.env.SUPABASE_URL;
+    const key = process.env.SUPABASE_SECRET_KEY;
     
     console.log('URL:', url);
     console.log('URL type:', typeof url);
@@ -22,3 +22,4 @@ exports.handler = async (event) => {
     };
   }
 };
+
