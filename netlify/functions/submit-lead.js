@@ -62,7 +62,7 @@ exports.handler = async (event) => {
       // If slug not found, continue anyway (lead still created, just unrouted)
     }
 
-    // Step 2: Create lead record with ALL form fields
+    // Step 2: Create lead record with ONLY existing columns
     const { data: lead, error: dbError } = await supabase
       .from('leads')
       .insert({
@@ -70,43 +70,7 @@ exports.handler = async (event) => {
         customer_email: body.customer_email,
         customer_phone: body.customer_phone || null,
         zip: body.zip || null,
-        role: body.role || null,
-        role_other: body.role_other || null,
-        needs: body.needs || null,
-        needs_other: body.needs_other || null,
-        property_type: body.property_type || null,
-        square_footage: body.square_footage || null,
-        bedrooms: body.bedrooms || null,
-        bathrooms: body.bathrooms || null,
-        extra_rooms: body.extra_rooms || null,
-        extra_rooms_other: body.extra_rooms_other || null,
-        fullness: body.fullness || null,
-        high_value: body.high_value || null,
-        high_value_other: body.high_value_other || null,
-        clear_out: body.clear_out || null,
-        timeline: body.timeline || null,
-        oversized: body.oversized || null,
-        oversized_other: body.oversized_other || null,
-        access: body.access || null,
-        access_other: body.access_other || null,
-        has_media: body.has_media || false,
-        media_count: body.media_count || 0,
-        home_value: body.home_value || null,
         notes: body.notes || null,
-        ip: body.ip || null,
-        city: body.city || null,
-        region: body.region || null,
-        country: body.country || null,
-        postal: body.postal || null,
-        latitude: body.latitude || null,
-        longitude: body.longitude || null,
-        isp: body.isp || null,
-        device: body.device || null,
-        user_agent: body.user_agent || null,
-        referrer: body.referrer || null,
-        page_url: body.page_url || null,
-        likely_vpn: body.likely_vpn || null,
-        professional_id: professionalId,
         status: 'open',
       })
       .select()
@@ -174,5 +138,6 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
