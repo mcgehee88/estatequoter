@@ -1,11 +1,11 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY
-);
-
 exports.handler = async (event) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+  );
+
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -109,4 +109,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
 

@@ -2,14 +2,14 @@ const { createClient } = require('@supabase/supabase-js');
 const { v4: uuidv4 } = require('uuid');
 const fetch = require('node-fetch');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY
-);
-
 const MAKE_COM_WEBHOOK = process.env.MAKE_COM_WEBHOOK_URL;
 
 exports.handler = async (event) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+  );
+
   // CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -111,4 +111,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
 

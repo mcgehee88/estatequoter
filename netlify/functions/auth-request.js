@@ -2,11 +2,6 @@ const { createClient } = require('@supabase/supabase-js');
 const { v4: uuidv4 } = require('uuid');
 const crypto = require('crypto');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY
-);
-
 // Simple email sending (using Supabase's built-in or a free service)
 const sendEmail = async (to, subject, html) => {
   // For now, we'll log this. In production, integrate with SendGrid, Resend, etc.
@@ -16,6 +11,11 @@ const sendEmail = async (to, subject, html) => {
 };
 
 exports.handler = async (event) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+  );
+
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -109,4 +109,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
 

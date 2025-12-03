@@ -1,14 +1,14 @@
 const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SECRET_KEY
-);
-
 // Simple auth: GitHub OAuth token (you can set this in Netlify env)
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || 'admin-token-change-me';
 
 exports.handler = async (event) => {
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SECRET_KEY
+  );
+
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -93,4 +93,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
