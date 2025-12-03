@@ -149,11 +149,7 @@
 <script>
 const ADMIN_PASSWORD = 'estatequoter2025';
 const SUPABASE_URL = '{{SUPABASE_URL}}';
-const SUPABASE_ANON_KEY = '{{SUPABASE_ANON_KEY}}';
-
-if (SUPABASE_ANON_KEY === '{{SUPABASE_ANON_KEY}}') {
-  document.getElementById('error-message').textContent = 'ERROR: Supabase keys not injected by build script. Contact admin.';
-}
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -221,6 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
