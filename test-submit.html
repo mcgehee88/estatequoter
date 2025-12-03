@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Supabase Submission</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Test Supabase Direct Submission</h1>
+  <button id="test-btn">Click to submit test lead</button>
+  <pre id="output"></pre>
+
+  <script>
+    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
+    
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('test-btn').onclick = async () => {
+      const output = document.getElementById('output');
+      output.textContent = 'Submitting...';
+
+      const testData = {
+        customer_name: 'Test User ' + Date.now(),
+        customer_email: 'test@example.com',
+        customer_phone: '555-1234',
+        zip: '23451',
+        role: 'Test role',
+        needs: 'Test needs',
+        property_type: 'House',
+        square_footage: 2500,
+        bedrooms: '3',
+        bathrooms: '2',
+        notes: 'This is a test submission',
+        created_at: new Date().toISOString()
+      };
+
+      try {
+        const { data, error } = await supabase.from('leads').insert([testData]);
+        if (error) {
+          output.textContent = 'ERROR:\n' + JSON.stringify(error, null, 2);
+        } else {
+          output.textContent = 'SUCCESS!\n' + JSON.stringify(data, null, 2) + '\n\nNow check your admin dashboard!';
+        }
+      } catch (err) {
+        output.textContent = 'EXCEPTION:\n' + err.message;
+      }
+    };
+  </script>
+</body>
+</html>
+
