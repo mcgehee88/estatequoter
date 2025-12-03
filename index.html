@@ -1934,10 +1934,24 @@ async function sendLeadToMake(leadData) {
 
   // Save to Supabase
   try {
+    // Map form data to database schema
+    const dbRecord = {
+      customer_name: leadData.name,
+      customer_email: leadData.email,
+      customer_phone: leadData.phone,
+      property_type: leadData.propertyType,
+      property_value_range: leadData.propertyValue,
+      estate_location: leadData.location,
+      urgency: leadData.urgency,
+      notes: leadData.notes,
+      referral_source: leadData.referralSource
+    };
+
     const { error } = await supabase
       .from('leads')
-      .insert(leadData);
+      .insert([dbRecord]);
     if (error) throw error;
+    console.log('Lead saved to Supabase successfully');
   } catch (err) {
     console.error('Supabase insert failed', err);
     alert('Something went wrong. Please try again.');
