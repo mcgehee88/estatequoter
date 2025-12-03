@@ -1830,10 +1830,13 @@ if (mediaInput) {
 
 /* Navigation buttons (Next / Back) */
 mainBtn.onclick = () => {
+  console.log('mainBtn clicked, currentStep:', currentStep, 'totalSteps:', totalSteps);
   if (!validateStep(currentStep)) return;
 
   if (currentStep === totalSteps - 1) {
+    console.log('Final step reached, collecting data...');
     const data = collectData();
+    console.log('Collected data:', data);
     currentLeadData = data;
 
     try {
@@ -1842,6 +1845,7 @@ mainBtn.onclick = () => {
       console.warn('Unable to store last lead', e);
     }
 
+    console.log('Calling sendLeadToMake with data:', data);
     sendLeadToMake(data);
     renderReview(data);
     document.getElementById('main-form').style.display = 'none';
@@ -1852,66 +1856,13 @@ mainBtn.onclick = () => {
   showStep(currentStep + 1, true);
 };
 
-backBtn.onclick = () => {
-  if (currentStep === 0) return;
-  showStep(currentStep - 1, true);
-};
-
-document.getElementById('edit-btn').onclick = () => {
-  let data = currentLeadData;
-
-  if (!data) {
-    try {
-      const raw = localStorage.getItem('eqLastLead');
-      if (raw) data = JSON.parse(raw);
-    } catch(e) {
-      console.warn('Unable to parse last lead', e);
-    }
-  }
-
-  if (data) {
-    hydrateFormFromData(data);
-  }
-
-  document.getElementById('zip-section').style.display = 'none';
-  document.getElementById('review').style.display = 'none';
-  document.getElementById('main-form').style.display = 'block';
-  ctaBar.style.display = 'block';
-  document.body.classList.add('form-active');
-  showStep(0, true);
-};
-
-/* Back button integration: intercept popstate for step navigation */
-window.addEventListener('popstate', (event) => {
-  const state = event.state;
-
-  if (state && typeof state.eqStep === 'number') {
-    document.getElementById('zip-section').style.display = 'none';
-    document.getElementById('review').style.display = 'none';
-    document.getElementById('main-form').style.display = 'block';
-    ctaBar.style.display = 'block';
-    document.body.classList.add('form-active');
-
-    showStep(state.eqStep, false);
-    return;
-  }
-
-  if (state && state.eqRoot) {
-    document.getElementById('zip-section').style.display = 'block';
-    document.getElementById('main-form').style.display = 'none';
-    document.getElementById('review').style.display = 'none';
-    ctaBar.style.display = 'none';
-    document.body.classList.remove('form-active');
-    window.scrollTo(0,0);
-  }
-});
-
-/* Send to Make.com – JSON only, no file upload */
 async function sendLeadToMake(leadData) {
+  console.log('sendLeadToMake called with:', leadData);
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
   
   mainBtn.disabled = true;
   mainBtn.textContent = "Submitting...";
+  console.log('Button disabled, showing "Submitting..."');
 
   // Map form data to database schema
   const dbPayload = {
@@ -1925,13 +1876,16 @@ async function sendLeadToMake(leadData) {
     notes: leadData.additionalInfo || '',
     referral_source: leadData.referralSource || 'organic'
   };
+  console.log('Mapped to dbPayload:', dbPayload);
 
   try {
+    console.log('Supabase client:', supabase);
     // Send to Supabase
     const { error } = await supabase
       .from('leads')
       .insert([dbPayload]);
     
+    console.log('Supabase insert response - error:', error);
     if (error) {
       console.error('Supabase error:', error);
       throw new Error(error.message);
@@ -2518,8 +2472,8 @@ function deleteLead(leadId) {
         document.getElementById('cta-bar').style.display = 'none';
         document.getElementById('review').style.display = 'block';
         document.body.classList.add('form-active');
+        showStep(0, true);
         manageModal.classList.remove('active');
-        history.pushState({ eqStep: 'review' }, "", "#review");
         window.scrollTo(0, 0);
       });
     });
