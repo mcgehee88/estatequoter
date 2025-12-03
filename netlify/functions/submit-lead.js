@@ -3,6 +3,17 @@ const { createClient } = require('@supabase/supabase-js');
 exports.handler = async (event) => {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+  
+  // Validate env vars
+  if (!supabaseUrl || !supabaseKey) {
+    console.error('Missing Supabase credentials:', { url: !!supabaseUrl, key: !!supabaseKey });
+    return {
+      statusCode: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Missing Supabase configuration' }),
+    };
+  }
+  
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   // Handle CORS preflight
@@ -163,4 +174,5 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
