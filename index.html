@@ -1932,10 +1932,8 @@ async function sendLeadToMake(leadData) {
   leadData.leadId = leadId;
   leadData.createdAt = new Date().toISOString();
 
-  // Save to Supabase
-    console.log('leadData to insert:', leadData);
-    console.log('supabase client:', supabase ? 'EXISTS' : 'UNDEFINED');
-    
+  // Send to backend API
+  try {
     const dbRecord = {
       customer_name: leadData.name,
       customer_email: leadData.email,
@@ -1982,18 +1980,26 @@ async function sendLeadToMake(leadData) {
       created_at: new Date().toISOString()
     };
 
-    const { data, error } = await supabase
-      .from('leads')
-      .insert([dbRecord]);
-    
-    console.log('Insert response - data:', data, 'error:', error);
-    
-    if (error) {
-      console.error('Full error object:', error);
-      throw error;
+    console.log('Sending lead to backend API:', apiURL);
+    const response = await fetch(apiURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dbRecord)
+    });
+
+    const result = await response.json();
+    console.log('API Response:', result);
+
+    if (!response.ok) {
+      console.error('API error:', result);
+      throw new Error(result.error || 'Failed to submit lead');
     }
-    
-    console.log('Lead saved to Supabase successfully');
+
+    console.log('Lead saved successfully via API');
+  } catch (error) {
+    console.error('Error submitting lead:', error);
+    throw error;
+  }
 }
 
 /* Collect all form data into a single object */
