@@ -563,59 +563,85 @@
         return;
       }
 
-      const proLink = `https://estatequoter.com/?pro=${encodeURIComponent(slug)}`;
-
       const payload = {
-        type: "proOnboarding",
         company:     (fd.get('company')     || '').toString().trim().slice(0, 160),
         contactName: (fd.get('contactName') || '').toString().trim().slice(0, 120),
         email:       (fd.get('email')       || '').toString().trim().slice(0, 200),
         phone:       (fd.get('phone')       || '').toString().trim().slice(0, 40),
         serviceArea: (fd.get('serviceArea') || '').toString().trim().slice(0, 160),
-        slug,
-        proLink,
-        createdAt: new Date().toISOString(),
-        userAgent: navigator.userAgent || "",
-        pageUrl: window.location.href || ""
+        slug
       };
 
       submitBtn.disabled = true;
       submitBtn.textContent = "Creating your link...";
 
-      // Try to hit Make ONLY if a real webhook URL is set
-      if (PRO_WEBHOOK_URL && !PRO_WEBHOOK_URL.includes("YOUR_PRO_WEBHOOK_HERE")) {
-        try {
-          await fetch(PRO_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-        } catch (err) {
-          console.error("Pro onboarding webhook failed (continuing anyway)", err);
-          // We do NOT show an alert or bail out; front-end still succeeds.
+      try {
+        const res = await fetch('/.netlify/functions/pro-register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.error || 'Failed to create your link. Please try again.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create my free link';
+          return;
         }
-      }
 
-      // Front-end success: show link, hide form + "Step 1" stuff
-      form.style.display = 'none';
-      if (note) note.style.display = 'none';
-      if (modalTitle) modalTitle.style.display = 'none';
-      if (modalIntro) modalIntro.style.display = 'none';
-      successBox.style.display = 'block';
-      linkBox.textContent = proLink;
+        // Success! Show the link and dashboard info
+        const proLink = `https://estatequoter.com/?pro=${data.slug}`;
+        const dashboardLink = 'https://estatequoter.com/pro-dashboard.html';
 
-      if (copyBtn && navigator.clipboard) {
-        copyBtn.addEventListener('click', async () => {
+        // Hide form, show success
+        form.style.display = 'none';
+        if (note) note.style.display = 'none';
+        if (modalTitle) modalTitle.style.display = 'none';
+        if (modalIntro) modalIntro.style.display = 'none';
+        successBox.style.display = 'block';
+        linkBox.textContent = proLink;
+
+        // Update success box to include dashboard info
+        const successHTML = `
+          <h3 style="font-size:18px;font-weight:700;margin-bottom:6px;">Your link is ready!</h3>
+          <p style="font-size:14px;margin-bottom:8px;">
+            Share this link with clients to collect leads:
+          </p>
+          <div style="background:#020617;color:#f9fafb;border-radius:12px;padding:10px 12px;font-size:14px;word-break:break-all;margin-bottom:14px;">
+            ${proLink}
+          </div>
+          <button type="button" id="pro-copy-btn-new" style="padding:8px 14px;border:none;border-radius:999px;font-size:13px;font-weight:600;background:#e5e7eb;color:#020617;cursor:pointer;margin-right:8px;">
+            Copy link
+          </button>
+          <a href="${dashboardLink}" target="_blank" style="padding:8px 14px;border:none;border-radius:999px;font-size:13px;font-weight:600;background:#22c55e;color:#022c22;cursor:pointer;display:inline-block;text-decoration:none;">
+            View Your Dashboard →
+          </a>
+          <p style="font-size:12px;color:#9ca3af;margin-top:12px;">
+            Use your email (<strong>${payload.email}</strong>) and a password to log in to your dashboard.
+          </p>
+        `;
+        successBox.innerHTML = successHTML;
+
+        // Copy functionality
+        document.getElementById('pro-copy-btn-new').addEventListener('click', async () => {
           try {
             await navigator.clipboard.writeText(proLink);
-            copyBtn.textContent = "Copied!";
+            document.getElementById('pro-copy-btn-new').textContent = 'Copied!';
             setTimeout(() => {
-              copyBtn.textContent = "Copy link";
+              document.getElementById('pro-copy-btn-new').textContent = 'Copy link';
             }, 1500);
           } catch (e) {
-            console.error("Copy failed", e);
+            console.error('Copy failed', e);
           }
         });
+
+      } catch (err) {
+        console.error('Pro registration failed', err);
+        alert('Something went wrong. Please try again in a moment.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create my free link';
       }
     });
   });
@@ -623,3 +649,4 @@
 
 </body>
 </html>
+

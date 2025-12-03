@@ -3,46 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EstateQuoter – Professional Dashboard</title>
+  <title>EstateQuoter Pro – Your Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
     
-    .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .login-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #0d9d6a 0%, #05672d 100%); }
     .login-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
-    .login-box h1 { font-size: 28px; margin-bottom: 10px; color: #2c5282; }
+    .login-box h1 { font-size: 28px; margin-bottom: 10px; color: #0d9d6a; }
     .login-box p { color: #718096; margin-bottom: 30px; font-size: 14px; }
     
     .form-group { margin-bottom: 20px; }
     .form-group label { display: block; font-size: 12px; color: #4a5568; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
     .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
-    .form-group input:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+    .form-group input:focus { outline: none; border-color: #0d9d6a; box-shadow: 0 0 0 3px rgba(13, 157, 106, 0.1); }
     
-    .form-group button { width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-    .form-group button:hover { background: #5568d3; }
+    .form-group button { width: 100%; padding: 12px; background: #0d9d6a; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .form-group button:hover { background: #05672d; }
     .form-group button:disabled { background: #cbd5e0; cursor: not-allowed; }
     
     .error { color: #e53e3e; font-size: 12px; margin-top: 8px; }
-    .loading { display: none; }
+    .loading { display: none; font-size: 12px; color: #718096; }
     
     .container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
     .container.authenticated { display: block; }
     
     header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
-    h2 { font-size: 24px; color: #2c5282; }
+    h2 { font-size: 24px; color: #0d9d6a; }
     .logout-btn { background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
     .logout-btn:hover { background: #c53030; }
+    
+    .pro-link-box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .pro-link-box h3 { font-size: 16px; margin-bottom: 12px; color: #2c5282; }
+    .link-display { background: #f8fafc; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 13px; word-break: break-all; margin-bottom: 8px; }
+    .copy-btn { padding: 8px 16px; background: #0d9d6a; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
     
     .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .stat-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .stat-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; }
-    .stat-value { font-size: 28px; font-weight: bold; color: #2c5282; margin-top: 8px; }
+    .stat-value { font-size: 28px; font-weight: bold; color: #0d9d6a; margin-top: 8px; }
     
     .filters { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
     .filters input, .filters select { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
-    .filters button { background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-    .filters button:hover { background: #1e3a5f; }
+    .filters button { background: #0d9d6a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .filters button:hover { background: #05672d; }
     
     .table-container { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
     table { width: 100%; border-collapse: collapse; }
@@ -65,19 +70,19 @@
     .field-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
     .field-value { font-size: 14px; color: #2d3748; }
     
-    .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
-    
     .media-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
     .media-item { border-radius: 6px; overflow: hidden; background: #f8fafc; aspect-ratio: 1; }
     .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+    
+    .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
   </style>
 </head>
 <body>
   <!-- LOGIN SCREEN -->
   <div id="login-screen" class="login-container">
     <div class="login-box">
-      <h1>EstateQuoter</h1>
-      <p>Professional Dashboard Login</p>
+      <h1>EstateQuoter Pro</h1>
+      <p>Professional Dashboard</p>
       
       <form id="login-form" onsubmit="handleLogin(event)">
         <div class="form-group">
@@ -97,9 +102,10 @@
         
         <div class="error" id="login-error"></div>
       </form>
-      
+
       <p style="margin-top: 20px; text-align: center; font-size: 12px; color: #718096;">
-        Don't have an account? <a href="#" onclick="toggleSignup(); return false;" style="color: #667eea; text-decoration: none;">Sign up here</a>
+        Don't have an account? 
+        <a href="/pro.html" style="color: #0d9d6a; text-decoration: none;">Create your free link</a>
       </p>
     </div>
   </div>
@@ -107,9 +113,17 @@
   <!-- DASHBOARD SCREEN -->
   <div id="dashboard-screen" class="container">
     <header>
-      <h2>EstateQuoter – Professional Dashboard</h2>
+      <h2>My EstateQuoter Pro Dashboard</h2>
       <button class="logout-btn" onclick="handleLogout()">Logout</button>
     </header>
+
+    <!-- Pro Link Box -->
+    <div class="pro-link-box" id="pro-link-section" style="display: none;">
+      <h3>Your Professional Link</h3>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 10px;">Share this link with clients to collect leads:</p>
+      <div class="link-display" id="pro-link-display"></div>
+      <button class="copy-btn" onclick="copyProLink()">Copy Link</button>
+    </div>
     
     <div class="stats" id="stats">
       <div class="stat-card">
@@ -177,6 +191,8 @@
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
     let allLeads = [];
+    let currentUser = null;
+    let currentProfessional = null;
     
     async function handleLogin(e) {
       e.preventDefault();
@@ -193,6 +209,20 @@
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         
+        currentUser = data.user;
+        
+        // Find professional account by email
+        const { data: professionals, error: proError } = await supabase
+          .from('professionals')
+          .select('*')
+          .eq('email', email)
+          .single();
+        
+        if (proError || !professionals) {
+          throw new Error('Professional account not found. Please contact support.');
+        }
+        
+        currentProfessional = professionals;
         showDashboard();
         loadLeads();
       } catch (err) {
@@ -206,6 +236,8 @@
       await supabase.auth.signOut();
       showLogin();
       document.getElementById('login-form').reset();
+      currentUser = null;
+      currentProfessional = null;
     }
     
     function showLogin() {
@@ -216,13 +248,23 @@
     function showDashboard() {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('dashboard-screen').classList.add('authenticated');
+      
+      // Show pro link
+      if (currentProfessional) {
+        const link = `https://estatequoter.com/?pro=${currentProfessional.slug}`;
+        document.getElementById('pro-link-display').textContent = link;
+        document.getElementById('pro-link-section').style.display = 'block';
+      }
     }
     
     async function loadLeads() {
       try {
+        if (!currentProfessional) return;
+        
         const { data, error } = await supabase
           .from('leads')
-          .select('*')
+          .select('*, lead_media(*)')
+          .eq('professional_id', currentProfessional.id)
           .order('created_at', { ascending: false });
         
         if (error) throw error;
@@ -249,7 +291,7 @@
     function renderTable() {
       const tbody = document.getElementById('leads-table');
       if (allLeads.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads yet</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads yet. Share your link to start receiving requests.</p></td></tr>';
         return;
       }
       
@@ -263,7 +305,7 @@
           <td>${lead.needs || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
+          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
@@ -298,7 +340,7 @@
           <td>${lead.needs || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
+          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
@@ -315,21 +357,26 @@
         ['Email', lead.customer_email],
         ['Phone', lead.customer_phone],
         ['ZIP Code', lead.zip],
+        ['Role', lead.role],
+        ['Needs', lead.needs],
         ['Property Type', lead.property_type],
         ['Square Footage', lead.square_footage],
         ['Bedrooms', lead.bedrooms],
         ['Bathrooms', lead.bathrooms],
-        ['What They Need Most', lead.needs],
-        ['Role', lead.role],
-        ['Urgency', lead.urgency],
-        ['Accessible', lead.accessible],
-        ['High Value Items', lead.high_value_items],
+        ['Extra Rooms', lead.extra_rooms],
+        ['Fullness', lead.fullness],
+        ['High Value Items', lead.high_value],
+        ['Clear Out Needs', lead.clear_out],
+        ['Timeline', lead.timeline],
+        ['Oversized Items', lead.oversized],
+        ['Access', lead.access],
+        ['Home Value', lead.home_value ? '$' + lead.home_value.toLocaleString() : null],
         ['Notes', lead.notes],
         ['Status', lead.status],
         ['Date Submitted', new Date(lead.created_at).toLocaleString()],
       ];
       
-      document.getElementById('modal-details').innerHTML = fields
+      let detailsHTML = fields
         .filter(([_, val]) => val)
         .map(([label, value]) => `
           <div class="field">
@@ -338,6 +385,25 @@
           </div>
         `).join('');
       
+      // Add media gallery if present
+      if (lead.lead_media && lead.lead_media.length > 0) {
+        detailsHTML += `
+          <div class="field">
+            <div class="field-label">Media (Photos/Video)</div>
+            <div class="media-gallery">
+              ${lead.lead_media.map(m => {
+                const isVideo = m.media_type === 'video';
+                const tag = isVideo 
+                  ? `<video src="${m.cloudinary_url}" controls style="width: 100%; height: 100%;"></video>`
+                  : `<img src="${m.cloudinary_url}" alt="">`;
+                return `<div class="media-item">${tag}</div>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+      
+      document.getElementById('modal-details').innerHTML = detailsHTML;
       modal.classList.add('active');
     }
     
@@ -349,15 +415,34 @@
       loadLeads();
     }
     
-    function toggleSignup() {
-      alert('Contact your administrator to create an account.');
+    function copyProLink() {
+      if (!currentProfessional) return;
+      const link = `https://estatequoter.com/?pro=${currentProfessional.slug}`;
+      navigator.clipboard.writeText(link).then(() => {
+        alert('Link copied to clipboard!');
+      });
     }
     
     // Check if user is already logged in
     supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        showDashboard();
-        loadLeads();
+        currentUser = session.user;
+        
+        // Find professional account
+        supabase
+          .from('professionals')
+          .select('*')
+          .eq('email', session.user.email)
+          .single()
+          .then(({ data, error }) => {
+            if (data) {
+              currentProfessional = data;
+              showDashboard();
+              loadLeads();
+            } else {
+              handleLogout();
+            }
+          });
       } else {
         showLogin();
       }
@@ -365,5 +450,4 @@
   </script>
 </body>
 </html>
-
 
