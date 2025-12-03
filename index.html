@@ -1933,34 +1933,46 @@ async function sendLeadToMake(leadData) {
   leadData.createdAt = new Date().toISOString();
 
   // Save to Supabase
-  try {
-    // Map form data to database schema
+    console.log('leadData to insert:', leadData);
+    console.log('supabase client:', supabase ? 'EXISTS' : 'UNDEFINED');
+    
     const dbRecord = {
       customer_name: leadData.name,
       customer_email: leadData.email,
       customer_phone: leadData.phone,
+      zip_code: leadData.zip,
       property_type: leadData.propertyType,
-      property_value_range: leadData.propertyValue,
-      estate_location: leadData.location,
-      urgency: leadData.urgency,
+      square_footage: leadData.squareFootage,
+      bedrooms: leadData.bedrooms,
+      bathrooms: leadData.bathrooms,
+      fullness: leadData.fullness,
+      high_value_items: leadData.highValue,
+      clear_out_needs: leadData.clearOut,
+      urgency: leadData.timeline,
+      extra_rooms: leadData.extraRooms,
+      oversized_items: leadData.oversized,
+      access_notes: leadData.access,
+      property_value: leadData.homeValue,
       notes: leadData.notes,
-      referral_source: leadData.referralSource
+      customer_role: leadData.role,
+      customer_needs: leadData.needs,
+      has_media: leadData.hasMedia,
+      created_at: new Date().toISOString(),
+      ip_address: leadData.ip
     };
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from('leads')
       .insert([dbRecord]);
-    if (error) throw error;
+    
+    console.log('Insert response - data:', data, 'error:', error);
+    
+    if (error) {
+      console.error('Full error object:', error);
+      throw error;
+    }
+    
     console.log('Lead saved to Supabase successfully');
-  } catch (err) {
-    console.error('Supabase insert failed', err);
-    alert('Something went wrong. Please try again.');
-    return;
-  }
-
-  // Reset button
-  mainBtn.textContent = "Submit request";
-  mainBtn.disabled = false;
 }
 
 /* Collect all form data into a single object */
