@@ -3,8 +3,9 @@ node_modules/
 .DS_Store
 .vscode/
 .env
-.env.production
-.env.*.local
+.env.*
+netlify/
+!netlify/functions/
 dist/
 build/
 *.tmp
