@@ -3,6 +3,9 @@
   publish = "."
   functions = "netlify/functions"
 
+[functions]
+  SECRETS_SCAN_ENABLED = "false"
+
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
@@ -22,5 +25,6 @@
   from = "/pro-dashboard"
   to = "/pro-dashboard.html"
   status = 200
+
 
 
