@@ -51,73 +51,90 @@
     
     .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
     .empty-state p { font-size: 16px; margin-bottom: 10px; }
+
+    .auth-required {
+      display: flex;
+    }
+
+    .dashboard {
+      display: none;
+    }
+
+    .dashboard.authenticated {
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>EstateQuoter – Professional Dashboard</h1>
-      <button class="logout-btn" onclick="logout()">Logout</button>
-    </header>
-    
-    <div class="stats" id="stats">
-      <div class="stat-card">
-        <div class="stat-label">Total Leads</div>
-        <div class="stat-value" id="total-leads">0</div>
+  <div id="auth-login" class="auth-required">
+    <div class="container">
+      <header>
+        <h1>EstateQuoter – Professional Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </header>
+      
+      <div class="stats" id="stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Leads</div>
+          <div class="stat-value" id="total-leads">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Open</div>
+          <div class="stat-value" id="open-leads">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Quoted</div>
+          <div class="stat-value" id="quoted-leads">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Closed</div>
+          <div class="stat-value" id="closed-leads">0</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Open</div>
-        <div class="stat-value" id="open-leads">0</div>
+      
+      <div class="filters">
+        <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
+        <select id="status-filter" onchange="filterLeads()">
+          <option value="">All Status</option>
+          <option value="open">Open</option>
+          <option value="quoted">Quoted</option>
+          <option value="closed">Closed</option>
+        </select>
+        <button onclick="refreshData()">Refresh</button>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Quoted</div>
-        <div class="stat-value" id="quoted-leads">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Closed</div>
-        <div class="stat-value" id="closed-leads">0</div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>ZIP</th>
+              <th>Property Type</th>
+              <th>Needs</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="leads-table">
+            <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
     
-    <div class="filters">
-      <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
-      <select id="status-filter" onchange="filterLeads()">
-        <option value="">All Status</option>
-        <option value="open">Open</option>
-        <option value="quoted">Quoted</option>
-        <option value="closed">Closed</option>
-      </select>
-      <button onclick="refreshData()">Refresh</button>
-    </div>
-    
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>ZIP</th>
-            <th>Property Type</th>
-            <th>Needs</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="leads-table">
-          <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
-        </tbody>
-      </table>
+    <div class="modal" id="detail-modal">
+      <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h2 id="modal-name"></h2>
+        <div id="modal-details"></div>
+      </div>
     </div>
   </div>
-  
-  <div class="modal" id="detail-modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">&times;</span>
-      <h2 id="modal-name"></h2>
-      <div id="modal-details"></div>
-    </div>
+
+  <div id="dashboard" class="dashboard">
   </div>
 
   <script>
@@ -284,4 +301,5 @@
   </script>
 </body>
 </html>
+
 
