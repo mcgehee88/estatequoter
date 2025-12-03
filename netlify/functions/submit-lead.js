@@ -62,18 +62,10 @@ exports.handler = async (event) => {
       // If slug not found, continue anyway (lead still created, just unrouted)
     }
 
-    // Step 2: Create lead record with ONLY existing columns
+    // Step 2: Create lead record with ALL captured form that the database has - map all field names to their database column equivalents
     const { data: lead, error: dbError } = await supabase
       .from('leads')
-      .insert({
-        customer_name: body.customer_name,
-        customer_email: body.customer_email,
-        customer_phone: body.customer_phone || null,
-        zip: body.zip || null,
-        notes: body.notes || null,
-        property_type: body.property_type || 'Not specified',
-        status: 'open',
-      })
+      .insert([body])
       .select()
       .single();
 
@@ -139,6 +131,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
