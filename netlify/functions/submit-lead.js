@@ -71,6 +71,7 @@ exports.handler = async (event) => {
         customer_phone: body.customer_phone || null,
         zip: body.zip || null,
         notes: body.notes || null,
+        property_type: body.property_type || 'Not specified',
         status: 'open',
       })
       .select()
@@ -138,6 +139,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
