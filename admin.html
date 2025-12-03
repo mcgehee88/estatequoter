@@ -26,7 +26,7 @@
     .error { color: #e53e3e; font-size: 12px; margin-top: 8px; }
     .loading { display: none; }
     
-    .container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
+    .container { max-width: 1600px; margin: 0 auto; padding: 20px; display: none; }
     .container.authenticated { display: block; }
     
     header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
@@ -43,33 +43,50 @@
     .filters input, .filters select { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
     .filters button { background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
     .filters button:hover { background: #1e3a5f; }
+    .filters .refresh-btn { background: #48bb78; }
+    .filters .refresh-btn:hover { background: #38a169; }
     
-    .table-container { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    .table-wrapper { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
-    th { background: #edf2f7; padding: 15px; text-align: left; font-weight: 600; font-size: 12px; color: #4a5568; text-transform: uppercase; border-bottom: 1px solid #cbd5e0; }
-    td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+    th { background: #edf2f7; padding: 15px; text-align: left; font-weight: 600; font-size: 11px; color: #4a5568; text-transform: uppercase; border-bottom: 1px solid #cbd5e0; white-space: nowrap; }
+    td { padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
     tr:hover { background: #f7fafc; }
     
-    .status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .status { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
     .status.open { background: #bee3f8; color: #2c5282; }
     .status.quoted { background: #c6f6d5; color: #22543d; }
     .status.closed { background: #fed7d7; color: #742a2a; }
     
-    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-    .modal.active { display: flex; }
-    .modal-content { background: white; border-radius: 8px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
-    .modal-close { float: right; font-size: 28px; font-weight: bold; color: #cbd5e0; cursor: pointer; }
-    .modal-close:hover { color: #a0aec0; }
+    .action-btn { padding: 6px 12px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; text-decoration: none; display: inline-block; }
+    .action-btn:hover { background: #5568d3; }
     
-    .field { margin-bottom: 20px; }
-    .field-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
-    .field-value { font-size: 14px; color: #2d3748; }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; overflow-y: auto; padding: 20px; }
+    .modal.active { display: flex; }
+    .modal-content { background: white; border-radius: 12px; padding: 40px; max-width: 900px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+    .modal-close { float: right; font-size: 28px; font-weight: bold; color: #cbd5e0; cursor: pointer; margin: -10px; }
+    .modal-close:hover { color: #a0aec0; }
+    .modal h2 { color: #2c5282; margin-bottom: 30px; font-size: 24px; clear: both; }
+    
+    .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .detail-section { background: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #667eea; }
+    .detail-section h3 { color: #2c5282; font-size: 13px; text-transform: uppercase; font-weight: 600; margin-bottom: 15px; }
+    
+    .field { margin-bottom: 15px; }
+    .field-label { font-size: 11px; color: #718096; text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+    .field-value { font-size: 14px; color: #2d3748; line-height: 1.5; word-break: break-word; }
+    
+    .media-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 10px; }
+    .media-item { border-radius: 6px; overflow: hidden; background: #e2e8f0; aspect-ratio: 1; cursor: pointer; }
+    .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+    
+    .geo-info { background: #f0f7ff; border: 1px solid #bee3f8; border-radius: 6px; padding: 12px; font-size: 12px; color: #2c5282; }
     
     .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
     
-    .media-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
-    .media-item { border-radius: 6px; overflow: hidden; background: #f8fafc; aspect-ratio: 1; }
-    .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 768px) {
+      th, td { padding: 10px; font-size: 12px; }
+      .details-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -97,51 +114,48 @@
         
         <div class="error" id="login-error"></div>
       </form>
-      
-      <p style="margin-top: 20px; text-align: center; font-size: 12px; color: #718096;">
-        Don't have an account? <a href="#" onclick="toggleSignup(); return false;" style="color: #667eea; text-decoration: none;">Sign up here</a>
-      </p>
     </div>
   </div>
 
-  <!-- DASHBOARD SCREEN -->
-  <div id="dashboard-screen" class="container">
+  <!-- DASHBOARD -->
+  <div class="container" id="dashboard">
     <header>
       <h2>EstateQuoter – Professional Dashboard</h2>
-      <button class="logout-btn" onclick="handleLogout()">Logout</button>
+      <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
     </header>
-    
-    <div class="stats" id="stats">
+
+    <div class="stats" id="stats-container">
       <div class="stat-card">
         <div class="stat-label">Total Leads</div>
-        <div class="stat-value" id="total-leads">0</div>
+        <div class="stat-value" id="stat-total">0</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Open</div>
-        <div class="stat-value" id="open-leads">0</div>
+        <div class="stat-label">Open Leads</div>
+        <div class="stat-value" id="stat-open">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Quoted</div>
-        <div class="stat-value" id="quoted-leads">0</div>
+        <div class="stat-value" id="stat-quoted">0</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Closed</div>
-        <div class="stat-value" id="closed-leads">0</div>
+        <div class="stat-value" id="stat-closed">0</div>
       </div>
     </div>
-    
+
     <div class="filters">
-      <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
-      <select id="status-filter" onchange="filterLeads()">
-        <option value="">All Status</option>
+      <input type="text" id="search-box" placeholder="Search by name, email, or phone..." style="flex: 1; min-width: 250px;">
+      <select id="status-filter">
+        <option value="">All Statuses</option>
         <option value="open">Open</option>
         <option value="quoted">Quoted</option>
         <option value="closed">Closed</option>
       </select>
-      <button onclick="refreshData()">Refresh</button>
+      <button onclick="filterLeads()" style="background: #2c5282;">Filter</button>
+      <button class="refresh-btn" onclick="loadLeads()">Refresh Data</button>
     </div>
-    
-    <div class="table-container">
+
+    <div class="table-wrapper">
       <table>
         <thead>
           <tr>
@@ -150,74 +164,70 @@
             <th>Phone</th>
             <th>ZIP</th>
             <th>Property Type</th>
-            <th>Needs</th>
+            <th>Primary Need</th>
+            <th>Timeline</th>
             <th>Status</th>
-            <th>Date</th>
+            <th>Submitted</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody id="leads-table">
-          <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
+          <tr><td colspan="10" class="empty-state">Loading...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <div class="modal" id="detail-modal">
+  <!-- DETAIL MODAL -->
+  <div class="modal" id="detail-modal" onclick="if(event.target === this) closeModal()">
     <div class="modal-content">
       <span class="modal-close" onclick="closeModal()">&times;</span>
-      <h2 id="modal-name"></h2>
-      <div id="modal-details"></div>
+      <h2 id="modal-name">Lead Details</h2>
+      
+      <div class="details-grid" id="modal-details"></div>
     </div>
   </div>
 
   <script>
     const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA1MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     
     let allLeads = [];
-    
-    async function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('login-email').value;
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
-      const loginBtn = document.getElementById('login-btn');
-      const errorDiv = document.getElementById('login-error');
       
-      loginBtn.style.display = 'none';
+      document.getElementById('login-btn').disabled = true;
       document.getElementById('login-loading').style.display = 'block';
-      errorDiv.textContent = '';
+      document.getElementById('login-error').textContent = '';
       
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        
-        showDashboard();
-        loadLeads();
-      } catch (err) {
-        errorDiv.textContent = err.message || 'Login failed';
-        loginBtn.style.display = 'block';
+      } catch (error) {
+        document.getElementById('login-error').textContent = error.message;
+        document.getElementById('login-btn').disabled = false;
         document.getElementById('login-loading').style.display = 'none';
       }
     }
-    
+
     async function handleLogout() {
       await supabase.auth.signOut();
-      showLogin();
-      document.getElementById('login-form').reset();
     }
-    
+
     function showLogin() {
       document.getElementById('login-screen').style.display = 'flex';
-      document.getElementById('dashboard-screen').classList.remove('authenticated');
+      document.getElementById('dashboard').classList.remove('authenticated');
     }
-    
+
     function showDashboard() {
       document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('dashboard-screen').classList.add('authenticated');
+      document.getElementById('dashboard').classList.add('authenticated');
     }
-    
+
     async function loadLeads() {
       try {
         const { data, error } = await supabase
@@ -226,30 +236,33 @@
           .order('created_at', { ascending: false });
         
         if (error) throw error;
+        
         allLeads = data || [];
         updateStats();
-        renderTable();
-      } catch (err) {
-        document.getElementById('leads-table').innerHTML = `<tr><td colspan="9" class="empty-state"><p>Error loading leads: ${err.message}</p></td></tr>`;
+        renderLeads();
+      } catch (error) {
+        console.error('Error loading leads:', error);
+        alert('Failed to load leads: ' + error.message);
       }
     }
-    
+
     function updateStats() {
       const total = allLeads.length;
       const open = allLeads.filter(l => l.status === 'open').length;
       const quoted = allLeads.filter(l => l.status === 'quoted').length;
       const closed = allLeads.filter(l => l.status === 'closed').length;
       
-      document.getElementById('total-leads').textContent = total;
-      document.getElementById('open-leads').textContent = open;
-      document.getElementById('quoted-leads').textContent = quoted;
-      document.getElementById('closed-leads').textContent = closed;
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-open').textContent = open;
+      document.getElementById('stat-quoted').textContent = quoted;
+      document.getElementById('stat-closed').textContent = closed;
     }
-    
-    function renderTable() {
+
+    function renderLeads() {
       const tbody = document.getElementById('leads-table');
+      
       if (allLeads.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads yet</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="empty-state"><p>No leads yet</p></td></tr>';
         return;
       }
       
@@ -260,14 +273,91 @@
           <td>${lead.customer_phone || 'N/A'}</td>
           <td>${lead.zip || 'N/A'}</td>
           <td>${lead.property_type || 'N/A'}</td>
-          <td>${lead.needs || 'N/A'}</td>
+          <td>${(lead.needs || 'N/A').substring(0, 30)}</td>
+          <td>${lead.timeline || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
+          <td><button class="action-btn" onclick="viewDetails(${lead.id})">View Full</button></td>
         </tr>
       `).join('');
     }
-    
+
+    function viewDetails(id) {
+      const lead = allLeads.find(l => l.id === id);
+      if (!lead) return;
+      
+      const modal = document.getElementById('detail-modal');
+      document.getElementById('modal-name').textContent = `${lead.customer_name} – Lead #${lead.id.substring(0, 8)}`;
+      
+      const sections = {
+        'Contact Information': [
+          ['Name', lead.customer_name],
+          ['Email', lead.customer_email],
+          ['Phone', lead.customer_phone],
+          ['ZIP Code', lead.zip],
+        ],
+        'Property Details': [
+          ['Property Type', lead.property_type],
+          ['Square Footage', lead.square_footage],
+          ['Bedrooms', lead.bedrooms],
+          ['Bathrooms', lead.bathrooms],
+          ['Home Value', lead.home_value ? `$${lead.home_value.toLocaleString()}` : 'N/A'],
+        ],
+        'Service Needs': [
+          ['Primary Need', lead.needs],
+          ['Role/Relationship', lead.role],
+          ['Clear Out Needed', lead.clear_out],
+          ['Timeline', lead.timeline],
+          ['High Value Items', lead.high_value],
+          ['Oversized Items', lead.oversized],
+        ],
+        'Property Condition': [
+          ['Fullness Level', lead.fullness],
+          ['Extra Rooms', lead.extra_rooms],
+          ['Access Issues', lead.access],
+          ['Extra Notes', lead.extra_rooms_other],
+        ],
+        'Additional Information': [
+          ['Status', lead.status],
+          ['Notes/Message', lead.notes],
+          ['Date Submitted', new Date(lead.created_at).toLocaleString()],
+          ['Professional Assigned', lead.professional_id ? `ID: ${lead.professional_id}` : 'Not assigned'],
+        ],
+        'Geolocation Data': [
+          ['IP Address', lead.ip],
+          ['City', lead.city],
+          ['Region', lead.region],
+          ['Country', lead.country],
+          ['Coordinates', lead.latitude && lead.longitude ? `${lead.latitude}, ${lead.longitude}` : 'N/A'],
+          ['ISP', lead.isp],
+          ['VPN Detected', lead.likely_vpn],
+        ],
+      };
+      
+      let html = '';
+      for (const [sectionTitle, fields] of Object.entries(sections)) {
+        const sectionContent = fields
+          .filter(([_, val]) => val && val !== 'N/A' && val !== '' && val !== 'null' && val !== '0')
+          .map(([label, value]) => `
+            <div class="field">
+              <div class="field-label">${label}</div>
+              <div class="field-value">${value}</div>
+            </div>
+          `).join('');
+        
+        if (sectionContent) {
+          html += `<div class="detail-section"><h3>${sectionTitle}</h3>${sectionContent}</div>`;
+        }
+      }
+      
+      document.getElementById('modal-details').innerHTML = html;
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.remove('active');
+    }
+
     function filterLeads() {
       const search = document.getElementById('search-box').value.toLowerCase();
       const status = document.getElementById('status-filter').value;
@@ -284,7 +374,7 @@
       
       const tbody = document.getElementById('leads-table');
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads match your filters</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="empty-state"><p>No leads match your filters</p></td></tr>';
         return;
       }
       
@@ -295,65 +385,15 @@
           <td>${lead.customer_phone || 'N/A'}</td>
           <td>${lead.zip || 'N/A'}</td>
           <td>${lead.property_type || 'N/A'}</td>
-          <td>${lead.needs || 'N/A'}</td>
+          <td>${(lead.needs || 'N/A').substring(0, 30)}</td>
+          <td>${lead.timeline || 'N/A'}</td>
           <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
           <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #667eea; text-decoration: none;">View</a></td>
+          <td><button class="action-btn" onclick="viewDetails(${lead.id})">View Full</button></td>
         </tr>
       `).join('');
     }
-    
-    function viewDetails(id) {
-      const lead = allLeads.find(l => l.id === id);
-      if (!lead) return;
-      
-      const modal = document.getElementById('detail-modal');
-      document.getElementById('modal-name').textContent = lead.customer_name || 'Unknown';
-      
-      const fields = [
-        ['Customer Name', lead.customer_name],
-        ['Email', lead.customer_email],
-        ['Phone', lead.customer_phone],
-        ['ZIP Code', lead.zip],
-        ['Property Type', lead.property_type],
-        ['Square Footage', lead.square_footage],
-        ['Bedrooms', lead.bedrooms],
-        ['Bathrooms', lead.bathrooms],
-        ['What They Need Most', lead.needs],
-        ['Role', lead.role],
-        ['Urgency', lead.urgency],
-        ['Accessible', lead.accessible],
-        ['High Value Items', lead.high_value_items],
-        ['Notes', lead.notes],
-        ['Status', lead.status],
-        ['Date Submitted', new Date(lead.created_at).toLocaleString()],
-      ];
-      
-      document.getElementById('modal-details').innerHTML = fields
-        .filter(([_, val]) => val)
-        .map(([label, value]) => `
-          <div class="field">
-            <div class="field-label">${label}</div>
-            <div class="field-value">${value}</div>
-          </div>
-        `).join('');
-      
-      modal.classList.add('active');
-    }
-    
-    function closeModal() {
-      document.getElementById('detail-modal').classList.remove('active');
-    }
-    
-    function refreshData() {
-      loadLeads();
-    }
-    
-    function toggleSignup() {
-      alert('Contact your administrator to create an account.');
-    }
-    
-    // Check if user is already logged in
+
     supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         showDashboard();
@@ -365,5 +405,4 @@
   </script>
 </body>
 </html>
-
 
