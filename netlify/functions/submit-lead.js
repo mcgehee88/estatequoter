@@ -65,7 +65,10 @@ exports.handler = async (event) => {
     // Step 2: Create lead record with ALL captured form that the database has - map all field names to their database column equivalents
     const { data: lead, error: dbError } = await supabase
       .from('leads')
-      .insert([body])
+      .insert([{
+        ...body,
+        property_type: body.property_type || 'Not specified'
+      }])
       .select()
       .single();
 
@@ -136,6 +139,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
