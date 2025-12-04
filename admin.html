@@ -482,13 +482,19 @@
       const errorDiv = document.getElementById('login-error');
 
       try {
+        console.log('Attempting login with:', email);
         const response = await fetch('/.netlify/functions/auth-login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
           body: JSON.stringify({ email, password }),
         });
 
+        console.log('Response status:', response.status);
         const data = await response.json();
+        console.log('Response data:', data);
 
         if (data.success) {
           sessionToken = data.session.access_token;
@@ -497,9 +503,11 @@
           loadLeads();
         } else {
           errorDiv.textContent = data.error || 'Login failed';
+          console.error('Login error:', data.error);
         }
       } catch (error) {
-        errorDiv.textContent = 'Error logging in';
+        console.error('Fetch error:', error);
+        errorDiv.textContent = 'Error logging in: ' + error.message;
       }
     }
 
@@ -637,4 +645,5 @@
   </script>
 </body>
 </html>
+
 
