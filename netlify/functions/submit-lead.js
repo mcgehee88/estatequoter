@@ -70,11 +70,16 @@ exports.handler = async (event) => {
       .single();
 
     if (dbError) {
-      console.error('DB error:', dbError);
+      console.error('DB error details:', {
+        message: dbError.message,
+        code: dbError.code,
+        hint: dbError.hint,
+        details: dbError.details
+      });
       return {
         statusCode: 500,
         headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: 'Failed to save lead' }),
+        body: JSON.stringify({ error: 'Failed to save lead', details: dbError.message }),
       };
     }
 
@@ -131,6 +136,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
