@@ -468,12 +468,8 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA1MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
     let allLeads = [];
-    let sessionToken = localStorage.getItem('admin_session');
+    let sessionToken = localStorage.getItem('admin_session') || null;
 
     async function handleLogin(event) {
       event.preventDefault();
@@ -645,5 +641,6 @@
   </script>
 </body>
 </html>
+
 
 
