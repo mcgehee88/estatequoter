@@ -1,4 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /dashboard
+Disallow: /dashboard.html
+Disallow: /pro-dashboard
+Disallow: /pro-dashboard.html
+Disallow: /api/
 
 Sitemap: https://estatequoter.com/sitemap.xml
+

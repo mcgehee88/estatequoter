@@ -7,13 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- SEO basics -->
-  <meta name="description" content="EstateQuoter helps families, heirs, and executors get fast, free quotes from local estate sale companies and estate liquidators for whole-house cleanouts, downsizing, and estate sales. Answer a few questions and compare options without pressure.">
+  <meta name="description" content="Get free estate liquidation & estate sale quotes from local professionals. EstateQuoter connects families and executors with estate liquidators for cleanouts, downsizing, and property liquidation. Fast, no-pressure quotes.">
   <link rel="canonical" href="https://estatequoter.com/">
   <meta name="robots" content="index,follow">
 
   <!-- Open Graph (for link previews / AI context) -->
   <meta property="og:title" content="EstateQuoter – Free Estate Liquidation & Estate Sale Quotes">
-  <meta property="og:description" content="Get fast, no-pressure quotes from trusted local estate liquidators and estate sale companies for cleanouts, downsizing, and full estate sales.">
+  <meta property="og:description" content="Free estate liquidation quotes from trusted local professionals. Connect with estate liquidators, estate sale companies, and cleanout services.">
   <meta property="og:url" content="https://estatequoter.com/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EstateQuoter">
@@ -21,22 +21,25 @@
 
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="EstateQuoter – Free Estate Liquidation & Estate Sale Quotes">
-  <meta name="twitter:description" content="Answer a few questions and get quotes from local estate liquidators, estate sale companies, and cleanout crews. Free and no pressure.">
+  <meta name="twitter:title" content="Free Estate Liquidation Quotes – EstateQuoter">
+  <meta name="twitter:description" content="Get quotes from estate sale companies & liquidators for cleanouts & downsizing. Free, fast, no pressure.">
 
   <!-- Structured data: Service -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "EstateQuoter",
+    "@id": "https://estatequoter.com/#service",
+    "name": "Estate Liquidation & Estate Sale Quotes",
     "url": "https://estatequoter.com/",
-    "description": "Online intake that helps families, heirs, and executors get fast quotes from local estate liquidators and estate sale companies for cleanouts, downsizing and estate sales.",
+    "description": "Online intake and matching service that helps families, heirs, and executors get fast, free quotes from local estate liquidators, estate sale companies, and cleanout professionals for whole-house estate sales, property liquidation, downsizing, and senior moves.",
     "serviceType": [
       "Estate liquidation",
       "Estate sale coordination",
-      "Estate cleanout",
-      "Downsizing help"
+      "Estate cleanout & haul-away",
+      "Downsizing assistance",
+      "Senior relocation",
+      "Property contents evaluation"
     ],
     "areaServed": {
       "@type": "Place",
@@ -44,7 +47,49 @@
     },
     "provider": {
       "@type": "Organization",
+      "@id": "https://estatequoter.com/#organization",
       "name": "EstateQuoter"
+    }
+  }
+  </script>
+
+  <!-- Structured data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://estatequoter.com/"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured data: LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://estatequoter.com/#localbusiness",
+    "name": "EstateQuoter",
+    "description": "Estate liquidation and estate sale quote matching service serving the United States",
+    "url": "https://estatequoter.com/",
+    "telephone": "+1-757-555-0123",
+    "email": "support@estatequoter.com",
+    "image": "https://estatequoter.com/logo.png",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Hampton Roads",
+      "addressLocality": "Virginia",
+      "addressCountry": "US"
+    },
+    "geo": {
+      "@type": "GeoShape",
+      "box": "24.5 -125.0 49.4 -66.9"
     }
   }
   </script>
@@ -78,6 +123,22 @@
           "@type": "Answer",
           "text": "No. EstateQuoter is free for families and heirs who are requesting quotes. Local professionals pay us to receive leads so you can compare options without pressure."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my information confidential?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Your information is kept confidential and only shared with professionals in your area who have confirmed they work in your region and service type."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does it take to get quotes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most users receive their first quote within 24-48 hours. The timeline depends on how quickly local professionals in your area respond to your submission."
+        }
       }
     ]
   }
@@ -88,8 +149,10 @@
   {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://estatequoter.com/#organization",
     "name": "EstateQuoter",
     "url": "https://estatequoter.com/",
+    "logo": "https://estatequoter.com/logo.png",
     "description": "EstateQuoter helps families, heirs, and executors get fast, no-pressure quotes from trusted local estate sale companies, estate liquidators, and cleanout crews.",
     "founder": [
       {
@@ -112,19 +175,7 @@
           "name": "Hampton Roads, Virginia"
         }
       }
-    ]
-  }
-  </script>
-
-  <!-- Structured data: Organization with logo -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "EstateQuoter",
-    "url": "https://estatequoter.com/",
-    "logo": "https://estatequoter.com/logo.png",
-    "description": "Free estate liquidation quotes and intake system for families, heirs, and executors.",
+    ],
     "sameAs": [],
     "contactPoint": {
       "@type": "ContactPoint",
@@ -133,7 +184,6 @@
     }
   }
   </script>
-
 
   <!-- Icons / styles -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -765,7 +815,7 @@
 
   <p class="helper" style="text-align:center; margin-top:-4px; margin-bottom:20px; font-size:14px;">
     Are you an estate professional?
-    <a href="/pro.html" style="color:#2153ff; text-decoration:underline;">
+    <a href="/pro.html" style="color:#64748b; text-decoration:underline;">
       See how EstateQuoter works for you
     </a>
   </p>
@@ -2181,6 +2231,8 @@ function collectData() {
     <a href="#" id="manage-link" style="color:#64748b; text-decoration:underline;">My Submissions</a>
     &nbsp;&middot;&nbsp;
     <a href="/pro.html" style="color:#64748b; text-decoration:underline;">For Professionals</a>
+    &nbsp;&middot;&nbsp;
+    <a href="/blog/" style="color:#64748b; text-decoration:underline;">Blog</a>
     &nbsp;&middot;&nbsp;
     <a href="/our-team" style="color:#64748b; text-decoration:underline;">Our Team</a>
     &nbsp;&middot;&nbsp;
