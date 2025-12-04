@@ -8,6 +8,7 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/admin"
@@ -23,6 +24,7 @@
   from = "/pro-dashboard"
   to = "/pro-dashboard.html"
   status = 200
+
 
 
 
