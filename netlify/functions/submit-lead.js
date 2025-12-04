@@ -62,13 +62,30 @@ exports.handler = async (event) => {
       // If slug not found, continue anyway (lead still created, just unrouted)
     }
 
-    // Step 2: Create lead record with ALL captured form that the database has - map all field names to their database column equivalents
+    // Step 2: Create lead record with ONLY valid database columns
+    // Filter to only include columns that exist in leads table
+    const validColumns = [
+      'customer_name', 'customer_email', 'customer_phone', 'zip', 'city', 'postal',
+      'latitude', 'longitude', 'country', 'region', 'property_type', 'bedrooms',
+      'bathrooms', 'square_footage', 'fullness', 'clear_out', 'access', 'timeline',
+      'role', 'needs', 'high_value', 'oversized', 'extra_rooms', 'has_media',
+      'media_count', 'notes', 'device', 'user_agent', 'ip', 'isp', 'likes_vpn',
+      'referrer', 'page_url', 'secure_url', 'professional_id'
+    ];
+    
+    const leadData = {};
+    validColumns.forEach(col => {
+      if (body[col] !== undefined) {
+        leadData[col] = body[col];
+      }
+    });
+    
+    // Ensure required defaults
+    leadData.property_type = leadData.property_type || 'Not specified';
+
     const { data: lead, error: dbError } = await supabase
       .from('leads')
-      .insert([{
-        ...body,
-        property_type: body.property_type || 'Not specified'
-      }])
+      .insert([leadData])
       .select()
       .single();
 
@@ -139,6 +156,7 @@ exports.handler = async (event) => {
     };
   }
 };
+
 
 
 
