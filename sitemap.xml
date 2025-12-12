@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://estatequoter.com/our-team.html</loc>
-    <changefreq>quarterly</changefreq>
+    <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
@@ -56,4 +56,5 @@
     <priority>0.8</priority>
   </url>
 </urlset>
+
 
