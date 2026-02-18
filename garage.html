@@ -450,6 +450,11 @@ function validateStep(idx) {
   const required = step.getAttribute('data-required') === 'true';
   if (!required) return true;
 
+  // Step 1 is the fullness range slider - always valid since it has a default value
+  if (idx === 1) {
+    return true;
+  }
+
   // Check chips
   const chips = step.querySelectorAll('.chip.active');
   const hasInput = step.querySelector('input[type="text"], input[type="email"], input[type="tel"]');
