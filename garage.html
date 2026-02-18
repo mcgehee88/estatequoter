@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Garage Clearout Quotes – EstateQuoter</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Get free quotes for garage cleanout and clearout services. Local pros clear your garage quickly. Fast, no-pressure quotes.">
+  <link rel="canonical" href="https://estatequoter.com/garage">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+  :root{
+    --p:#2153ff;
+    --g:#0d9d6a;
+    --bg:#f8fafc;
+    --t:#0f172a;
+    --m:#64748b;
+    --r:24px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:system-ui,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--t);
+    line-height:1.6;
+    min-height:100dvh;
+  }
+  .page {
+    padding:32px 16px 120px;
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .logo {
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-bottom:24px;
+    text-decoration:none;
+    color:var(--t);
+  }
+  .logo-mark {
+    width:44px;
+    height:44px;
+    border-radius:999px;
+    background:var(--g);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    box-shadow:0 10px 26px rgba(13,157,106,.35);
+  }
+  .logo-mark i { font-size:22px; }
+  .logo-word { font-size:26px; letter-spacing:.03em; }
+
+  h1 { font-size:32px; font-weight:800; margin-bottom:12px; }
+  h1 span { color:var(--p); }
+  .sub { font-size:18px; color:#475569; margin-bottom:24px; }
+  .sub strong { color:var(--g); }
+
+  body.form-active .page { padding-top:20px; padding-bottom:60px; }
+  body.form-active h1 { font-size:26px; margin-bottom:8px; }
+  body.form-active .sub { font-size:15px; margin-bottom:16px; }
+
+  .form-container {
+    background:#fff;
+    border-radius:var(--r);
+    box-shadow:0 16px 50px rgba(0,0,0,.1);
+    padding:32px 24px;
+    text-align:left;
+    margin:0 auto;
+  }
+
+  #main-form { display:none; }
+  .progress {
+    height:10px;
+    background:#e2e8f0;
+    border-radius:5px;
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .bar {
+    height:100%;
+    background:var(--p);
+    width:0;
+    transition:width .3s ease;
+  }
+  .step-title { font-size:20px; font-weight:700; margin-bottom:4px; }
+  .encourager { font-size:13px; color:var(--m); margin-bottom:16px; }
+
+  .q { display:none; animation:fade .25s; }
+  .q.active { display:block; }
+  @keyframes fade {
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:none}
+  }
+
+  label {
+    display:block;
+    font-weight:600;
+    margin:16px 0 8px;
+    font-size:16px;
+  }
+  input[type=text],
+  input[type=tel],
+  input[type=email],
+  select,
+  textarea {
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    font-size:18px;
+  }
+  .helper { font-size:14px; color:var(--m); margin-top:4px; }
+
+  .chips {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:12px 0;
+  }
+  .chip {
+    padding:12px 20px;
+    border:2px solid #cbd5e1;
+    border-radius:999px;
+    background:#fff;
+    cursor:pointer;
+    transition:all .15s;
+    font-size:16px;
+  }
+  .chip.active {
+    border-color:var(--p);
+    background:#e0ebff;
+    color:var(--p);
+  }
+  .chip:hover { border-color:var(--p); }
+
+  .video-box {
+    border:3px dashed #94a3b8;
+    border-radius:16px;
+    padding:32px 20px;
+    text-align:center;
+    background:#f8fafc;
+    cursor:pointer;
+    margin-top:12px;
+  }
+  .video-box.ready { border-color:var(--g); background:#ecfdf5; }
+  #media-summary { margin-top:10px; font-size:14px; color:#64748b; }
+  #media-preview-grid { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .media-thumb {
+    width:72px; height:72px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    object-fit:cover;
+  }
+
+  .fixed-btn {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#fff;
+    border-top:1px solid #e2e8f0;
+    padding:16px;
+    z-index:100;
+    box-shadow:0 -4px 20px rgba(0,0,0,.1);
+  }
+  .btn-row {
+    display:flex;
+    gap:12px;
+    max-width:640px;
+    margin:0 auto;
+  }
+  button {
+    flex:1;
+    padding:16px 24px;
+    border:none;
+    border-radius:999px;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:all .15s;
+  }
+  #back-btn {
+    background:#e2e8f0;
+    color:#475569;
+  }
+  #main-btn {
+    background:var(--p);
+    color:#fff;
+  }
+  #zip-btn {
+    background:var(--g);
+    color:#fff;
+    width:100%;
+  }
+  button:hover { transform:translateY(-1px); }
+  button:active { transform:translateY(0); }
+
+  .modal {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+    z-index:200;
+  }
+  .modal.active { display:flex; }
+  .modal-content {
+    background:#fff;
+    border-radius:20px;
+    padding:32px 24px;
+    max-width:360px;
+    width:100%;
+    text-align:center;
+  }
+
+  .footer-link {
+    display:inline-block;
+    margin-top:32px;
+    color:var(--m);
+    font-size:14px;
+    text-decoration:none;
+  }
+  .footer-link:hover { color:var(--p); }
+
+  .range-wrap { position:relative; margin:24px 0 48px; }
+  input[type=range] {
+    width:100%;
+    height:8px;
+    border-radius:8px;
+    background:#e2e8f0;
+    outline:none;
+    -webkit-appearance:none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--p);
+    cursor:pointer;
+  }
+  .range-value {
+    position:absolute;
+    top:-60px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--p);
+    color:#fff;
+    padding:8px 16px;
+    border-radius:12px;
+    font-weight:700;
+    font-size:18px;
+    white-space:nowrap;
+    cursor:text;
+    z-index:2;
+  }
+  .range-value::after {
+    content:"";
+    position:absolute;
+    bottom:-6px;
+    left:50%;
+    margin-left:-6px;
+    border-width:6px;
+    border-style:solid;
+    border-color:var(--p) transparent transparent transparent;
+  }
+  </style>
+</head>
+<body>
+<div class="page">
+  <a href="/" class="logo">
+    <div class="logo-mark"><i class="fas fa-warehouse"></i></div>
+    <div class="logo-word">EstateQuoter</div>
+  </a>
+
+  <h1>Garage <span>Clearout</span> Quotes</h1>
+  <p class="sub">Get free quotes from local pros who clear garages. <strong>No pressure.</strong></p>
+
+  <!-- ZIP entry -->
+  <div id="zip-section" class="form-container">
+    <label>What's your ZIP code?</label>
+    <input type="text" id="zip" placeholder="Enter 5-digit ZIP" maxlength="5" inputmode="numeric">
+    <p class="helper">We'll match you with garage cleanout pros near you.</p>
+    <button id="zip-btn" style="margin-top:20px;">Get Started</button>
+  </div>
+
+  <!-- Main form -->
+  <div id="main-form" class="form-container">
+    <div class="progress"><div class="bar" id="progress-bar"></div></div>
+    <div class="step-title" id="step-title">Let's start</div>
+    <div class="encourager" id="encourager">Just a few quick questions.</div>
+
+    <!-- Step 0: Garage size -->
+    <div class="q active" data-step="0" data-required="true">
+      <label>How big is the garage?</label>
+      <div class="chips">
+        <div class="chip" data-val="1-car">1-car garage</div>
+        <div class="chip" data-val="2-car">2-car garage</div>
+        <div class="chip" data-val="3-car">3-car garage</div>
+        <div class="chip" data-val="Oversized">Oversized / extra large</div>
+      </div>
+    </div>
+
+    <!-- Step 1: How full -->
+    <div class="q" data-step="1" data-required="true">
+      <label>How full is it?</label>
+      <div class="range-wrap">
+        <input type="range" id="fullness-range" min="1" max="4" step="1" value="2">
+        <div class="range-value" id="fullness-bubble" data-type="fullness">Medium</div>
+      </div>
+      <p class="helper">Drag the slider to show how packed your garage is.</p>
+    </div>
+
+    <!-- Step 2: What's in it -->
+    <div class="q" data-step="2" data-required="true">
+      <label>What's mostly in there?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Boxes">Boxes / bins</div>
+        <div class="chip" data-val="Furniture">Furniture</div>
+        <div class="chip" data-val="Tools">Tools / equipment</div>
+        <div class="chip" data-val="Appliances">Appliances</div>
+        <div class="chip" data-val="Yard equipment">Yard equipment</div>
+        <div class="chip" data-val="Car parts">Car parts</div>
+        <div class="chip" data-val="Misc">Mixed / misc stuff</div>
+      </div>
+      <p class="helper">Pick all that apply.</p>
+    </div>
+
+    <!-- Step 3: Any valuables -->
+    <div class="q" data-step="3" data-required="false">
+      <label>Anything valuable?</label>
+      <div class="chips" data-multi="true">
+        <div class="chip" data-val="Antiques">Antiques</div>
+        <div class="chip" data-val="Tools (high-end)">High-end tools</div>
+        <div class="chip" data-val="Electronics">Electronics</div>
+        <div class="chip" data-val="Collectibles">Collectibles</div>
+        <div class="chip" data-val="None">Nothing special</div>
+      </div>
+      <p class="helper">This helps pros know what to look out for.</p>
+    </div>
+
+    <!-- Step 4: Timeline -->
+    <div class="q" data-step="4" data-required="true">
+      <label>When do you need it done?</label>
+      <div class="chips">
+        <div class="chip" data-val="ASAP">As soon as possible</div>
+        <div class="chip" data-val="Within 2 weeks">Within 2 weeks</div>
+        <div class="chip" data-val="Within a month">Within a month</div>
+        <div class="chip" data-val="No rush">No rush, just looking</div>
+      </div>
+    </div>
+
+    <!-- Step 5: Photos -->
+    <div class="q" data-step="5" data-required="false">
+      <label>Got photos? (Optional)</label>
+      <div class="video-box" id="media-box">
+        <i class="fas fa-camera" style="font-size:32px; color:#64748b; margin-bottom:8px;"></i>
+        <div style="font-weight:600; margin-top:8px;">Tap to add photos</div>
+        <div style="font-size:13px; color:#64748b; margin-top:4px;">A few pics help pros give accurate quotes.</div>
+      </div>
+      <div id="media-summary"></div>
+      <div id="media-preview-grid"></div>
+    </div>
+
+    <!-- Step 6: Contact -->
+    <div class="q" data-step="6" data-required="true">
+      <label>Your name</label>
+      <input type="text" id="name" placeholder="First and last name" maxlength="120">
+      <label style="margin-top:16px">Phone number</label>
+      <input type="tel" id="phone" placeholder="We'll text/call with quotes" maxlength="40">
+      <label style="margin-top:16px">Email</label>
+      <input type="email" id="email" placeholder="Your email address" maxlength="200">
+      <label style="margin-top:16px">Anything else?</label>
+      <textarea id="notes" rows="2" placeholder="Any details we should know?" maxlength="500"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- Fixed buttons -->
+<div class="fixed-btn" id="cta-bar" style="display:none;">
+  <div class="btn-row">
+    <button id="back-btn">Back</button>
+    <button id="main-btn">Next</button>
+  </div>
+</div>
+
+<!-- Success modal -->
+<div class="modal" id="complete-modal">
+  <div class="modal-content">
+    <i class="fas fa-check-circle fa-4x" style="color:var(--g);margin-bottom:16px;"></i>
+    <h2 style="color:var(--g); margin-bottom:8px;">You're all set!</h2>
+    <p style="font-size:16px; margin:8px 0 0;">We sent your info to local garage cleanout pros. Expect quotes within 24-48 hours.</p>
+    <button style="margin-top:24px;" onclick="location.reload()">Done</button>
+  </div>
+</div>
+
+<script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+<script>
+const qs = document.querySelectorAll('.q');
+const progressBar = document.getElementById('progress-bar');
+const stepTitle = document.getElementById('step-title');
+const encourager = document.getElementById('encourager');
+const mainBtn = document.getElementById('main-btn');
+const backBtn = document.getElementById('back-btn');
+const ctaBar = document.getElementById('cta-bar');
+const totalSteps = qs.length;
+
+let currentStep = 0;
+window.cloudinaryFiles = [];
+
+const stepTitles = [
+  'Garage size',
+  'How full',
+  'What\'s inside',
+  'Any valuables?',
+  'Timeline',
+  'Photos (optional)',
+  'Your info'
+];
+
+const encouragers = [
+  'Just the basics.',
+  'Best guess is fine.',
+  'Pick whatever applies.',
+  'Helps pros prepare.',
+  'No wrong answer.',
+  'Optional but helpful.',
+  'Almost done!'
+];
+
+function showStep(idx) {
+  qs.forEach((el, i) => el.classList.toggle('active', i === idx));
+  currentStep = idx;
+  progressBar.style.width = ((idx + 1) / totalSteps * 100) + '%';
+  stepTitle.textContent = stepTitles[idx] || 'Step ' + (idx + 1);
+  encourager.textContent = encouragers[idx] || '';
+  backBtn.style.display = idx === 0 ? 'none' : 'block';
+  mainBtn.textContent = idx === totalSteps - 1 ? 'Submit' : 'Next';
+}
+
+function validateStep(idx) {
+  const step = qs[idx];
+  const required = step.getAttribute('data-required') === 'true';
+  if (!required) return true;
+
+  // Check chips
+  const chips = step.querySelectorAll('.chip.active');
+  const hasInput = step.querySelector('input[type="text"], input[type="email"], input[type="tel"]');
+
+  if (hasInput) {
+    const name = document.getElementById('name')?.value.trim();
+    const phone = document.getElementById('phone')?.value.trim();
+    const email = document.getElementById('email')?.value.trim();
+    if (idx === 6) {
+      if (!name) { alert('Please enter your name.'); return false; }
+      if (!phone) { alert('Please enter your phone number.'); return false; }
+      if (!email) { alert('Please enter your email.'); return false; }
+    }
+    return true;
+  }
+
+  if (chips.length === 0) {
+    alert('Please pick an option.');
+    return false;
+  }
+  return true;
+}
+
+function collectData() {
+  const chipValues = (stepIdx) => {
+    const step = qs[stepIdx];
+    if (!step) return '';
+    return Array.from(step.querySelectorAll('.chip.active'))
+      .map(c => c.dataset.val)
+      .join(', ');
+  };
+
+  return {
+    zip: document.getElementById('zip').value.trim(),
+    property_type: 'Garage',
+    garage_size: chipValues(0),
+    fullness: document.getElementById('fullness-bubble').textContent.trim(),
+    contents: chipValues(2),
+    valuables: chipValues(3),
+    timeline: chipValues(4),
+    has_media: window.cloudinaryFiles.length > 0,
+    media_count: window.cloudinaryFiles.length,
+    media: window.cloudinaryFiles,
+    customer_name: document.getElementById('name').value.trim(),
+    customer_phone: document.getElementById('phone').value.trim(),
+    customer_email: document.getElementById('email').value.trim(),
+    notes: document.getElementById('notes').value.trim(),
+    page_url: 'garage',
+  };
+}
+
+// ZIP submit
+document.getElementById('zip-btn').onclick = () => {
+  const zip = document.getElementById('zip').value.trim();
+  if (!/^\d{5}$/.test(zip)) {
+    alert('Please enter a valid 5-digit ZIP code.');
+    return;
+  }
+  document.getElementById('zip-section').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  ctaBar.style.display = 'block';
+  document.body.classList.add('form-active');
+  showStep(0);
+};
+
+// Chips behavior
+document.querySelectorAll('.chips').forEach(group => {
+  const multi = group.getAttribute('data-multi') === 'true';
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    if (multi) {
+      chip.classList.toggle('active');
+    } else {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+  });
+});
+
+// Range slider
+const fullnessSlider = document.getElementById('fullness-range');
+const fullnessBubble = document.getElementById('fullness-bubble');
+function updateFullness() {
+  const val = parseInt(fullnessSlider.value, 10);
+  const labels = ['', 'Light', 'Medium', 'Full', 'Packed'];
+  fullnessBubble.textContent = labels[val] || 'Medium';
+}
+fullnessSlider.addEventListener('input', updateFullness);
+updateFullness();
+
+// Navigation
+mainBtn.onclick = async () => {
+  if (!validateStep(currentStep)) return;
+
+  if (currentStep === totalSteps - 1) {
+    mainBtn.textContent = 'Sending...';
+    mainBtn.disabled = true;
+
+    const data = collectData();
+
+    try {
+      // Send to Make.com
+      await fetch('https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, source: 'garage-page' })
+      });
+
+      // Also send to API
+      await fetch('/api/submit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById('complete-modal').classList.add('active');
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+      mainBtn.textContent = 'Submit';
+      mainBtn.disabled = false;
+    }
+    return;
+  }
+
+  showStep(currentStep + 1);
+};
+
+backBtn.onclick = () => {
+  if (currentStep > 0) showStep(currentStep - 1);
+};
+
+// Photo upload
+const mediaBox = document.getElementById('media-box');
+const mediaSummary = document.getElementById('media-summary');
+const mediaGrid = document.getElementById('media-preview-grid');
+
+mediaBox?.addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.accept = 'image/*';
+  input.style.display = 'none';
+  document.body.appendChild(input);
+
+  input.onchange = async () => {
+    const files = Array.from(input.files || []);
+    if (!files.length) { input.remove(); return; }
+
+    mediaSummary.textContent = 'Uploading...';
+
+    for (const file of files) {
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('upload_preset', 'ml_default');
+      fd.append('folder', 'estatequoter-garage');
+
+      try {
+        const r = await fetch('https://api.cloudinary.com/v1_1/dknb61uxx/auto/upload', {
+          method: 'POST',
+          body: fd
+        });
+        const d = await r.json();
+        if (d.secure_url) window.cloudinaryFiles.push(d);
+      } catch (e) {
+        console.error('Upload error', e);
+      }
+    }
+
+    mediaBox.classList.add('ready');
+    mediaSummary.textContent = `${window.cloudinaryFiles.length} photo${window.cloudinaryFiles.length > 1 ? 's' : ''} added`;
+    mediaGrid.innerHTML = window.cloudinaryFiles.slice(0, 6).map(f => `
+      <img class="media-thumb" src="${f.secure_url.replace('/upload/', '/upload/w_150,h_150,c_fill/')}" alt="">
+    `).join('');
+    input.remove();
+  };
+
+  input.click();
+});
+</script>
+</body>
+</html>

@@ -25,6 +25,11 @@
   to = "/pro-dashboard.html"
   status = 200
 
+[[redirects]]
+  from = "/garage"
+  to = "/garage.html"
+  status = 200
+
 
 
 
