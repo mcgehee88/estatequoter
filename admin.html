@@ -10,7 +10,7 @@
     .status-open { background: #dcfce7; color: #166534; }
     .status-quoted { background: #dbeafe; color: #1e40af; }
     .status-closed { background: #f3e8ff; color: #7c3aed; }
-    .status-archived { background: #fee2e2; color: #dc2626; }
+    .status-archived { background: #fee2e2; color: #991b1b; }
   </style>
 </head>
 <body class="bg-gray-50">
@@ -27,16 +27,14 @@
       password: "",
       error: false,
       leads: [],
-      archivedLeads: [],
       search: "",
       loading: false,
       viewingLead: null,
-      updatingStatus: null,
       showArchive: false,
-      deleteConfirm: null
+      confirmingDelete: null
     };
 
-    // Store search input reference outside render cycle
+    // Keep search input value separate from state to avoid focus issues
     let searchInputValue = "";
 
     function render() {
@@ -70,17 +68,20 @@
         return;
       }
 
-      const displayLeads = state.showArchive ? state.archivedLeads : state.leads;
-      const filtered = displayLeads.filter(l => 
-        (l.customer_name || '').toLowerCase().includes(searchInputValue.toLowerCase()) ||
-        (l.customer_email || '').toLowerCase().includes(searchInputValue.toLowerCase()) ||
-        (l.zip || '').includes(searchInputValue)
-      );
+      const filtered = (state.showArchive ? state.leads.filter(l => l.archived) : state.leads.filter(l => !l.archived))
+        .filter(l => {
+          const term = searchInputValue.toLowerCase();
+          return !term || 
+            (l.customer_name || '').toLowerCase().includes(term) ||
+            (l.customer_email || '').toLowerCase().includes(term) ||
+            (l.zip || '').includes(term);
+        });
 
-      const openCount = state.leads.filter(l => l.status === 'open' || !l.status).length;
-      const quotedCount = state.leads.filter(l => l.status === 'quoted').length;
-      const closedCount = state.leads.filter(l => l.status === 'closed').length;
-      const archivedCount = state.archivedLeads.length;
+      const activeLeads = state.leads.filter(l => !l.archived);
+      const archivedLeads = state.leads.filter(l => l.archived);
+      const openCount = activeLeads.filter(l => l.status === 'open' || !l.status).length;
+      const quotedCount = activeLeads.filter(l => l.status === 'quoted').length;
+      const closedCount = activeLeads.filter(l => l.status === 'closed').length;
 
       app.innerHTML = `
         <div class="min-h-screen bg-gray-50">
@@ -88,12 +89,10 @@
             <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
               <div>
                 <h1 class="text-xl font-bold text-gray-800">EstateQuoter Admin</h1>
-                <p class="text-sm text-gray-500">${state.leads.length} active leads • ${archivedCount} archived</p>
+                <p class="text-sm text-gray-500">${activeLeads.length} active leads • ${archivedLeads.length} archived</p>
               </div>
               <div class="flex gap-2">
-                <button onclick="toggleArchiveView()" class="${state.showArchive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
-                  ${state.showArchive ? '📁 View Active' : '🗑️ View Archive'}
-                </button>
+                <button onclick="${state.showArchive ? 'showActive()' : 'showArchive()'" class="${state.showArchive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-2 rounded-lg font-medium">${state.showArchive ? 'View Active' : 'View Archive'}</button>
                 <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">Logout</button>
               </div>
             </div>
@@ -101,15 +100,15 @@
 
           <div class="max-w-7xl mx-auto px-4 py-6">
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-indigo-600">${state.leads.length}</div><div class="text-sm text-gray-500 uppercase">Active</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-indigo-600">${activeLeads.length}</div><div class="text-sm text-gray-500 uppercase">Active</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-green-600">${openCount}</div><div class="text-sm text-gray-500 uppercase">Open</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-blue-600">${quotedCount}</div><div class="text-sm text-gray-500 uppercase">Quoted</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-purple-600">${closedCount}</div><div class="text-sm text-gray-500 uppercase">Closed</div></div>
-              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-red-600">${archivedCount}</div><div class="text-sm text-gray-500 uppercase">Archived</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-red-600">${archivedLeads.length}</div><div class="text-sm text-gray-500 uppercase">Archived</div></div>
             </div>
 
             <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
-              <input type="text" placeholder="Search by name, email, or ZIP..." id="search" value="${searchInputValue}" class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg text-gray-800">
+              <input type="text" placeholder="Search by name, email, or ZIP..." id="searchInput" class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg text-gray-800">
             </div>
 
             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
@@ -134,13 +133,15 @@
                             </select>
                           </td>
                           ` : `<td class="px-4 py-3"><span class="status-archived px-2 py-1 rounded text-xs font-medium">${new Date(lead.archived_at).toLocaleDateString()}</span></td>`}
-                          <td class="px-4 py-3 text-sm flex gap-2">
-                            <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
-                            ${!state.showArchive ? 
-                              `<button onclick="archiveLead('${lead.id}')" class="text-red-600 hover:text-red-800 font-medium">Delete</button>` :
-                              `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 font-medium">Restore</button>
-                               <button onclick="confirmPermanentDelete('${lead.id}')" class="text-red-600 hover:text-red-800 font-medium">Delete</button>`
-                            }
+                          <td class="px-4 py-3">
+                            <div class="flex items-center gap-3">
+                              <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
+                              ${!state.showArchive ? 
+                                `<button onclick="archiveLead('${lead.id}')" class="text-gray-400 hover:text-red-600 transition-colors" title="Archive lead">🗑️</button>` :
+                                `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 font-medium text-sm">Restore</button>
+                                 <button onclick="confirmPermanentDelete('${lead.id}')" class="text-gray-400 hover:text-red-600 transition-colors ml-2" title="Delete forever">🗑️</button>`
+                              }
+                            </div>
                           </td>
                         </tr>
                       `).join('')}
@@ -151,26 +152,29 @@
             </div>
           </div>
 
-          ${state.viewingLead ? renderLeadModal() : ''}
-          ${state.deleteConfirm ? renderDeleteConfirm() : ''}
+          ${state.viewingLead ? renderLeadModal(state.viewingLead) : ''}
+          ${state.confirmingDelete ? renderDeleteConfirmModal(state.confirmingDelete) : ''}
         </div>
       `;
 
-      // Setup search input listener after render
-      const searchInput = document.getElementById('search');
+      // Setup search input with proper event handling
+      const searchInput = document.getElementById('searchInput');
       if (searchInput) {
-        searchInput.addEventListener('input', handleSearchInput);
-        searchInput.focus();
+        searchInput.value = searchInputValue;
+        searchInput.addEventListener('input', (e) => {
+          searchInputValue = e.target.value;
+          render();
+          // Restore focus and cursor position
+          const input = document.getElementById('searchInput');
+          if (input) {
+            input.focus();
+            input.setSelectionRange(searchInputValue.length, searchInputValue.length);
+          }
+        });
       }
     }
 
-    function handleSearchInput(e) {
-      searchInputValue = e.target.value;
-      render();
-    }
-
-    function renderLeadModal() {
-      const lead = state.viewingLead;
+    function renderLeadModal(lead) {
       return `
         <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeModal()">
           <div class="bg-white rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
@@ -182,7 +186,7 @@
               
               <div>
                 <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📋 Contact Information</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Name</div><div class="font-medium text-gray-900">${lead.customer_name || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Email</div><div class="font-medium text-gray-900">${lead.customer_email || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Phone</div><div class="font-medium text-gray-900">${lead.customer_phone || '—'}</div></div>
@@ -257,10 +261,10 @@
                   <div><span class="text-gray-400">Status:</span> ${lead.status || 'open'}</div>
                   <div><span class="text-gray-400">Device:</span> ${lead.device || '—'}</div>
                   <div><span class="text-gray-400">IP:</span> ${lead.ip || '—'}</div>
-                  <div><span class="text-gray-400">Postal (Detected):</span> ${lead.postal || '—'}</div>
-                  <div><span class="text-gray-400">Country (Detected):</span> ${lead.country || '—'}</div>
                   <div><span class="text-gray-400">ISP:</span> ${lead.isp || '—'}</div>
                   <div><span class="text-gray-400">Coords:</span> ${lead.latitude && lead.longitude ? `${lead.latitude}, ${lead.longitude}` : '—'}</div>
+                  ${lead.postal ? `<div><span class="text-gray-400">Postal (Detected):</span> ${lead.postal}</div>` : ''}
+                  ${lead.country ? `<div><span class="text-gray-400">Country (Detected):</span> ${lead.country}</div>` : ''}
                 </div>
                 ${lead.user_agent ? `<div class="mt-2 text-xs text-gray-400 break-all">User Agent: ${lead.user_agent}</div>` : ''}
                 ${lead.referrer ? `<div class="mt-1 text-xs text-gray-400">Referrer: ${lead.referrer}</div>` : ''}
@@ -272,22 +276,22 @@
       `;
     }
 
-    function renderDeleteConfirm() {
+    function renderDeleteConfirmModal(lead) {
       return `
-        <div class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[60]" onclick="if(event.target === this) cancelDelete()">
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeDeleteConfirm()">
           <div class="bg-white rounded-xl max-w-md w-full p-6">
             <div class="text-center mb-6">
               <div class="text-5xl mb-4">⚠️</div>
               <h2 class="text-xl font-bold text-red-600 mb-2">Permanent Delete</h2>
               <p class="text-gray-600">This lead is already archived. Deleting it now will remove it <strong>forever</strong> and it cannot be recovered.</p>
             </div>
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-              <p class="text-sm text-red-800 font-medium">Lead: ${state.deleteConfirm.customer_name || state.deleteConfirm.customer_email || 'Unknown'}</p>
-              <p class="text-xs text-red-600 mt-1">ID: ${state.deleteConfirm.id}</p>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
+              <div class="text-sm text-red-800"><strong>Lead:</strong> ${lead.customer_name}</div>
+              <div class="text-xs text-red-600 mt-1">ID: ${lead.id}</div>
             </div>
             <div class="flex gap-3">
-              <button onclick="cancelDelete()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 rounded-lg">Cancel</button>
-              <button onclick="permanentDeleteLead()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">Delete Forever</button>
+              <button onclick="closeDeleteConfirm()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg">Cancel</button>
+              <button onclick="permanentDeleteLead('${lead.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-lg">Delete Forever</button>
             </div>
           </div>
         </div>
@@ -301,12 +305,8 @@
         const res = await fetch(API_URL);
         const data = await res.json();
         state.leads = data.leads || [];
-        // Load archived leads from localStorage
-        const archived = localStorage.getItem('estatequoter_archived');
-        state.archivedLeads = archived ? JSON.parse(archived) : [];
       } catch (err) {
         state.leads = [];
-        state.archivedLeads = [];
       }
       state.loading = false;
       render();
@@ -329,13 +329,16 @@
     function logout() {
       state.loggedIn = false;
       state.password = "";
-      searchInputValue = "";
       render();
     }
 
-    function toggleArchiveView() {
-      state.showArchive = !state.showArchive;
-      searchInputValue = "";
+    function showArchive() {
+      state.showArchive = true;
+      render();
+    }
+
+    function showActive() {
+      state.showArchive = false;
       render();
     }
 
@@ -356,8 +359,7 @@
     }
 
     function viewLead(id) {
-      const allLeads = [...state.leads, ...state.archivedLeads];
-      state.viewingLead = allLeads.find(l => l.id === id);
+      state.viewingLead = state.leads.find(l => l.id === id);
       render();
     }
 
@@ -366,65 +368,63 @@
       render();
     }
 
-    function archiveLead(id) {
-      const lead = state.leads.find(l => l.id === id);
-      if (!lead) return;
-      
-      // Add to archive with timestamp
-      lead.archived_at = new Date().toISOString();
-      state.archivedLeads = [...state.archivedLeads, lead];
-      
-      // Remove from active leads
-      state.leads = state.leads.filter(l => l.id !== id);
-      
-      // Save to localStorage
-      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
-      
-      render();
+    async function archiveLead(id) {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, archived: true, archived_at: new Date().toISOString() })
+        });
+        if (res.ok) {
+          state.leads = state.leads.map(l => l.id === id ? { ...l, archived: true, archived_at: new Date().toISOString() } : l);
+          render();
+        }
+      } catch (err) {
+        console.error('Failed to archive lead:', err);
+      }
     }
 
-    function restoreLead(id) {
-      const lead = state.archivedLeads.find(l => l.id === id);
-      if (!lead) return;
-      
-      // Remove archive timestamp
-      delete lead.archived_at;
-      
-      // Add back to active leads
-      state.leads = [...state.leads, lead];
-      
-      // Remove from archive
-      state.archivedLeads = state.archivedLeads.filter(l => l.id !== id);
-      
-      // Save to localStorage
-      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
-      
-      render();
+    async function restoreLead(id) {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, archived: false, archived_at: null })
+        });
+        if (res.ok) {
+          state.leads = state.leads.map(l => l.id === id ? { ...l, archived: false, archived_at: null } : l);
+          render();
+        }
+      } catch (err) {
+        console.error('Failed to restore lead:', err);
+      }
     }
 
     function confirmPermanentDelete(id) {
-      const lead = state.archivedLeads.find(l => l.id === id);
-      if (!lead) return;
-      state.deleteConfirm = lead;
+      state.confirmingDelete = state.leads.find(l => l.id === id);
       render();
     }
 
-    function cancelDelete() {
-      state.deleteConfirm = null;
+    function closeDeleteConfirm() {
+      state.confirmingDelete = null;
       render();
     }
 
-    function permanentDeleteLead() {
-      if (!state.deleteConfirm) return;
-      
-      const id = state.deleteConfirm.id;
-      state.archivedLeads = state.archivedLeads.filter(l => l.id !== id);
-      
-      // Save to localStorage
-      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
-      
-      state.deleteConfirm = null;
-      render();
+    async function permanentDeleteLead(id) {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+        if (res.ok) {
+          state.leads = state.leads.filter(l => l.id !== id);
+          state.confirmingDelete = null;
+          render();
+        }
+      } catch (err) {
+        console.error('Failed to delete lead:', err);
+      }
     }
 
     // Initial render
