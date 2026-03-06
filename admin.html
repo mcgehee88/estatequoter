@@ -10,6 +10,7 @@
     .status-open { background: #dcfce7; color: #166534; }
     .status-quoted { background: #dbeafe; color: #1e40af; }
     .status-closed { background: #f3e8ff; color: #7c3aed; }
+    .status-archived { background: #fee2e2; color: #dc2626; }
   </style>
 </head>
 <body class="bg-gray-50">
@@ -26,11 +27,17 @@
       password: "",
       error: false,
       leads: [],
+      archivedLeads: [],
       search: "",
       loading: false,
       viewingLead: null,
-      updatingStatus: null
+      updatingStatus: null,
+      showArchive: false,
+      deleteConfirm: null
     };
+
+    // Store search input reference outside render cycle
+    let searchInputValue = "";
 
     function render() {
       const app = document.getElementById('app');
@@ -63,15 +70,17 @@
         return;
       }
 
-      const filtered = state.leads.filter(l => 
-        (l.customer_name || '').toLowerCase().includes(state.search.toLowerCase()) ||
-        (l.customer_email || '').toLowerCase().includes(state.search.toLowerCase()) ||
-        (l.zip || '').includes(state.search)
+      const displayLeads = state.showArchive ? state.archivedLeads : state.leads;
+      const filtered = displayLeads.filter(l => 
+        (l.customer_name || '').toLowerCase().includes(searchInputValue.toLowerCase()) ||
+        (l.customer_email || '').toLowerCase().includes(searchInputValue.toLowerCase()) ||
+        (l.zip || '').includes(searchInputValue)
       );
 
       const openCount = state.leads.filter(l => l.status === 'open' || !l.status).length;
       const quotedCount = state.leads.filter(l => l.status === 'quoted').length;
       const closedCount = state.leads.filter(l => l.status === 'closed').length;
+      const archivedCount = state.archivedLeads.length;
 
       app.innerHTML = `
         <div class="min-h-screen bg-gray-50">
@@ -79,30 +88,36 @@
             <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
               <div>
                 <h1 class="text-xl font-bold text-gray-800">EstateQuoter Admin</h1>
-                <p class="text-sm text-gray-500">${state.leads.length} total leads</p>
+                <p class="text-sm text-gray-500">${state.leads.length} active leads • ${archivedCount} archived</p>
               </div>
-              <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">Logout</button>
+              <div class="flex gap-2">
+                <button onclick="toggleArchiveView()" class="${state.showArchive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity">
+                  ${state.showArchive ? '📁 View Active' : '🗑️ View Archive'}
+                </button>
+                <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">Logout</button>
+              </div>
             </div>
           </div>
 
           <div class="max-w-7xl mx-auto px-4 py-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-indigo-600">${state.leads.length}</div><div class="text-sm text-gray-500 uppercase">Total</div></div>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-indigo-600">${state.leads.length}</div><div class="text-sm text-gray-500 uppercase">Active</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-green-600">${openCount}</div><div class="text-sm text-gray-500 uppercase">Open</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-blue-600">${quotedCount}</div><div class="text-sm text-gray-500 uppercase">Quoted</div></div>
               <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-purple-600">${closedCount}</div><div class="text-sm text-gray-500 uppercase">Closed</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-red-600">${archivedCount}</div><div class="text-sm text-gray-500 uppercase">Archived</div></div>
             </div>
 
             <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
-              <input type="text" placeholder="Search by name, email, or ZIP..." id="search" value="${state.search}" class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg text-gray-800">
+              <input type="text" placeholder="Search by name, email, or ZIP..." id="search" value="${searchInputValue}" class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg text-gray-800">
             </div>
 
             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
               ${state.loading ? '<div class="p-12 text-center text-gray-500">Loading leads...</div>' : 
-                !filtered.length ? `<div class="p-12 text-center text-gray-500">${state.search ? 'No leads match' : 'No leads found'}</div>` : `
+                !filtered.length ? `<div class="p-12 text-center text-gray-500">${searchInputValue ? 'No leads match' : state.showArchive ? 'No archived leads' : 'No leads found'}</div>` : `
                 <div class="overflow-x-auto">
                   <table class="w-full">
-                    <thead class="bg-gray-50 border-b"><tr><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ZIP</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Action</th></tr></thead>
+                    <thead class="bg-gray-50 border-b"><tr><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ZIP</th>${!state.showArchive ? '<th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>' : '<th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Archived</th>'}<th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Action</th></tr></thead>
                     <tbody>
                       ${filtered.map(lead => `
                         <tr class="border-b hover:bg-gray-50">
@@ -110,6 +125,7 @@
                           <td class="px-4 py-3 text-sm text-gray-600">${lead.customer_email || '—'}</td>
                           <td class="px-4 py-3 text-sm text-gray-600">${lead.customer_phone || '—'}</td>
                           <td class="px-4 py-3 text-sm text-gray-600">${lead.zip || '—'}</td>
+                          ${!state.showArchive ? `
                           <td class="px-4 py-3">
                             <select onchange="updateStatus('${lead.id}', this.value)" class="px-2 py-1 rounded text-xs font-medium border-0 cursor-pointer ${lead.status === 'closed' ? 'status-closed' : lead.status === 'quoted' ? 'status-quoted' : 'status-open'}">
                               <option value="open" ${lead.status === 'open' || !lead.status ? 'selected' : ''}>Open</option>
@@ -117,7 +133,15 @@
                               <option value="closed" ${lead.status === 'closed' ? 'selected' : ''}>Closed</option>
                             </select>
                           </td>
-                          <td class="px-4 py-3 text-sm"><button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button></td>
+                          ` : `<td class="px-4 py-3"><span class="status-archived px-2 py-1 rounded text-xs font-medium">${new Date(lead.archived_at).toLocaleDateString()}</span></td>`}
+                          <td class="px-4 py-3 text-sm flex gap-2">
+                            <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
+                            ${!state.showArchive ? 
+                              `<button onclick="archiveLead('${lead.id}')" class="text-red-600 hover:text-red-800 font-medium">Delete</button>` :
+                              `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 font-medium">Restore</button>
+                               <button onclick="confirmPermanentDelete('${lead.id}')" class="text-red-600 hover:text-red-800 font-medium">Delete</button>`
+                            }
+                          </td>
                         </tr>
                       `).join('')}
                     </tbody>
@@ -127,109 +151,147 @@
             </div>
           </div>
 
-          ${state.viewingLead ? `
-            <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeModal()">
-              <div class="bg-white rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
-                <div class="p-6 border-b flex justify-between items-center">
-                  <h2 class="text-xl font-bold text-gray-900">${state.viewingLead.customer_name} — Lead Details</h2>
-                  <button onclick="closeModal()" class="text-gray-500 hover:text-gray-800 text-2xl">×</button>
-                </div>
-                <div class="p-6 space-y-6">
-                  
-                  <div>
-                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📋 Contact Information</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Name</div><div class="font-medium text-gray-900">${state.viewingLead.customer_name || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Email</div><div class="font-medium text-gray-900">${state.viewingLead.customer_email || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Phone</div><div class="font-medium text-gray-900">${state.viewingLead.customer_phone || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">ZIP (Entered)</div><div class="font-medium text-gray-900">${state.viewingLead.zip || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">City</div><div class="font-medium text-gray-900">${state.viewingLead.city || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Region</div><div class="font-medium text-gray-900">${state.viewingLead.region || '—'}</div></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🎯 Role & Needs</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Your Role</div><div class="font-medium text-gray-900">${state.viewingLead.role || '—'}</div></div>
-                      ${state.viewingLead.role_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Role (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.role_other}</div></div>` : ''}
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">What You Need Most</div><div class="font-medium text-gray-900">${state.viewingLead.needs || '—'}</div></div>
-                      ${state.viewingLead.needs_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Needs (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.needs_other}</div></div>` : ''}
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Clear Out Needs</div><div class="font-medium text-gray-900">${state.viewingLead.clear_out || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Timeline</div><div class="font-medium text-gray-900">${state.viewingLead.timeline || '—'}</div></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🏠 Property Details</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Property Type</div><div class="font-medium text-gray-900">${state.viewingLead.property_type || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bedrooms</div><div class="font-medium text-gray-900">${state.viewingLead.bedrooms || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bathrooms</div><div class="font-medium text-gray-900">${state.viewingLead.bathrooms || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Square Footage</div><div class="font-medium text-gray-900">${state.viewingLead.square_footage ? state.viewingLead.square_footage.toLocaleString() + ' sqft' : '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Fullness Level</div><div class="font-medium text-gray-900">${state.viewingLead.fullness || '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Home Value</div><div class="font-medium text-gray-900">${state.viewingLead.home_value ? '$' + state.viewingLead.home_value.toLocaleString() : '—'}</div></div>
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms</div><div class="font-medium text-gray-900">${state.viewingLead.extra_rooms || '—'}</div></div>
-                      ${state.viewingLead.extra_rooms_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.extra_rooms_other}</div></div>` : ''}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">💎 Special Items & Access</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value Items</div><div class="font-medium text-gray-900">${state.viewingLead.high_value || '—'}</div></div>
-                      ${state.viewingLead.high_value_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.high_value_other}</div></div>` : ''}
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized Items</div><div class="font-medium text-gray-900">${state.viewingLead.oversized || '—'}</div></div>
-                      ${state.viewingLead.oversized_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.oversized_other}</div></div>` : ''}
-                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access Requirements</div><div class="font-medium text-gray-900">${state.viewingLead.access || '—'}</div></div>
-                      ${state.viewingLead.access_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access (Other)</div><div class="font-medium text-gray-900">${state.viewingLead.access_other}</div></div>` : ''}
-                    </div>
-                  </div>
-
-                  ${state.viewingLead.has_media ? `
-                    <div>
-                      <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📸 Media (${state.viewingLead.media_count || 0} items)</h3>
-                      <div class="bg-gray-100 p-4 rounded">
-                        ${state.viewingLead.media_urls ? state.viewingLead.media_urls.split(',').map(url => url.trim()).filter(u => u).map(url => 
-                          `<a href="${url}" target="_blank" class="inline-block mr-2 mb-2 px-3 py-2 bg-white rounded border hover:bg-indigo-50 text-sm text-indigo-600 hover:text-indigo-800 transition-colors">📷 View Image</a>`
-                        ).join('') : '<span class="text-gray-500">Media URLs not available</span>'}
-                      </div>
-                    </div>
-                  ` : ''}
-
-                  ${state.viewingLead.notes ? `
-                    <div>
-                      <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📝 Additional Notes</h3>
-                      <div class="bg-gray-100 p-4 rounded text-gray-900">${state.viewingLead.notes}</div>
-                    </div>
-                  ` : ''}
-
-                  <div class="pt-4 border-t">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">🔧 Technical Metadata (Auto-Detected from Submission)</h3>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-500">
-                      <div><span class="text-gray-400">Lead ID:</span> ${state.viewingLead.id || '—'}</div>
-                      <div><span class="text-gray-400">Lead #:</span> ${state.viewingLead.lead_number || '—'}</div>
-                      <div><span class="text-gray-400">Submitted:</span> ${state.viewingLead.created_at ? new Date(state.viewingLead.created_at).toLocaleString() : '—'}</div>
-                      <div><span class="text-gray-400">Status:</span> ${state.viewingLead.status || 'open'}</div>
-                      <div><span class="text-gray-400">Device:</span> ${state.viewingLead.device || '—'}</div>
-                      <div><span class="text-gray-400">IP:</span> ${state.viewingLead.ip || '—'}</div>
-                      <div><span class="text-gray-400">Postal (Detected):</span> ${state.viewingLead.postal || '—'}</div>
-                      <div><span class="text-gray-400">Country (Detected):</span> ${state.viewingLead.country || '—'}</div>
-                      <div><span class="text-gray-400">ISP:</span> ${state.viewingLead.isp || '—'}</div>
-                      <div><span class="text-gray-400">Coords:</span> ${state.viewingLead.latitude && state.viewingLead.longitude ? `${state.viewingLead.latitude}, ${state.viewingLead.longitude}` : '—'}</div>
-                    </div>
-                    ${state.viewingLead.user_agent ? `<div class="mt-2 text-xs text-gray-400 break-all">User Agent: ${state.viewingLead.user_agent}</div>` : ''}
-                    ${state.viewingLead.referrer ? `<div class="mt-1 text-xs text-gray-400">Referrer: ${state.viewingLead.referrer}</div>` : ''}
-                    ${state.viewingLead.page_url ? `<div class="mt-1 text-xs text-gray-400">Page: ${state.viewingLead.page_url}</div>` : ''}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ` : ''}
+          ${state.viewingLead ? renderLeadModal() : ''}
+          ${state.deleteConfirm ? renderDeleteConfirm() : ''}
         </div>
       `;
 
-      document.getElementById('search')?.addEventListener('input', (e) => { state.search = e.target.value; render(); });
+      // Setup search input listener after render
+      const searchInput = document.getElementById('search');
+      if (searchInput) {
+        searchInput.addEventListener('input', handleSearchInput);
+        searchInput.focus();
+      }
+    }
+
+    function handleSearchInput(e) {
+      searchInputValue = e.target.value;
+      render();
+    }
+
+    function renderLeadModal() {
+      const lead = state.viewingLead;
+      return `
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeModal()">
+          <div class="bg-white rounded-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b flex justify-between items-center">
+              <h2 class="text-xl font-bold text-gray-900">${lead.customer_name} — Lead Details</h2>
+              <button onclick="closeModal()" class="text-gray-500 hover:text-gray-800 text-2xl">×</button>
+            </div>
+            <div class="p-6 space-y-6">
+              
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📋 Contact Information</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Name</div><div class="font-medium text-gray-900">${lead.customer_name || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Email</div><div class="font-medium text-gray-900">${lead.customer_email || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Phone</div><div class="font-medium text-gray-900">${lead.customer_phone || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">ZIP (Entered)</div><div class="font-medium text-gray-900">${lead.zip || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">City</div><div class="font-medium text-gray-900">${lead.city || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Region</div><div class="font-medium text-gray-900">${lead.region || '—'}</div></div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🎯 Role & Needs</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Your Role</div><div class="font-medium text-gray-900">${lead.role || '—'}</div></div>
+                  ${lead.role_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Role (Other)</div><div class="font-medium text-gray-900">${lead.role_other}</div></div>` : ''}
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">What You Need Most</div><div class="font-medium text-gray-900">${lead.needs || '—'}</div></div>
+                  ${lead.needs_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Needs (Other)</div><div class="font-medium text-gray-900">${lead.needs_other}</div></div>` : ''}
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Clear Out Needs</div><div class="font-medium text-gray-900">${lead.clear_out || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Timeline</div><div class="font-medium text-gray-900">${lead.timeline || '—'}</div></div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🏠 Property Details</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Property Type</div><div class="font-medium text-gray-900">${lead.property_type || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bedrooms</div><div class="font-medium text-gray-900">${lead.bedrooms || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bathrooms</div><div class="font-medium text-gray-900">${lead.bathrooms || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Square Footage</div><div class="font-medium text-gray-900">${lead.square_footage ? lead.square_footage.toLocaleString() + ' sqft' : '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Fullness Level</div><div class="font-medium text-gray-900">${lead.fullness || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Home Value</div><div class="font-medium text-gray-900">${lead.home_value ? '$' + lead.home_value.toLocaleString() : '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms</div><div class="font-medium text-gray-900">${lead.extra_rooms || '—'}</div></div>
+                  ${lead.extra_rooms_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms (Other)</div><div class="font-medium text-gray-900">${lead.extra_rooms_other}</div></div>` : ''}
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">💎 Special Items & Access</h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value Items</div><div class="font-medium text-gray-900">${lead.high_value || '—'}</div></div>
+                  ${lead.high_value_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value (Other)</div><div class="font-medium text-gray-900">${lead.high_value_other}</div></div>` : ''}
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized Items</div><div class="font-medium text-gray-900">${lead.oversized || '—'}</div></div>
+                  ${lead.oversized_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized (Other)</div><div class="font-medium text-gray-900">${lead.oversized_other}</div></div>` : ''}
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access Requirements</div><div class="font-medium text-gray-900">${lead.access || '—'}</div></div>
+                  ${lead.access_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access (Other)</div><div class="font-medium text-gray-900">${lead.access_other}</div></div>` : ''}
+                </div>
+              </div>
+
+              ${lead.has_media ? `
+                <div>
+                  <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📸 Media (${lead.media_count || 0} items)</h3>
+                  <div class="bg-gray-100 p-4 rounded">
+                    ${lead.media_urls ? lead.media_urls.split(',').map(url => url.trim()).filter(u => u).map(url => 
+                      `<a href="${url}" target="_blank" class="inline-block mr-2 mb-2 px-3 py-2 bg-white rounded border hover:bg-indigo-50 text-sm text-indigo-600 hover:text-indigo-800 transition-colors">📷 View Image</a>`
+                    ).join('') : '<span class="text-gray-500">Media URLs not available</span>'}
+                  </div>
+                </div>
+              ` : ''}
+
+              ${lead.notes ? `
+                <div>
+                  <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📝 Additional Notes</h3>
+                  <div class="bg-gray-100 p-4 rounded text-gray-900">${lead.notes}</div>
+                </div>
+              ` : ''}
+
+              <div class="pt-4 border-t">
+                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">🔧 Technical Metadata (Auto-Detected from Submission)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-500">
+                  <div><span class="text-gray-400">Lead ID:</span> ${lead.id || '—'}</div>
+                  <div><span class="text-gray-400">Lead #:</span> ${lead.lead_number || '—'}</div>
+                  <div><span class="text-gray-400">Submitted:</span> ${lead.created_at ? new Date(lead.created_at).toLocaleString() : '—'}</div>
+                  <div><span class="text-gray-400">Status:</span> ${lead.status || 'open'}</div>
+                  <div><span class="text-gray-400">Device:</span> ${lead.device || '—'}</div>
+                  <div><span class="text-gray-400">IP:</span> ${lead.ip || '—'}</div>
+                  <div><span class="text-gray-400">Postal (Detected):</span> ${lead.postal || '—'}</div>
+                  <div><span class="text-gray-400">Country (Detected):</span> ${lead.country || '—'}</div>
+                  <div><span class="text-gray-400">ISP:</span> ${lead.isp || '—'}</div>
+                  <div><span class="text-gray-400">Coords:</span> ${lead.latitude && lead.longitude ? `${lead.latitude}, ${lead.longitude}` : '—'}</div>
+                </div>
+                ${lead.user_agent ? `<div class="mt-2 text-xs text-gray-400 break-all">User Agent: ${lead.user_agent}</div>` : ''}
+                ${lead.referrer ? `<div class="mt-1 text-xs text-gray-400">Referrer: ${lead.referrer}</div>` : ''}
+                ${lead.page_url ? `<div class="mt-1 text-xs text-gray-400">Page: ${lead.page_url}</div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDeleteConfirm() {
+      return `
+        <div class="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[60]" onclick="if(event.target === this) cancelDelete()">
+          <div class="bg-white rounded-xl max-w-md w-full p-6">
+            <div class="text-center mb-6">
+              <div class="text-5xl mb-4">⚠️</div>
+              <h2 class="text-xl font-bold text-red-600 mb-2">Permanent Delete</h2>
+              <p class="text-gray-600">This lead is already archived. Deleting it now will remove it <strong>forever</strong> and it cannot be recovered.</p>
+            </div>
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p class="text-sm text-red-800 font-medium">Lead: ${state.deleteConfirm.customer_name || state.deleteConfirm.customer_email || 'Unknown'}</p>
+              <p class="text-xs text-red-600 mt-1">ID: ${state.deleteConfirm.id}</p>
+            </div>
+            <div class="flex gap-3">
+              <button onclick="cancelDelete()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 rounded-lg">Cancel</button>
+              <button onclick="permanentDeleteLead()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg">Delete Forever</button>
+            </div>
+          </div>
+        </div>
+      `;
     }
 
     async function loadLeads() {
@@ -239,8 +301,12 @@
         const res = await fetch(API_URL);
         const data = await res.json();
         state.leads = data.leads || [];
+        // Load archived leads from localStorage
+        const archived = localStorage.getItem('estatequoter_archived');
+        state.archivedLeads = archived ? JSON.parse(archived) : [];
       } catch (err) {
         state.leads = [];
+        state.archivedLeads = [];
       }
       state.loading = false;
       render();
@@ -263,6 +329,13 @@
     function logout() {
       state.loggedIn = false;
       state.password = "";
+      searchInputValue = "";
+      render();
+    }
+
+    function toggleArchiveView() {
+      state.showArchive = !state.showArchive;
+      searchInputValue = "";
       render();
     }
 
@@ -283,12 +356,74 @@
     }
 
     function viewLead(id) {
-      state.viewingLead = state.leads.find(l => l.id === id);
+      const allLeads = [...state.leads, ...state.archivedLeads];
+      state.viewingLead = allLeads.find(l => l.id === id);
       render();
     }
 
     function closeModal() {
       state.viewingLead = null;
+      render();
+    }
+
+    function archiveLead(id) {
+      const lead = state.leads.find(l => l.id === id);
+      if (!lead) return;
+      
+      // Add to archive with timestamp
+      lead.archived_at = new Date().toISOString();
+      state.archivedLeads = [...state.archivedLeads, lead];
+      
+      // Remove from active leads
+      state.leads = state.leads.filter(l => l.id !== id);
+      
+      // Save to localStorage
+      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
+      
+      render();
+    }
+
+    function restoreLead(id) {
+      const lead = state.archivedLeads.find(l => l.id === id);
+      if (!lead) return;
+      
+      // Remove archive timestamp
+      delete lead.archived_at;
+      
+      // Add back to active leads
+      state.leads = [...state.leads, lead];
+      
+      // Remove from archive
+      state.archivedLeads = state.archivedLeads.filter(l => l.id !== id);
+      
+      // Save to localStorage
+      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
+      
+      render();
+    }
+
+    function confirmPermanentDelete(id) {
+      const lead = state.archivedLeads.find(l => l.id === id);
+      if (!lead) return;
+      state.deleteConfirm = lead;
+      render();
+    }
+
+    function cancelDelete() {
+      state.deleteConfirm = null;
+      render();
+    }
+
+    function permanentDeleteLead() {
+      if (!state.deleteConfirm) return;
+      
+      const id = state.deleteConfirm.id;
+      state.archivedLeads = state.archivedLeads.filter(l => l.id !== id);
+      
+      // Save to localStorage
+      localStorage.setItem('estatequoter_archived', JSON.stringify(state.archivedLeads));
+      
+      state.deleteConfirm = null;
       render();
     }
 
