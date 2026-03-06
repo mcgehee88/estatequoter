@@ -31,7 +31,8 @@
       loading: false,
       viewingLead: null,
       showArchive: false,
-      confirmingDelete: null
+      confirmingDelete: null,
+      confirmingArchive: null
     };
 
     // Keep search input value separate from state to avoid focus issues
@@ -137,7 +138,7 @@
                             <div class="flex items-center gap-6">
                               <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
                               ${!state.showArchive ? 
-                                `<button onclick="archiveLead('${lead.id}')" class="text-red-500 hover:text-red-700 text-sm px-1" title="Archive lead">✕</button>` :
+                                `<button onclick="confirmArchive('${lead.id}')" class="text-red-500 hover:text-red-700 text-sm px-1" title="Archive lead">✕</button>` :
                                 `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 text-xs font-medium">Restore</button>
                                  <button onclick="confirmPermanentDelete('${lead.id}')" class="text-red-600 hover:text-red-800 text-sm px-1" title="Delete forever">✕</button>`
                               }
@@ -154,6 +155,7 @@
 
           ${state.viewingLead ? renderLeadModal(state.viewingLead) : ''}
           ${state.confirmingDelete ? renderDeleteConfirmModal(state.confirmingDelete) : ''}
+          ${state.confirmingArchive ? renderArchiveConfirmModal(state.confirmingArchive) : ''}
         </div>
       `;
 
@@ -298,6 +300,24 @@
       `;
     }
 
+    function renderArchiveConfirmModal(lead) {
+      return `
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeArchiveConfirm()">
+          <div class="bg-white rounded-lg max-w-sm w-full p-5">
+            <div class="text-center mb-4">
+              <div class="text-3xl mb-2">🗂️</div>
+              <h3 class="text-lg font-semibold text-gray-800">Confirm Delete?</h3>
+              <p class="text-sm text-gray-600 mt-1">Archive <strong>${lead.customer_name}</strong>?</p>
+            </div>
+            <div class="flex gap-3">
+              <button onclick="closeArchiveConfirm()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg text-sm">No</button>
+              <button onclick="doArchiveLead('${lead.id}')" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg text-sm">Yes</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     async function loadLeads() {
       state.loading = true;
       render();
@@ -368,7 +388,17 @@
       render();
     }
 
-    async function archiveLead(id) {
+    function confirmArchive(id) {
+      state.confirmingArchive = state.leads.find(l => l.id === id);
+      render();
+    }
+
+    function closeArchiveConfirm() {
+      state.confirmingArchive = null;
+      render();
+    }
+
+    async function doArchiveLead(id) {
       try {
         const res = await fetch(API_URL, {
           method: 'PUT',
@@ -377,6 +407,7 @@
         });
         if (res.ok) {
           state.leads = state.leads.map(l => l.id === id ? { ...l, archived: true, archived_at: new Date().toISOString() } : l);
+          state.confirmingArchive = null;
           render();
         }
       } catch (err) {
