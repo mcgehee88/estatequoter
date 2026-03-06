@@ -137,9 +137,9 @@
                             <div class="flex items-center gap-3">
                               <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
                               ${!state.showArchive ? 
-                                `<button onclick="archiveLead('${lead.id}')" class="text-gray-400 hover:text-red-600 transition-colors" title="Archive lead">🗑️</button>` :
+                                `<button onclick="archiveLead('${lead.id}')" class="text-gray-500 hover:text-red-600 transition-colors" title="Archive lead">🗑️</button>` :
                                 `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 font-medium text-sm">Restore</button>
-                                 <button onclick="confirmPermanentDelete('${lead.id}')" class="text-gray-400 hover:text-red-600 transition-colors ml-2" title="Delete forever">🗑️</button>`
+                                 <button onclick="confirmPermanentDelete('${lead.id}')" class="text-gray-500 hover:text-red-600 transition-colors ml-2" title="Delete forever">🗑️</button>`
                               }
                             </div>
                           </td>
