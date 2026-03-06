@@ -92,7 +92,7 @@
                 <p class="text-sm text-gray-500">${activeLeads.length} active leads • ${archivedLeads.length} archived</p>
               </div>
               <div class="flex gap-2">
-                <button onclick="${state.showArchive ? 'showActive()' : 'showArchive()'" class="${state.showArchive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-2 rounded-lg font-medium">${state.showArchive ? 'View Active' : 'View Archive'}</button>
+                <button onclick="${state.showArchive ? 'showActive()' : 'showArchive()'}" class="${state.showArchive ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'} px-4 py-2 rounded-lg font-medium">${state.showArchive ? 'View Active' : 'View Archive'}</button>
                 <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">Logout</button>
               </div>
             </div>
