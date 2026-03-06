@@ -1427,13 +1427,12 @@ function validateStep(stepIndex) {
         alert('Please tell us about access difficulty.');
         return false;
       }
-      const otherChip = step.querySelector('.chip.active[data-val="Other"]');
-      if (otherChip) {
-        const txt = document.getElementById('access-other').value.trim();
-        if (!txt) {
-          alert('Please describe the access challenges.');
-          return false;
-        }
+      const accessOther = document.getElementById('access-other');
+      const accessOtherChip = step.querySelector('.chip.active[data-val="Other"]');
+      if (accessOtherChip && accessOtherChip.classList.contains('active')) {
+        accessOther.style.display = 'block';
+      } else {
+        accessOther.style.display = accessOther.value ? 'block' : 'none';
       }
       return true;
     }
@@ -1974,9 +1973,10 @@ window.addEventListener('popstate', (event) => {
   }
 });
 
-/* Send to Make.com – JSON only, no file upload */
+/* Send to Make.com AND zo.space API – JSON only, no file upload */
 async function sendLeadToMake(leadData) {
   const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+  const apiURL = "https://freetrials.zo.space/api/estatequoter/leads";
 
   // Track how many leads this browser has sent
   let leadCount = 0;
@@ -1998,78 +1998,67 @@ async function sendLeadToMake(leadData) {
   const leadId = "EQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
   leadData.leadId = leadId;
   leadData.createdAt = new Date().toISOString();
+  leadData.leadNumber = leadCount;
+  leadData.submittedFrom = window.location.href;
 
-  // Prepare data for Make.com
-  const makePayload = {
-    customer_name: leadData.name,
-    customer_email: leadData.email,
-    customer_phone: leadData.phone,
-    zip: leadData.zip,
-    role: leadData.role,
-    needs: leadData.needs,
-    property_type: leadData.propertyType,
-    square_footage: leadData.squareFootage,
+  // Map form data to API format for zo.space
+  const apiPayload = {
+    id: leadId,
+    customer_name: leadData.name || '',
+    customer_email: leadData.email || '',
+    customer_phone: leadData.phone || '',
+    zip: leadData.zip || '',
+    city: leadData.city || '',
+    region: leadData.region || '',
+    country: leadData.country || '',
+    property_type: leadData.propertyType || 'Not specified',
     bedrooms: leadData.bedrooms,
     bathrooms: leadData.bathrooms,
-    extra_rooms: leadData.extraRooms,
-    fullness: leadData.fullness,
-    high_value: leadData.highValue,
-    clear_out: leadData.clearOut,
-    timeline: leadData.timeline,
-    oversized: leadData.oversized,
-    access: leadData.access,
-    has_media: leadData.hasMedia,
-    media_count: leadData.mediaCount,
+    square_footage: leadData.squareFootage || '',
+    fullness: leadData.fullness || '',
+    clear_out: leadData.clearOut || '',
+    timeline: leadData.timeline || '',
+    role: leadData.role || '',
+    needs: leadData.needs || '',
+    high_value: leadData.highValue || '',
+    oversized: leadData.oversized || '',
+    extra_rooms: leadData.extraRooms || '',
+    has_media: leadData.hasMedia || false,
+    media_count: leadData.mediaCount || 0,
     media_urls: (window.cloudinaryFiles || []).map(f => f.secure_url).join(', '),
     home_value: leadData.homeValue,
     notes: leadData.notes,
-    ip: leadData.ip,
-    city: leadData.city,
-    region: leadData.region,
-    country: leadData.country,
-    device: leadData.device,
-    referrer: leadData.referrer,
-    page_url: leadData.pageUrl,
-    likely_vpn: leadData.likelyVPN,
-    pro_slug: document.getElementById('proSlug')?.value || null,
+    device: leadData.device || '',
+    user_agent: leadData.userAgent || '',
+    ip: leadData.ip || '',
+    referrer: leadData.referrer || '',
+    page_url: leadData.pageUrl || '',
+    status: 'open',
     submitted_at: new Date().toISOString()
   };
 
-  // Save to localStorage for "My Submissions" feature
+  // Save to localStorage backup (in case both fail)
   try {
-    // Save as last lead
-    localStorage.setItem('eqLastLead', JSON.stringify(leadData));
-    
-    // Add to all leads array
-    let allLeads = [];
-    try {
-      const raw = localStorage.getItem('eqAllLeads');
-      if (raw) allLeads = JSON.parse(raw);
-    } catch (e) {
-      allLeads = [];
-    }
-    allLeads.push(leadData);
-    localStorage.setItem('eqAllLeads', JSON.stringify(allLeads));
+    const existingLeads = JSON.parse(localStorage.getItem('eqAllLeads') || '[]');
+    existingLeads.push(leadData);
+    localStorage.setItem('eqAllLeads', JSON.stringify(existingLeads));
   } catch (e) {
     console.warn('Unable to save to localStorage', e);
   }
 
-  // Send to Make.com (fire and forget - don't block on success)
-  try {
-    console.log('Sending lead to Make.com:', webhookURL);
-    fetch(webhookURL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(makePayload)
-    }).then(response => {
-      console.log('Make.com response:', response.status);
-    }).catch(err => {
-      console.error('Make.com error:', err);
-    });
-  } catch (error) {
-    console.error('Error sending to Make.com:', error);
-    // Don't throw - user experience continues even if webhook fails
-  }
+  // Send to Make.com (fire and forget)
+  fetch(webhookURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(leadData)
+  }).catch(err => console.warn("Make.com webhook failed (non-blocking):", err));
+
+  // Send to zo.space API (also fire and forget - don't block UX)
+  fetch(apiURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(apiPayload)
+  }).catch(err => console.warn("zo.space API failed (non-blocking):", err));
 }
 
 /* Collect all form data into a single object */

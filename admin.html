@@ -4,667 +4,238 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
-  <title>EstateQuoter – Admin Dashboard</title>
+  <title>EstateQuoter Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    /* LOGIN SCREEN */
-    #login-screen {
-      max-width: 400px;
-      margin: 50px auto;
-      background: white;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-    
-    #login-screen h1 { margin-bottom: 30px; color: #333; font-size: 28px; }
-    
-    .form-group { margin-bottom: 20px; }
-    .form-group label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; }
-    .form-group input { 
-      width: 100%; 
-      padding: 12px; 
-      border: 2px solid #ddd; 
-      border-radius: 8px; 
-      font-size: 16px;
-      transition: border-color 0.3s;
-    }
-    .form-group input:focus { outline: none; border-color: #667eea; }
-    
-    #login-btn { 
-      width: 100%; 
-      padding: 12px; 
-      background: #667eea; 
-      color: white; 
-      border: none; 
-      border-radius: 8px; 
-      font-size: 16px; 
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    #login-btn:hover { background: #764ba2; }
-    
-    #login-error { color: #e74c3c; margin-top: 15px; padding: 10px; background: #ffe6e6; border-radius: 6px; display: none; }
-
-    /* DASHBOARD */
-    #dashboard-screen {
-      max-width: 1400px;
-      margin: 0 auto;
-      transition: all 0.3s;
-    }
-
-    .dashboard-hidden { display: none !important; }
-
-    .dashboard-header {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .dashboard-header h1 { color: #333; }
-    .logout-btn { 
-      padding: 10px 20px; 
-      background: #e74c3c; 
-      color: white; 
-      border: none; 
-      border-radius: 6px; 
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .logout-btn:hover { background: #c0392b; }
-
-    /* STATS */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .stat-card .stat-number { 
-      font-size: 36px; 
-      font-weight: bold; 
-      color: #667eea; 
-      margin-bottom: 10px;
-    }
-
-    .stat-card .stat-label { 
-      color: #666; 
-      font-size: 14px; 
-      text-transform: uppercase; 
-      font-weight: 600; 
-    }
-
-    /* LEADS TABLE */
-    .leads-container {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-
-    .table-header {
-      padding: 20px;
-      background: #f8f9fa;
-      border-bottom: 2px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .table-header h2 { color: #333; font-size: 18px; }
-
-    .search-box {
-      padding: 10px 15px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      width: 250px;
-      font-size: 14px;
-    }
-
-    /* TABLE */
-    .leads-table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow-x: auto;
-    }
-
-    .leads-table thead {
-      background: #f8f9fa;
-      position: sticky;
-      top: 0;
-    }
-
-    .leads-table th {
-      padding: 15px;
-      text-align: left;
-      font-weight: 600;
-      color: #555;
-      border-bottom: 2px solid #ddd;
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    .leads-table td {
-      padding: 15px;
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-    }
-
-    .leads-table tr:hover {
-      background: #f9f9f9;
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .status-open { background: #e8f4f8; color: #0277bd; }
-    .status-quoted { background: #f0f4e8; color: #558b2f; }
-    .status-closed { background: #f3e5f5; color: #6a1b9a; }
-
-    .action-btn {
-      padding: 8px 16px;
-      background: #667eea;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 12px;
-      transition: background 0.3s;
-    }
-
-    .action-btn:hover { background: #764ba2; }
-
-    /* MODAL */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .modal.active { display: flex; align-items: flex-start; justify-content: center; padding-top: 40px; }
-
-    .modal-content {
-      background: white;
-      border-radius: 12px;
-      max-width: 800px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      padding: 40px;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 28px;
-      cursor: pointer;
-      color: #999;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    .modal-close:hover { color: #333; }
-
-    .modal-content h2 {
-      margin-bottom: 30px;
-      color: #333;
-      font-size: 24px;
-    }
-
-    .detail-section {
-      margin-bottom: 30px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .detail-section h3 {
-      margin-bottom: 15px;
-      color: #667eea;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .detail-item {
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
-    }
-
-    .detail-label {
-      font-weight: 600;
-      color: #667eea;
-      font-size: 12px;
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-
-    .detail-value {
-      color: #333;
-      font-size: 14px;
-      word-break: break-word;
-    }
-
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 768px) {
-      body { padding: 10px; }
-
-      #login-screen { padding: 25px; margin: 30px auto; }
-      #login-screen h1 { font-size: 22px; }
-
-      .dashboard-header { 
-        padding: 20px; 
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-      }
-
-      .stats-grid { 
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-      }
-
-      .stat-card { padding: 15px; }
-      .stat-card .stat-number { font-size: 28px; }
-
-      .table-header {
-        padding: 15px;
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-      }
-
-      .search-box { width: 100%; }
-
-      .leads-table th,
-      .leads-table td {
-        padding: 10px;
-        font-size: 12px;
-      }
-
-      .modal-content {
-        padding: 20px;
-        margin: 0;
-      }
-
-      .modal-content h2 { font-size: 18px; }
-
-      .detail-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .detail-item {
-        padding: 12px;
-      }
-
-      .action-btn {
-        padding: 6px 12px;
-        font-size: 11px;
-      }
-
-      .modal-close { font-size: 24px; top: 10px; right: 15px; }
-    }
-
-    @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr; }
-      
-      .leads-table th,
-      .leads-table td {
-        padding: 8px;
-        font-size: 11px;
-      }
-
-      .modal-content { padding: 15px; }
-    }
-
-    .no-results {
-      text-align: center;
-      padding: 60px 20px;
-      color: #999;
-    }
+    .status-open { background: #dcfce7; color: #166534; }
+    .status-quoted { background: #dbeafe; color: #1e40af; }
+    .status-closed { background: #f3e8ff; color: #7c3aed; }
   </style>
 </head>
-<body>
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen">
-    <h1>🔐 Admin Login</h1>
-    <form onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="email" required placeholder="Email">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="password" required placeholder="Password">
-      </div>
-      <button type="submit" id="login-btn">Login</button>
-      <div id="login-error"></div>
-    </form>
-  </div>
-
-  <!-- DASHBOARD SCREEN -->
-  <div id="dashboard-screen" class="dashboard-hidden">
-    <div class="dashboard-header">
-      <div>
-        <h1>📊 Lead Management Dashboard</h1>
-        <p style="color: #999; margin-top: 5px;" id="user-email"></p>
-      </div>
-      <button class="logout-btn" onclick="handleLogout()">Logout</button>
-    </div>
-
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number" id="stat-total">0</div>
-        <div class="stat-label">Total Leads</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="stat-open">0</div>
-        <div class="stat-label">Open</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="stat-quoted">0</div>
-        <div class="stat-label">Quoted</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number" id="stat-closed">0</div>
-        <div class="stat-label">Closed</div>
-      </div>
-    </div>
-
-    <!-- LEADS -->
-    <div class="leads-container">
-      <div class="table-header">
-        <h2>📋 All Leads</h2>
-        <input type="text" class="search-box" id="search-box" placeholder="Search by name, email, zip..." onkeyup="filterLeads()">
-      </div>
-
-      <div style="overflow-x: auto;">
-        <table class="leads-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>ZIP</th>
-              <th>Property</th>
-              <th>Need</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="leads-tbody">
-            <tr><td colspan="9" class="no-results">Loading leads...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL -->
-  <div id="detail-modal" class="modal" onclick="if(event.target === this) closeModal()">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal()">&times;</span>
-      <h2 id="modal-name">Lead Details</h2>
-      <div id="modal-details"></div>
-    </div>
-  </div>
+<body class="bg-gray-50">
+  <div id="app"></div>
 
   <script>
-    let allLeads = [];
-    let filteredLeads = [];
-    let sessionToken = localStorage.getItem('admin_session') || null;
+    const ADMIN_EMAIL = "contact@estatequoter.com";
+    const ADMIN_PASSWORD = "estatequoter2025";
+    const API_URL = "https://freetrials.zo.space/api/estatequoter/leads";
 
-    async function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const errorDiv = document.getElementById('login-error');
+    let state = {
+      loggedIn: false,
+      email: "contact@estatequoter.com",
+      password: "",
+      error: false,
+      leads: [],
+      search: "",
+      loading: false,
+      viewingLead: null,
+      updatingStatus: null
+    };
 
-      try {
-        const response = await fetch('/.netlify/functions/auth-login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          sessionToken = data.session.access_token;
-          localStorage.setItem('admin_session', sessionToken);
-          document.getElementById('user-email').textContent = `Logged in as: ${email}`;
-          document.getElementById('login-screen').style.display = 'none';
-          document.getElementById('dashboard-screen').classList.remove('dashboard-hidden');
-          loadLeads();
-        } else {
-          errorDiv.textContent = 'Invalid credentials';
-          errorDiv.style.display = 'block';
-        }
-      } catch (error) {
-        console.error('Login error:', error);
-        errorDiv.textContent = 'Error logging in. Please try again.';
-        errorDiv.style.display = 'block';
-      }
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('admin_session');
-      sessionToken = null;
-      document.getElementById('login-screen').style.display = 'block';
-      document.getElementById('dashboard-screen').classList.add('dashboard-hidden');
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
-    }
-
-    async function loadLeads() {
-      try {
-        const response = await fetch('/.netlify/functions/admin-get-leads');
-        const data = await response.json();
-
-        if (!response.ok) {
-          console.error('Error loading leads:', data);
-          return;
-        }
-
-        allLeads = data.leads || [];
-        filteredLeads = allLeads;
-        updateStats();
-        renderLeads();
-      } catch (error) {
-        console.error('Failed to load leads:', error);
-      }
-    }
-
-    function filterLeads() {
-      const search = document.getElementById('search-box').value.toLowerCase();
-      filteredLeads = allLeads.filter(lead =>
-        (lead.customer_name || '').toLowerCase().includes(search) ||
-        (lead.customer_email || '').toLowerCase().includes(search) ||
-        (lead.customer_phone || '').toLowerCase().includes(search) ||
-        (lead.zip || '').includes(search)
-      );
-      renderLeads();
-    }
-
-    function updateStats() {
-      const total = allLeads.length;
-      const open = allLeads.filter(l => l.status === 'open' || !l.status).length;
-      const quoted = allLeads.filter(l => l.status === 'quoted').length;
-      const closed = allLeads.filter(l => l.status === 'closed').length;
-
-      document.getElementById('stat-total').textContent = total;
-      document.getElementById('stat-open').textContent = open;
-      document.getElementById('stat-quoted').textContent = quoted;
-      document.getElementById('stat-closed').textContent = closed;
-    }
-
-    function renderLeads() {
-      const tbody = document.getElementById('leads-tbody');
-
-      if (filteredLeads.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="no-results">No leads found</td></tr>';
+    function render() {
+      const app = document.getElementById('app');
+      
+      if (!state.loggedIn) {
+        app.innerHTML = `
+          <div class="min-h-screen bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+              <div class="text-center mb-8">
+                <div class="text-4xl mb-2">🔐</div>
+                <h1 class="text-2xl font-bold text-gray-800">EstateQuoter Admin</h1>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-1">Admin Email</label>
+                  <input type="email" id="email" value="${state.email}" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 focus:border-indigo-500 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+                  <input type="password" id="password" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-gray-800 focus:border-indigo-500 focus:outline-none">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition-colors">Login</button>
+                ${state.error ? '<div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm text-center">Invalid credentials</div>' : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        document.getElementById('password')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleLogin(); });
         return;
       }
 
-      tbody.innerHTML = filteredLeads.map(lead => `
-        <tr>
-          <td>${lead.customer_name || 'N/A'}</td>
-          <td>${lead.customer_email || 'N/A'}</td>
-          <td>${lead.customer_phone || 'N/A'}</td>
-          <td>${lead.zip || 'N/A'}</td>
-          <td>${lead.property_type || 'N/A'}</td>
-          <td>${lead.needs || 'N/A'}</td>
-          <td><span class="status-badge status-${lead.status || 'open'}">${lead.status || 'open'}</span></td>
-          <td>${lead.created_at ? new Date(lead.created_at).toLocaleDateString() : 'N/A'}</td>
-          <td><button class="action-btn" onclick="viewDetails('${lead.id}')">View Full</button></td>
-        </tr>
-      `).join('');
+      const filtered = state.leads.filter(l => 
+        (l.customer_name || '').toLowerCase().includes(state.search.toLowerCase()) ||
+        (l.customer_email || '').toLowerCase().includes(state.search.toLowerCase()) ||
+        (l.zip || '').includes(state.search)
+      );
+
+      const openCount = state.leads.filter(l => l.status === 'open' || !l.status).length;
+      const quotedCount = state.leads.filter(l => l.status === 'quoted').length;
+      const closedCount = state.leads.filter(l => l.status === 'closed').length;
+
+      app.innerHTML = `
+        <div class="min-h-screen bg-gray-50">
+          <div class="bg-white shadow-sm border-b">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+              <div>
+                <h1 class="text-xl font-bold text-gray-800">EstateQuoter Admin</h1>
+                <p class="text-sm text-gray-500">${state.leads.length} total leads</p>
+              </div>
+              <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">Logout</button>
+            </div>
+          </div>
+
+          <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-indigo-600">${state.leads.length}</div><div class="text-sm text-gray-500 uppercase">Total</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-green-600">${openCount}</div><div class="text-sm text-gray-500 uppercase">Open</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-blue-600">${quotedCount}</div><div class="text-sm text-gray-500 uppercase">Quoted</div></div>
+              <div class="bg-white p-4 rounded-lg shadow-sm"><div class="text-3xl font-bold text-purple-600">${closedCount}</div><div class="text-sm text-gray-500 uppercase">Closed</div></div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+              <input type="text" placeholder="Search by name, email, or ZIP..." id="search" value="${state.search}" class="w-full md:w-96 px-4 py-2 border border-gray-300 rounded-lg text-gray-800">
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+              ${state.loading ? '<div class="p-12 text-center text-gray-500">Loading leads...</div>' : 
+                !filtered.length ? `<div class="p-12 text-center text-gray-500">${state.search ? 'No leads match' : 'No leads found'}</div>` : `
+                <div class="overflow-x-auto">
+                  <table class="w-full">
+                    <thead class="bg-gray-50 border-b"><tr><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Name</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Email</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Phone</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">ZIP</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th><th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Action</th></tr></thead>
+                    <tbody>
+                      ${filtered.map(lead => `
+                        <tr class="border-b hover:bg-gray-50">
+                          <td class="px-4 py-3 text-sm text-gray-800 font-medium">${lead.customer_name || '—'}</td>
+                          <td class="px-4 py-3 text-sm text-gray-600">${lead.customer_email || '—'}</td>
+                          <td class="px-4 py-3 text-sm text-gray-600">${lead.customer_phone || '—'}</td>
+                          <td class="px-4 py-3 text-sm text-gray-600">${lead.zip || '—'}</td>
+                          <td class="px-4 py-3">
+                            <select onchange="updateStatus('${lead.id}', this.value)" class="px-2 py-1 rounded text-xs font-medium border-0 cursor-pointer ${lead.status === 'closed' ? 'status-closed' : lead.status === 'quoted' ? 'status-quoted' : 'status-open'}">
+                              <option value="open" ${lead.status === 'open' || !lead.status ? 'selected' : ''}>Open</option>
+                              <option value="quoted" ${lead.status === 'quoted' ? 'selected' : ''}>Quoted</option>
+                              <option value="closed" ${lead.status === 'closed' ? 'selected' : ''}>Closed</option>
+                            </select>
+                          </td>
+                          <td class="px-4 py-3 text-sm"><button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button></td>
+                        </tr>
+                      `).join('')}
+                    </tbody>
+                  </table>
+                </div>
+              `}
+            </div>
+          </div>
+
+          ${state.viewingLead ? `
+            <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeModal()">
+              <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b flex justify-between items-center">
+                  <h2 class="text-xl font-bold text-gray-900">${state.viewingLead.customer_name} — Lead Details</h2>
+                  <button onclick="closeModal()" class="text-gray-500 hover:text-gray-800 text-2xl">×</button>
+                </div>
+                <div class="p-6 space-y-6">
+                  <div>
+                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📋 Contact</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Name</div><div class="font-medium text-gray-900">${state.viewingLead.customer_name || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Email</div><div class="font-medium text-gray-900">${state.viewingLead.customer_email || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Phone</div><div class="font-medium text-gray-900">${state.viewingLead.customer_phone || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Location</div><div class="font-medium text-gray-900">${state.viewingLead.city || '—'}, ${state.viewingLead.region || '—'} ${state.viewingLead.zip || '—'}</div></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🏠 Property</h3>
+                    <div class="grid grid-cols-3 gap-4">
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Type</div><div class="font-medium text-gray-900">${state.viewingLead.property_type || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bed/Bath</div><div class="font-medium text-gray-900">${state.viewingLead.bedrooms || '—'}bd / ${state.viewingLead.bathrooms || '—'}ba</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Fullness</div><div class="font-medium text-gray-900">${state.viewingLead.fullness || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Timeline</div><div class="font-medium text-gray-900">${state.viewingLead.timeline || '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Value</div><div class="font-medium text-gray-900">$${state.viewingLead.home_value ? state.viewingLead.home_value.toLocaleString() : '—'}</div></div>
+                      <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Needs</div><div class="font-medium text-gray-900">${state.viewingLead.needs || '—'}</div></div>
+                    </div>
+                  </div>
+                  ${state.viewingLead.notes ? `
+                    <div>
+                      <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📝 Notes</h3>
+                      <div class="bg-gray-100 p-4 rounded text-gray-900">${state.viewingLead.notes}</div>
+                    </div>
+                  ` : ''}
+                  <div class="pt-4 border-t text-xs text-gray-600">
+                    Lead ID: ${state.viewingLead.id} • Created: ${new Date(state.viewingLead.created_at).toLocaleString()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      `;
+
+      document.getElementById('search')?.addEventListener('input', (e) => { state.search = e.target.value; render(); });
     }
 
-    function viewDetails(id) {
-      const lead = allLeads.find(l => l.id === id);
-      if (!lead) return;
-
-      document.getElementById('modal-name').textContent = `${lead.customer_name || 'N/A'} – Lead #${(id || '').substring(0, 8)}`;
-
-      const sections = {
-        '📋 Contact Information': [
-          ['Name', lead.customer_name],
-          ['Email', lead.customer_email],
-          ['Phone', lead.customer_phone],
-          ['ZIP Code', lead.zip],
-          ['City', lead.city],
-          ['Region', lead.region],
-          ['Country', lead.country],
-        ],
-        '🏠 Property Details': [
-          ['Property Type', lead.property_type],
-          ['Square Footage', lead.square_footage],
-          ['Bedrooms', lead.bedrooms],
-          ['Bathrooms', lead.bathrooms],
-          ['Estimated Value', lead.home_value ? `$${lead.home_value.toLocaleString()}` : 'Not provided'],
-          ['Fullness Level', lead.fullness],
-        ],
-        '💼 Service Needs': [
-          ['Primary Need', lead.needs],
-          ['Secondary Needs', lead.needs_other],
-          ['Role/Relationship', lead.role],
-          ['Role Details', lead.role_other],
-          ['Clear Out Required', lead.clear_out],
-          ['Timeline', lead.timeline],
-        ],
-        '🎯 Item Assessment': [
-          ['High Value Items', lead.high_value],
-          ['High Value Details', lead.high_value_other],
-          ['Oversized Items', lead.oversized],
-          ['Oversized Details', lead.oversized_other],
-          ['Extra Room Items', lead.extra_rooms],
-          ['Extra Room Details', lead.extra_rooms_other],
-        ],
-        '🔍 Property Condition': [
-          ['Access Issues', lead.access],
-          ['Access Details', lead.access_other],
-          ['Media Available', lead.has_media],
-          ['Media Count', lead.media_count],
-        ],
-        '📍 Geolocation': [
-          ['Latitude', lead.latitude],
-          ['Longitude', lead.longitude],
-          ['Postal Code', lead.postal],
-        ],
-        '💻 Device & Browser': [
-          ['Device Type', lead.device],
-          ['User Agent', lead.user_agent],
-          ['IP Address', lead.ip],
-          ['ISP', lead.isp],
-          ['VPN Detected', lead.likely_vpn],
-          ['Referrer', lead.referrer],
-          ['Page URL', lead.page_url],
-        ],
-        '📝 Additional Info': [
-          ['Notes', lead.notes],
-          ['Lead Status', lead.status || 'open'],
-          ['Created Date', lead.created_at ? new Date(lead.created_at).toLocaleString() : 'N/A'],
-        ],
-      };
-
-      let detailsHtml = '';
-      for (const [sectionTitle, fields] of Object.entries(sections)) {
-        const validFields = fields.filter(([_, value]) => value);
-        if (validFields.length === 0) continue;
-
-        detailsHtml += `<div class="detail-section"><h3>${sectionTitle}</h3><div class="detail-grid">`;
-        detailsHtml += validFields.map(([label, value]) => `
-          <div class="detail-item">
-            <div class="detail-label">${label}</div>
-            <div class="detail-value">${value}</div>
-          </div>
-        `).join('');
-        detailsHtml += '</div></div>';
+    async function loadLeads() {
+      state.loading = true;
+      render();
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        state.leads = data.leads || [];
+      } catch (err) {
+        state.leads = [];
       }
+      state.loading = false;
+      render();
+    }
 
-      document.getElementById('modal-details').innerHTML = detailsHtml;
-      document.getElementById('detail-modal').classList.add('active');
+    function handleLogin() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        state.loggedIn = true;
+        state.error = false;
+        loadLeads();
+      } else {
+        state.error = true;
+        render();
+      }
+    }
+
+    function logout() {
+      state.loggedIn = false;
+      state.password = "";
+      render();
+    }
+
+    async function updateStatus(id, newStatus) {
+      try {
+        const res = await fetch(API_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, status: newStatus })
+        });
+        if (res.ok) {
+          state.leads = state.leads.map(l => l.id === id ? { ...l, status: newStatus, updated_at: new Date().toISOString() } : l);
+          render();
+        }
+      } catch (err) {
+        console.error('Failed to update status:', err);
+      }
+    }
+
+    function viewLead(id) {
+      state.viewingLead = state.leads.find(l => l.id === id);
+      render();
     }
 
     function closeModal() {
-      document.getElementById('detail-modal').classList.remove('active');
+      state.viewingLead = null;
+      render();
     }
 
-    window.addEventListener('load', () => {
-      if (sessionToken) {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('dashboard-screen').classList.remove('dashboard-hidden');
-        loadLeads();
-      }
-    });
+    // Initial render
+    render();
   </script>
 </body>
 </html>
-
