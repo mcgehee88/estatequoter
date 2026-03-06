@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>EstateQuoter – Admin Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    /* LOGIN */
+    #login-screen {
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    #login-screen h1 { margin-bottom: 30px; color: #333; font-size: 28px; text-align: center; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; color: #555; font-weight: 600; }
+    .form-group input { 
+      width: 100%; 
+      padding: 12px; 
+      border: 2px solid #ddd; 
+      border-radius: 8px; 
+      font-size: 16px;
+    }
+    #login-btn { 
+      width: 100%; 
+      padding: 12px; 
+      background: #667eea; 
+      color: white; 
+      border: none; 
+      border-radius: 8px; 
+      font-size: 16px; 
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #login-btn:hover { background: #764ba2; }
+    #login-error { 
+      color: #e74c3c; 
+      margin-top: 15px; 
+      padding: 10px; 
+      background: #ffe6e6; 
+      border-radius: 6px; 
+      display: none; 
+      text-align: center;
+    }
+
+    /* DASHBOARD */
+    #dashboard-screen { display: none; }
+    .header {
+      background: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .header h1 { color: #333; font-size: 24px; }
+    .logout-btn { 
+      padding: 10px 20px; 
+      background: #e74c3c; 
+      color: white; 
+      border: none; 
+      border-radius: 6px; 
+      cursor: pointer;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      padding: 20px 40px;
+      background: rgba(255,255,255,0.1);
+    }
+    .tab {
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .tab.active { background: white; color: #667eea; }
+
+    .content {
+      padding: 20px 40px;
+      height: calc(100vh - 140px);
+    }
+    .sheet-container {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 100%;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .sheet-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .instructions {
+      background: rgba(255,255,255,0.95);
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    .instructions h2 { margin-bottom: 20px; color: #333; }
+    .instructions ol { margin-left: 20px; line-height: 2; }
+    .instructions code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <h1>🔐 EstateQuoter Admin</h1>
+  <div class="form-group">
+    <label for="email">Admin Email</label>
+    <input type="email" id="email" placeholder="Enter your email">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="Enter password">
+  </div>
+  <button id="login-btn">Login</button>
+  <div id="login-error">Invalid email or password</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard-screen">
+  <div class="header">
+    <h1>EstateQuoter Master Admin</h1>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('leads')">📊 All Leads</button>
+    <button class="tab" onclick="showTab('pros')">👥 Professionals</button>
+    <button class="tab" onclick="showTab('settings')">⚙️ Settings</button>
+  </div>
+
+  <div class="content">
+    <!-- Leads Tab -->
+    <div id="leads-tab" class="tab-content">
+      <div class="sheet-container">
+        <iframe id="leads-sheet" src=""></iframe>
+      </div>
+    </div>
+
+    <!-- Pros Tab -->
+    <div id="pros-tab" class="tab-content" style="display:none;">
+      <div class="sheet-container">
+        <iframe id="pros-sheet" src=""></iframe>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings-tab" class="tab-content" style="display:none;">
+      <div class="instructions">
+        <h2>⚙️ Setup Instructions</h2>
+        <ol>
+          <li><strong>Google Sheet:</strong> View all leads at your Google Sheet link</li>
+          <li><strong>Make.com:</strong> Check your scenarios at <a href="https://www.make.com" target="_blank">make.com</a></li>
+          <li><strong>Webhook URL:</strong> <code id="webhook-url">https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3</code></li>
+          <li><strong>Test:</strong> Submit a form and watch it appear in the Leads sheet</li>
+        </ol>
+        <p style="margin-top: 20px;">
+          <strong>Need help?</strong> Contact your developer or check Make.com logs.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Admin credentials (change these!)
+const ADMIN_EMAIL = "contact@estatequoter.com";
+const ADMIN_PASSWORD = "estatequoter2025"; // CHANGE THIS!
+
+// Google Sheet URLs (you'll update these after creating the sheets)
+const LEADS_SHEET_URL = ""; // Will be filled in after sheet creation
+const PROS_SHEET_URL = "";  // Will be filled in after sheet creation
+
+// Login handler
+document.getElementById('login-btn').addEventListener('click', () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard-screen').style.display = 'block';
+    loadSheets();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+});
+
+// Allow Enter key to submit
+['email', 'password'].forEach(id => {
+  document.getElementById(id).addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+  });
+});
+
+function logout() {
+  document.getElementById('login-screen').style.display = 'block';
+  document.getElementById('dashboard-screen').style.display = 'none';
+  document.getElementById('email').value = '';
+  document.getElementById('password').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function showTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Show/hide content
+  document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+  document.getElementById(tabName + '-tab').style.display = 'block';
+}
+
+function loadSheets() {
+  // Load Google Sheets in iframes
+  if (LEADS_SHEET_URL) {
+    document.getElementById('leads-sheet').src = LEADS_SHEET_URL;
+  } else {
+    document.getElementById('leads-tab').innerHTML = `
+      <div class="instructions">
+        <h2>📊 Leads Sheet Not Connected</h2>
+        <p>Your Google Sheet needs to be set up. Once created, update the LEADS_SHEET_URL in this file.</p>
+      </div>
+    `;
+  }
+  
+  if (PROS_SHEET_URL) {
+    document.getElementById('pros-sheet').src = PROS_SHEET_URL;
+  }
+}
+</script>
+
+</body>
+</html>
