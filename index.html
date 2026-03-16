@@ -1038,6 +1038,10 @@
       <input type="email" id="email" placeholder="We will send quotes here" required maxlength="200">
       <label style="margin-top:16px">Phone</label>
       <input type="tel" id="phone" placeholder="Mobile number" required maxlength="40">
+      <label style="margin-top:16px">City <span style="font-weight:normal;color:#64748b">(auto-filled from ZIP, editable)</span></label>
+      <input type="text" id="city" placeholder="City" maxlength="100">
+      <label style="margin-top:16px">State <span style="font-weight:normal;color:#64748b">(auto-filled from ZIP, editable)</span></label>
+      <input type="text" id="state" placeholder="State" maxlength="2" style="text-transform:uppercase">
       <label style="margin-top:20px">Anything else we should know?</label>
       <textarea id="notes" rows="3" placeholder="Timeline, attorney involvement, locked areas, special requests, etc." maxlength="1000"></textarea>
     </div>
@@ -1600,6 +1604,8 @@ function hydrateFormFromData(data) {
   if (data.email) document.getElementById('email').value = data.email.slice(0, 200);
   if (data.phone) document.getElementById('phone').value = data.phone.slice(0, 40);
   if (typeof data.notes === 'string') document.getElementById('notes').value = data.notes.slice(0, 1000);
+  if (data.city) document.getElementById("city").value = data.city.slice(0, 100);
+  if (data.state) document.getElementById("state").value = data.state.slice(0, 2);
 
   // Meta
   const meta = window._eqMeta || {};
@@ -1638,32 +1644,34 @@ function renderReview(data) {
     : "No";
 
   const items = [
-    { label: "ZIP code", value: data.zip || '-' },
-    { label: "Your role", value: [data.role, data.roleOther].filter(Boolean).join(' | ') || '-' },
-    { label: "What you need most", value: [data.needs, data.needsOther].filter(Boolean).join(' | ') || '-' },
-    { label: "Property type", value: data.propertyType || '-' },
-    { label: "Square footage", value: fmtSqft(data.squareFootage) || '-' },
-    { label: "Bedrooms", value: data.bedrooms || '-' },
-    { label: "Bathrooms", value: data.bathrooms || '-' },
-    { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(' | ') || '-' },
-    { label: "How full it is", value: data.fullness || '-' },
-    { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(' | ') || '-' },
-    { label: "Clear out needs", value: data.clearOut || '-' },
-    { label: "Timeline", value: data.timeline || '-' },
-    { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(' | ') || '-' },
-    { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(' | ') || '-' },
-    { label: "Home value estimate", value: fmtMoney(data.homeValue) || '-' },
-    { label: "Name", value: data.name || '-' },
-    { label: "Email", value: data.email || '-' },
-    { label: "Phone", value: data.phone || '-' },
-    { label: "Notes", value: data.notes || 'None' },
+    { label: "ZIP code", value: data.zip || "-", step: 0 },
+    { label: "City", value: data.city || "-", step: 12 },
+    { label: "State", value: data.state || "-", step: 12 },
+    { label: "Your role", value: [data.role, data.roleOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "What you need most", value: [data.needs, data.needsOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "Property type", value: data.propertyType || "-", step: 2 },
+    { label: "Square footage", value: fmtSqft(data.squareFootage) || "-", step: 3 },
+    { label: "Bedrooms", value: data.bedrooms || "-", step: 4 },
+    { label: "Bathrooms", value: data.bathrooms || "-", step: 4 },
+    { label: "Extra rooms or spaces", value: [data.extraRooms, data.extraRoomsOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "How full it is", value: data.fullness || "-", step: 6 },
+    { label: "High value items", value: [data.highValue, data.highValueOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "Clear out needs", value: data.clearOut || "-", step: 8 },
+    { label: "Timeline", value: data.timeline || "-", step: 9 },
+    { label: "Oversized / difficult items", value: [data.oversized, data.oversizedOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "Access", value: [data.access, data.accessOther].filter(Boolean).join(', ') || '-', step: 0 },
+    { label: "Home value estimate", value: fmtMoney(data.homeValue) || "-", step: 13 },
+    { label: "Name", value: data.name || "-", step: 12 },
+    { label: "Email", value: data.email || "-", step: 12 },
+    { label: "Phone", value: data.phone || "-", step: 12 },
+    { label: "Notes", value: data.notes || "None", step: 12 },
     { label: "Media uploaded (photos/video)", value: mediaLabel }
   ];
 
-  grid.innerHTML = items.map(item => `
-    <div class="review-item">
+  grid.innerHTML = items.map((item, idx) => `
+    <div class="review-item" style="cursor:pointer;" onclick="jumpToStep(${item.step})">
       <dl>
-        <dt>${item.label}</dt>
+        <dt>${item.label} <span style="color:#2153ff;font-size:11px;font-weight:normal;">(click to edit)</span></dt>
         <dd>${item.value}</dd>
       </dl>
     </div>
@@ -2141,6 +2149,8 @@ function collectData() {
   data.email = document.getElementById('email').value.trim();
   data.phone = document.getElementById('phone').value.trim();
   data.notes = document.getElementById('notes').value.trim();
+  data.city = document.getElementById("city")?.value?.trim() || "";
+  data.state = document.getElementById("state")?.value?.trim() || "";
 
   // Metadata
   const meta = window._eqMeta || {};
@@ -2878,3 +2888,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
+<script>
+/* ZIP Code to City/State Lookup */
+async function lookupZipCode(zip) {
+  if (!zip || zip.length !== 5) return null;
+  try {
+    const response = await fetch(`https://api.zippopotam.us/us/${zip}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.places && data.places[0]) {
+        return {
+          city: data.places[0]['place name'],
+          state: data.places[0]['state abbreviation']
+        };
+      }
+    }
+  } catch (e) {
+    console.log('ZIP lookup error:', e);
+  }
+  return null;
+}
+
+/* Auto-lookup when ZIP is entered */
+document.addEventListener('DOMContentLoaded', function() {
+  const zipInput = document.getElementById('zip');
+  if (zipInput) {
+    zipInput.addEventListener('blur', async function() {
+      const zip = this.value.trim();
+      if (zip.length === 5) {
+        const location = await lookupZipCode(zip);
+        if (location) {
+          document.getElementById('city').value = location.city;
+          document.getElementById('state').value = location.state;
+        }
+      }
+    });
+  }
+});
+</script>
+
+<script>
+/* Jump to specific step for editing from review */
+function jumpToStep(stepIndex) {
+  document.getElementById('review').style.display = 'none';
+  document.getElementById('main-form').style.display = 'block';
+  document.getElementById('cta-bar').style.display = 'block';
+  document.body.classList.add('form-active');
+  showStep(stepIndex, true);
+  window.scrollTo(0, 0);
+}
+</script>
