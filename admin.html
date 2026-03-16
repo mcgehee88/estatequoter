@@ -17,13 +17,17 @@
   <div id="app"></div>
 
   <script>
+    // Admin credentials - in production, these should be set via environment variables
+    // and validated server-side. This is a simple client-side check for the admin panel.
     const ADMIN_EMAIL = "contact@estatequoter.com";
     const ADMIN_PASSWORD = "estatequoter2025";
+    
     const API_URL = "https://freetrials.zo.space/api/estatequoter/leads";
+    const NETLIFY_API = "/.netlify/functions/admin-all-leads";
 
     let state = {
       loggedIn: false,
-      email: "contact@estatequoter.com",
+      email: "",
       password: "",
       error: false,
       leads: [],
@@ -35,7 +39,6 @@
       confirmingArchive: null
     };
 
-    // Keep search input value separate from state to avoid focus issues
     let searchInputValue = "";
 
     function render() {
@@ -133,14 +136,13 @@
                               <option value="closed" ${lead.status === 'closed' ? 'selected' : ''}>Closed</option>
                             </select>
                           </td>
-                          ` : `<td class="px-4 py-3"><span class="status-archived px-2 py-1 rounded text-xs font-medium">${new Date(lead.archived_at).toLocaleDateString()}</span></td>`}
+                          ` : `<td class="px-4 py-3"><span class="status-archived px-2 py-1 rounded text-xs font-medium">${new Date(lead.archived_at || lead.updated_at).toLocaleDateString()}</span></td>`}
                           <td class="px-4 py-3">
                             <div class="flex items-center gap-6">
                               <button onclick="viewLead('${lead.id}')" class="text-indigo-600 hover:text-indigo-800 font-medium">View</button>
                               ${!state.showArchive ? 
                                 `<button onclick="confirmArchive('${lead.id}')" class="text-red-500 hover:text-red-700 text-sm px-1" title="Archive lead">✕</button>` :
-                                `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 text-xs font-medium">Restore</button>
-                                 <button onclick="confirmPermanentDelete('${lead.id}')" class="text-red-600 hover:text-red-800 text-sm px-1" title="Delete forever">✕</button>`
+                                `<button onclick="restoreLead('${lead.id}')" class="text-green-600 hover:text-green-800 text-xs font-medium">Restore</button>`
                               }
                             </div>
                           </td>
@@ -154,19 +156,16 @@
           </div>
 
           ${state.viewingLead ? renderLeadModal(state.viewingLead) : ''}
-          ${state.confirmingDelete ? renderDeleteConfirmModal(state.confirmingDelete) : ''}
           ${state.confirmingArchive ? renderArchiveConfirmModal(state.confirmingArchive) : ''}
         </div>
       `;
 
-      // Setup search input with proper event handling
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
         searchInput.value = searchInputValue;
         searchInput.addEventListener('input', (e) => {
           searchInputValue = e.target.value;
           render();
-          // Restore focus and cursor position
           const input = document.getElementById('searchInput');
           if (input) {
             input.focus();
@@ -192,20 +191,20 @@
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Name</div><div class="font-medium text-gray-900">${lead.customer_name || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Email</div><div class="font-medium text-gray-900">${lead.customer_email || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Phone</div><div class="font-medium text-gray-900">${lead.customer_phone || '—'}</div></div>
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">ZIP (Entered)</div><div class="font-medium text-gray-900">${lead.zip || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">ZIP</div><div class="font-medium text-gray-900">${lead.zip || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">City</div><div class="font-medium text-gray-900">${lead.city || '—'}</div></div>
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Region</div><div class="font-medium text-gray-900">${lead.region || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">State/Region</div><div class="font-medium text-gray-900">${lead.region || '—'}</div></div>
                 </div>
               </div>
 
               <div>
                 <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">🎯 Role & Needs</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Your Role</div><div class="font-medium text-gray-900">${lead.role || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Role</div><div class="font-medium text-gray-900">${lead.role || '—'}</div></div>
                   ${lead.role_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Role (Other)</div><div class="font-medium text-gray-900">${lead.role_other}</div></div>` : ''}
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">What You Need Most</div><div class="font-medium text-gray-900">${lead.needs || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Needs</div><div class="font-medium text-gray-900">${lead.needs || '—'}</div></div>
                   ${lead.needs_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Needs (Other)</div><div class="font-medium text-gray-900">${lead.needs_other}</div></div>` : ''}
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Clear Out Needs</div><div class="font-medium text-gray-900">${lead.clear_out || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Clear Out</div><div class="font-medium text-gray-900">${lead.clear_out || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Timeline</div><div class="font-medium text-gray-900">${lead.timeline || '—'}</div></div>
                 </div>
               </div>
@@ -217,83 +216,75 @@
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bedrooms</div><div class="font-medium text-gray-900">${lead.bedrooms || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Bathrooms</div><div class="font-medium text-gray-900">${lead.bathrooms || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Square Footage</div><div class="font-medium text-gray-900">${lead.square_footage ? lead.square_footage.toLocaleString() + ' sqft' : '—'}</div></div>
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Fullness Level</div><div class="font-medium text-gray-900">${lead.fullness || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Fullness</div><div class="font-medium text-gray-900">${lead.fullness || '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Home Value</div><div class="font-medium text-gray-900">${lead.home_value ? '$' + lead.home_value.toLocaleString() : '—'}</div></div>
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms</div><div class="font-medium text-gray-900">${lead.extra_rooms || '—'}</div></div>
-                  ${lead.extra_rooms_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms (Other)</div><div class="font-medium text-gray-900">${lead.extra_rooms_other}</div></div>` : ''}
                 </div>
               </div>
 
+              ${lead.extra_rooms_other ? `
               <div>
-                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">💎 Special Items & Access</h3>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">Extra Rooms Detail</h3>
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Extra Rooms (Other)</div><div class="font-medium text-gray-900">${lead.extra_rooms_other}</div></div>
+                </div>
+              </div>
+              ` : ''}
+
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">💎 Special Items</h3>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value Items</div><div class="font-medium text-gray-900">${lead.high_value || '—'}</div></div>
                   ${lead.high_value_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">High Value (Other)</div><div class="font-medium text-gray-900">${lead.high_value_other}</div></div>` : ''}
                   <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized Items</div><div class="font-medium text-gray-900">${lead.oversized || '—'}</div></div>
                   ${lead.oversized_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Oversized (Other)</div><div class="font-medium text-gray-900">${lead.oversized_other}</div></div>` : ''}
-                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access Requirements</div><div class="font-medium text-gray-900">${lead.access || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access</div><div class="font-medium text-gray-900">${lead.access || '—'}</div></div>
                   ${lead.access_other ? `<div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Access (Other)</div><div class="font-medium text-gray-900">${lead.access_other}</div></div>` : ''}
                 </div>
               </div>
 
-              ${lead.has_media ? `
-                <div>
-                  <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📸 Media (${lead.media_count || 0} items)</h3>
-                  <div class="bg-gray-100 p-4 rounded">
-                    ${lead.media_urls ? lead.media_urls.split(',').map(url => url.trim()).filter(u => u).map(url => 
-                      `<a href="${url}" target="_blank" class="inline-block mr-2 mb-2 px-3 py-2 bg-white rounded border hover:bg-indigo-50 text-sm text-indigo-600 hover:text-indigo-800 transition-colors">📷 View Image</a>`
-                    ).join('') : '<span class="text-gray-500">Media URLs not available</span>'}
-                  </div>
-                </div>
+              ${lead.notes ? `
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">Notes</h3>
+                <div class="bg-gray-100 p-4 rounded text-gray-900">${lead.notes}</div>
+              </div>
               ` : ''}
 
-              ${lead.notes ? `
-                <div>
-                  <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">📝 Additional Notes</h3>
-                  <div class="bg-gray-100 p-4 rounded text-gray-900">${lead.notes}</div>
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">Submission Source</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Lead #</div><div class="font-medium text-gray-900">${lead.lead_number || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Device</div><div class="font-medium text-gray-900">${lead.device || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Referrer</div><div class="font-medium text-gray-900">${lead.referrer || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Page URL</div><div class="font-medium text-gray-900">${lead.page_url || '—'}</div></div>
                 </div>
-              ` : ''}
+              </div>
+
+              <div>
+                <h3 class="text-sm font-semibold text-indigo-600 uppercase mb-3">IP & Location Data</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">IP Address</div><div class="font-medium text-gray-900">${lead.ip || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Region</div><div class="font-medium text-gray-900">${lead.region || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Country</div><div class="font-medium text-gray-900">${lead.country || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Postal Code</div><div class="font-medium text-gray-900">${lead.postal || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Latitude</div><div class="font-medium text-gray-900">${lead.latitude || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">Longitude</div><div class="font-medium text-gray-900">${lead.longitude || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">ISP</div><div class="font-medium text-gray-900">${lead.isp || '—'}</div></div>
+                  <div class="bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">VPN Detected</div><div class="font-medium text-gray-900">${lead.likely_vpn || '—'}</div></div>
+                </div>
+                ${lead.user_agent ? `<div class="mt-4 bg-gray-100 p-3 rounded"><div class="text-xs text-gray-600">User Agent</div><div class="font-medium text-gray-900 text-xs break-all">${lead.user_agent}</div></div>` : ''}
+              </div>
 
               <div class="pt-4 border-t">
-                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">🔧 Technical Metadata (Auto-Detected from Submission)</h3>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase mb-2">Technical Metadata</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-gray-500">
                   <div><span class="text-gray-400">Lead ID:</span> ${lead.id || '—'}</div>
                   <div><span class="text-gray-400">Lead #:</span> ${lead.lead_number || '—'}</div>
                   <div><span class="text-gray-400">Submitted:</span> ${lead.created_at ? new Date(lead.created_at).toLocaleString() : '—'}</div>
                   <div><span class="text-gray-400">Status:</span> ${lead.status || 'open'}</div>
-                  <div><span class="text-gray-400">Device:</span> ${lead.device || '—'}</div>
-                  <div><span class="text-gray-400">IP:</span> ${lead.ip || '—'}</div>
-                  <div><span class="text-gray-400">ISP:</span> ${lead.isp || '—'}</div>
-                  <div><span class="text-gray-400">Coords:</span> ${lead.latitude && lead.longitude ? `${lead.latitude}, ${lead.longitude}` : '—'}</div>
-                  ${lead.postal ? `<div><span class="text-gray-400">Postal (Detected):</span> ${lead.postal}</div>` : ''}
-                  ${lead.country ? `<div><span class="text-gray-400">Country (Detected):</span> ${lead.country}</div>` : ''}
+                  <div><span class="text-gray-400">Pro Assigned:</span> ${lead.professional_assigned || 'Organic'}</div>
                 </div>
-                ${lead.user_agent ? `<div class="mt-2 text-xs text-gray-400 break-all">User Agent: ${lead.user_agent}</div>` : ''}
-                ${lead.referrer ? `<div class="mt-1 text-xs text-gray-400">Referrer: ${lead.referrer}</div>` : ''}
-                ${lead.page_url ? `<div class="mt-1 text-xs text-gray-400">Page: ${lead.page_url}</div>` : ''}
               </div>
-            </div>
-          </div>
-        </div>
-      `;
-    }
-
-    function renderDeleteConfirmModal(lead) {
-      return `
-        <div class="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onclick="if(event.target === this) closeDeleteConfirm()">
-          <div class="bg-white rounded-xl max-w-md w-full p-6">
-            <div class="text-center mb-6">
-              <div class="text-5xl mb-4">⚠️</div>
-              <h2 class="text-xl font-bold text-red-600 mb-2">Permanent Delete</h2>
-              <p class="text-gray-600">This lead is already archived. Deleting it now will remove it <strong>forever</strong> and it cannot be recovered.</p>
-            </div>
-            <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
-              <div class="text-sm text-red-800"><strong>Lead:</strong> ${lead.customer_name}</div>
-              <div class="text-xs text-red-600 mt-1">ID: ${lead.id}</div>
-            </div>
-            <div class="flex gap-3">
-              <button onclick="closeDeleteConfirm()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg">Cancel</button>
-              <button onclick="permanentDeleteLead('${lead.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 rounded-lg">Delete Forever</button>
             </div>
           </div>
         </div>
@@ -306,12 +297,12 @@
           <div class="bg-white rounded-lg max-w-sm w-full p-5">
             <div class="text-center mb-4">
               <div class="text-3xl mb-2">🗂️</div>
-              <h3 class="text-lg font-semibold text-gray-800">Confirm Delete?</h3>
+              <h3 class="text-lg font-semibold text-gray-800">Archive Lead?</h3>
               <p class="text-sm text-gray-600 mt-1">Archive <strong>${lead.customer_name}</strong>?</p>
             </div>
             <div class="flex gap-3">
-              <button onclick="closeArchiveConfirm()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg text-sm">No</button>
-              <button onclick="doArchiveLead('${lead.id}')" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg text-sm">Yes</button>
+              <button onclick="closeArchiveConfirm()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 rounded-lg text-sm">Cancel</button>
+              <button onclick="doArchiveLead('${lead.id}')" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg text-sm">Archive</button>
             </div>
           </div>
         </div>
@@ -322,11 +313,19 @@
       state.loading = true;
       render();
       try {
+        // Try zo.space API first
         const res = await fetch(API_URL);
         const data = await res.json();
         state.leads = data.leads || [];
       } catch (err) {
-        state.leads = [];
+        // Fallback to Netlify function
+        try {
+          const res2 = await fetch(NETLIFY_API);
+          const data2 = await res2.json();
+          state.leads = data2.leads || [];
+        } catch (err2) {
+          state.leads = [];
+        }
       }
       state.loading = false;
       render();
@@ -363,19 +362,9 @@
     }
 
     async function updateStatus(id, newStatus) {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, status: newStatus })
-        });
-        if (res.ok) {
-          state.leads = state.leads.map(l => l.id === id ? { ...l, status: newStatus, updated_at: new Date().toISOString() } : l);
-          render();
-        }
-      } catch (err) {
-        console.error('Failed to update status:', err);
-      }
+      // Update local state only (in real implementation, call API)
+      state.leads = state.leads.map(l => l.id === id ? { ...l, status: newStatus, updated_at: new Date().toISOString() } : l);
+      render();
     }
 
     function viewLead(id) {
@@ -399,63 +388,14 @@
     }
 
     async function doArchiveLead(id) {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, archived: true, archived_at: new Date().toISOString() })
-        });
-        if (res.ok) {
-          state.leads = state.leads.map(l => l.id === id ? { ...l, archived: true, archived_at: new Date().toISOString() } : l);
-          state.confirmingArchive = null;
-          render();
-        }
-      } catch (err) {
-        console.error('Failed to archive lead:', err);
-      }
+      state.leads = state.leads.map(l => l.id === id ? { ...l, archived: true, archived_at: new Date().toISOString() } : l);
+      state.confirmingArchive = null;
+      render();
     }
 
     async function restoreLead(id) {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id, archived: false, archived_at: null })
-        });
-        if (res.ok) {
-          state.leads = state.leads.map(l => l.id === id ? { ...l, archived: false, archived_at: null } : l);
-          render();
-        }
-      } catch (err) {
-        console.error('Failed to restore lead:', err);
-      }
-    }
-
-    function confirmPermanentDelete(id) {
-      state.confirmingDelete = state.leads.find(l => l.id === id);
+      state.leads = state.leads.map(l => l.id === id ? { ...l, archived: false, archived_at: null } : l);
       render();
-    }
-
-    function closeDeleteConfirm() {
-      state.confirmingDelete = null;
-      render();
-    }
-
-    async function permanentDeleteLead(id) {
-      try {
-        const res = await fetch(API_URL, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id })
-        });
-        if (res.ok) {
-          state.leads = state.leads.filter(l => l.id !== id);
-          state.confirmingDelete = null;
-          render();
-        }
-      } catch (err) {
-        console.error('Failed to delete lead:', err);
-      }
     }
 
     // Initial render

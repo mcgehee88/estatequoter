@@ -2,7 +2,6 @@
   command = "npm install"
   publish = "."
   functions = "netlify/functions"
-  environment = { SECRETS_SCAN_ENABLED = "false", SUPABASE_URL = "https://dzqjvsabwijgwbhfjzqq.supabase.co" }
 
 [[redirects]]
   from = "/api/*"
@@ -16,22 +15,16 @@
   status = 200
 
 [[redirects]]
-  from = "/dashboard"
-  to = "/dashboard.html"
-  status = 200
-
-[[redirects]]
   from = "/pro-dashboard"
   to = "/pro-dashboard.html"
   status = 200
 
 [[redirects]]
-  from = "/garage"
-  to = "/garage.html"
+  from = "/pro"
+  to = "/pro.html"
   status = 200
 
-
-
-
-
-
+[[redirects]]
+  from = "/blog/*"
+  to = "/blog/:splat.html"
+  status = 200

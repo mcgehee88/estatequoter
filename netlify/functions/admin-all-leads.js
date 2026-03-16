@@ -1,10 +1,9 @@
-const { createClient } = require('@supabase/supabase-js');
+const { readFile } = require('node:fs/promises');
+const path = require('node:path');
+
+const DATA_FILE = path.join(process.cwd(), 'data', 'leads.json');
 
 exports.handler = async (event) => {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -26,57 +25,19 @@ exports.handler = async (event) => {
   }
 
   try {
-    // Fetch ALL leads (admin view)
-    const { data: leads, error: leadsError } = await supabase
-      .from('leads')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (leadsError) throw leadsError;
-
-    // Fetch all media
-    let mediaMap = {};
-    if (leads && leads.length > 0) {
-      const leadIds = leads.map((l) => l.id);
-      const { data: media, error: mediaError } = await supabase
-        .from('lead_media')
-        .select('*')
-        .in('lead_id', leadIds);
-
-      if (!mediaError && media) {
-        media.forEach((m) => {
-          if (!mediaMap[m.lead_id]) mediaMap[m.lead_id] = [];
-          mediaMap[m.lead_id].push(m);
-        });
-      }
+    // Read leads from JSON file
+    let leads = [];
+    try {
+      const data = await readFile(DATA_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      leads = parsed.leads || [];
+    } catch (e) {
+      // File doesn't exist or is empty - return empty array
+      leads = [];
     }
 
-    // Fetch professional names for leads
-    let proMap = {};
-    const uniqueProIds = [...new Set((leads || [])
-      .map((l) => l.professional_id)
-      .filter((id) => id))];
-
-    if (uniqueProIds.length > 0) {
-      const { data: professionals, error: proError } = await supabase
-        .from('professionals')
-        .select('id, company_name, slug')
-        .in('id', uniqueProIds);
-
-      if (!proError && professionals) {
-        professionals.forEach((p) => {
-          proMap[p.id] = { company_name: p.company_name, slug: p.slug };
-        });
-      }
-    }
-
-    // Enrich leads with media + pro info
-    const enrichedLeads = (leads || []).map((lead) => ({
-      ...lead,
-      media: mediaMap[lead.id] || [],
-      professional: lead.professional_id ? proMap[lead.professional_id] : null,
-      lead_source: lead.professional_id ? 'pro' : 'organic',
-    }));
+    // Sort by date descending
+    leads.sort((a, b) => new Date(b.submitted_at || b.created_at || 0) - new Date(a.submitted_at || a.created_at || 0));
 
     return {
       statusCode: 200,
@@ -86,8 +47,8 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         success: true,
-        leads: enrichedLeads,
-        count: enrichedLeads.length,
+        leads: leads,
+        count: leads.length,
       }),
     };
   } catch (error) {
@@ -99,4 +60,3 @@ exports.handler = async (event) => {
     };
   }
 };
-

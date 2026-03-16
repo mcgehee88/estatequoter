@@ -9,9 +9,5 @@
   "keywords": ["estate", "liquidation", "quotes"],
   "author": "Michael McGehee",
   "license": "All Rights Reserved",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.38.0",
-    "uuid": "^9.0.0",
-    "node-fetch": "^2.7.0"
-  }
+  "dependencies": {}
 }

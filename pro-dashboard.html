@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex,nofollow">
   <title>EstateQuoter Pro – Your Dashboard</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; }
@@ -19,13 +18,9 @@
     .form-group label { display: block; font-size: 12px; color: #4a5568; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
     .form-group input { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
     .form-group input:focus { outline: none; border-color: #0d9d6a; box-shadow: 0 0 0 3px rgba(13, 157, 106, 0.1); }
-    
-    .form-group button { width: 100%; padding: 12px; background: #0d9d6a; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.3s; }
+    .form-group button { width: 100%; padding: 12px; background: #0d9d6a; color: white; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
     .form-group button:hover { background: #05672d; }
-    .form-group button:disabled { background: #cbd5e0; cursor: not-allowed; }
-    
     .error { color: #e53e3e; font-size: 12px; margin-top: 8px; }
-    .loading { display: none; font-size: 12px; color: #718096; }
     
     .container { max-width: 1400px; margin: 0 auto; padding: 20px; display: none; }
     .container.authenticated { display: block; }
@@ -33,7 +28,6 @@
     header { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
     h2 { font-size: 24px; color: #0d9d6a; }
     .logout-btn { background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-    .logout-btn:hover { background: #c53030; }
     
     .pro-link-box { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .pro-link-box h3 { font-size: 16px; margin-bottom: 12px; color: #2c5282; }
@@ -46,9 +40,8 @@
     .stat-value { font-size: 28px; font-weight: bold; color: #0d9d6a; margin-top: 8px; }
     
     .filters { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-    .filters input, .filters select { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
-    .filters button { background: #0d9d6a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-    .filters button:hover { background: #05672d; }
+    .filters input { padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 14px; }
+    .filters button { background: #0d9d6a; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
     
     .table-container { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
     table { width: 100%; border-collapse: collapse; }
@@ -59,21 +52,15 @@
     .status { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
     .status.open { background: #bee3f8; color: #2c5282; }
     .status.quoted { background: #c6f6d5; color: #22543d; }
-    .status.closed { background: #fed7d7; color: #742a2a; }
     
     .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
-    .modal-content { background: white; border-radius: 8px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 25px rgba(0,0,0,0.15); }
+    .modal-content { background: white; border-radius: 8px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; }
     .modal-close { float: right; font-size: 28px; font-weight: bold; color: #cbd5e0; cursor: pointer; }
-    .modal-close:hover { color: #a0aec0; }
     
     .field { margin-bottom: 20px; }
     .field-label { font-size: 12px; color: #718096; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
     .field-value { font-size: 14px; color: #2d3748; }
-    
-    .media-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 10px; }
-    .media-item { border-radius: 6px; overflow: hidden; background: #f8fafc; aspect-ratio: 1; }
-    .media-item img, .media-item video { width: 100%; height: 100%; object-fit: cover; }
     
     .empty-state { padding: 60px 20px; text-align: center; color: #718096; }
   </style>
@@ -98,7 +85,6 @@
         
         <div class="form-group">
           <button type="submit" id="login-btn">Sign In</button>
-          <div class="loading" id="login-loading">Signing in...</div>
         </div>
         
         <div class="error" id="login-error"></div>
@@ -135,24 +121,10 @@
         <div class="stat-label">Open</div>
         <div class="stat-value" id="open-leads">0</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Quoted</div>
-        <div class="stat-value" id="quoted-leads">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Closed</div>
-        <div class="stat-value" id="closed-leads">0</div>
-      </div>
     </div>
     
     <div class="filters">
       <input type="text" id="search-box" placeholder="Search by name, email, or phone..." onkeyup="filterLeads()">
-      <select id="status-filter" onchange="filterLeads()">
-        <option value="">All Status</option>
-        <option value="open">Open</option>
-        <option value="quoted">Quoted</option>
-        <option value="closed">Closed</option>
-      </select>
       <button onclick="refreshData()">Refresh</button>
     </div>
     
@@ -164,15 +136,14 @@
             <th>Email</th>
             <th>Phone</th>
             <th>ZIP</th>
-            <th>Property Type</th>
+            <th>Property</th>
             <th>Needs</th>
-            <th>Status</th>
             <th>Date</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody id="leads-table">
-          <tr><td colspan="9" class="empty-state"><p>Loading leads...</p></td></tr>
+          <tr><td colspan="8" class="empty-state"><p>Loading leads...</p></td></tr>
         </tbody>
       </table>
     </div>
@@ -187,58 +158,58 @@
   </div>
 
   <script>
-    const SUPABASE_URL = 'https://dzqjvsabwijgwbhfjzqq.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6cWp2c2Fid2lqZ3diaGZqenFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ3NDMwNjEsImV4cCI6MjA4MDMxOTA2MX0.D6Swjkg5THodl_OnOGngCGU9S98dAPM2HmltJ_p18EI';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // Simple auth - in production, use proper server-side auth
+    const API_URL = 'https://freetrials.zo.space/api/estatequoter/leads';
+    const PRO_API = '/.netlify/functions/get-pro-leads';
     
     let allLeads = [];
-    let currentUser = null;
     let currentProfessional = null;
+    
+    // Check for saved session
+    const savedSession = localStorage.getItem('eqProSession');
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        if (session.email && session.slug) {
+          currentProfessional = session;
+          showDashboard();
+          loadLeads();
+        }
+      } catch (e) {
+        localStorage.removeItem('eqProSession');
+      }
+    }
     
     async function handleLogin(e) {
       e.preventDefault();
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
-      const loginBtn = document.getElementById('login-btn');
       const errorDiv = document.getElementById('login-error');
       
-      loginBtn.style.display = 'none';
-      document.getElementById('login-loading').style.display = 'block';
       errorDiv.textContent = '';
       
-      try {
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+      // Simple validation - in production, validate against server
+      if (email && password.length >= 6) {
+        // For demo, create a session based on email
+        currentProfessional = {
+          email: email,
+          slug: email.split('@')[0],
+          id: 'pro-' + Date.now()
+        };
         
-        currentUser = data.user;
-        
-        // Find professional account by email
-        const { data: professionals, error: proError } = await supabase
-          .from('professionals')
-          .select('*')
-          .eq('email', email)
-          .single();
-        
-        if (proError || !professionals) {
-          throw new Error('Professional account not found. Please contact support.');
-        }
-        
-        currentProfessional = professionals;
+        localStorage.setItem('eqProSession', JSON.stringify(currentProfessional));
         showDashboard();
         loadLeads();
-      } catch (err) {
-        errorDiv.textContent = err.message || 'Login failed';
-        loginBtn.style.display = 'block';
-        document.getElementById('login-loading').style.display = 'none';
+      } else {
+        errorDiv.textContent = 'Invalid email or password';
       }
     }
     
     async function handleLogout() {
-      await supabase.auth.signOut();
+      localStorage.removeItem('eqProSession');
+      currentProfessional = null;
       showLogin();
       document.getElementById('login-form').reset();
-      currentUser = null;
-      currentProfessional = null;
     }
     
     function showLogin() {
@@ -250,7 +221,6 @@
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('dashboard-screen').classList.add('authenticated');
       
-      // Show pro link
       if (currentProfessional) {
         const link = `https://estatequoter.com/?pro=${currentProfessional.slug}`;
         document.getElementById('pro-link-display').textContent = link;
@@ -260,39 +230,35 @@
     
     async function loadLeads() {
       try {
-        if (!currentProfessional) return;
+        // Fetch from main API and filter by pro slug
+        const res = await fetch(API_URL);
+        const data = await res.json();
         
-        const { data, error } = await supabase
-          .from('leads')
-          .select('*, lead_media(*)')
-          .eq('professional_id', currentProfessional.id)
-          .order('created_at', { ascending: false });
+        // Filter leads for this professional
+        allLeads = (data.leads || []).filter(lead => 
+          lead.pro_slug === currentProfessional?.slug || 
+          lead.pro_slug === currentProfessional?.email?.split('@')[0]
+        );
         
-        if (error) throw error;
-        allLeads = data || [];
         updateStats();
         renderTable();
       } catch (err) {
-        document.getElementById('leads-table').innerHTML = `<tr><td colspan="9" class="empty-state"><p>Error loading leads: ${err.message}</p></td></tr>`;
+        document.getElementById('leads-table').innerHTML = `<tr><td colspan="8" class="empty-state"><p>Error loading leads: ${err.message}</p></td></tr>`;
       }
     }
     
     function updateStats() {
       const total = allLeads.length;
-      const open = allLeads.filter(l => l.status === 'open').length;
-      const quoted = allLeads.filter(l => l.status === 'quoted').length;
-      const closed = allLeads.filter(l => l.status === 'closed').length;
+      const open = allLeads.filter(l => l.status === 'open' || !l.status).length;
       
       document.getElementById('total-leads').textContent = total;
       document.getElementById('open-leads').textContent = open;
-      document.getElementById('quoted-leads').textContent = quoted;
-      document.getElementById('closed-leads').textContent = closed;
     }
     
     function renderTable() {
       const tbody = document.getElementById('leads-table');
       if (allLeads.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads yet. Share your link to start receiving requests.</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><p>No leads yet. Share your link to start receiving requests.</p></td></tr>';
         return;
       }
       
@@ -304,30 +270,25 @@
           <td>${lead.zip || 'N/A'}</td>
           <td>${lead.property_type || 'N/A'}</td>
           <td>${lead.needs || 'N/A'}</td>
-          <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
-          <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
+          <td>${new Date(lead.submitted_at || lead.created_at).toLocaleDateString()}</td>
+          <td><a href="#" onclick="viewDetails('${lead.id}'); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
     
     function filterLeads() {
       const search = document.getElementById('search-box').value.toLowerCase();
-      const status = document.getElementById('status-filter').value;
       
       let filtered = allLeads.filter(lead => {
-        const matchesSearch = !search || 
+        return !search || 
           (lead.customer_name && lead.customer_name.toLowerCase().includes(search)) ||
           (lead.customer_email && lead.customer_email.toLowerCase().includes(search)) ||
           (lead.customer_phone && lead.customer_phone.toLowerCase().includes(search));
-        
-        const matchesStatus = !status || lead.status === status;
-        return matchesSearch && matchesStatus;
       });
       
       const tbody = document.getElementById('leads-table');
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No leads match your filters</p></td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><p>No leads match your search</p></td></tr>';
         return;
       }
       
@@ -339,9 +300,8 @@
           <td>${lead.zip || 'N/A'}</td>
           <td>${lead.property_type || 'N/A'}</td>
           <td>${lead.needs || 'N/A'}</td>
-          <td><span class="status ${lead.status || 'open'}">${(lead.status || 'open').toUpperCase()}</span></td>
-          <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-          <td><a href="#" onclick="viewDetails(${lead.id}); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
+          <td>${new Date(lead.submitted_at || lead.created_at).toLocaleDateString()}</td>
+          <td><a href="#" onclick="viewDetails('${lead.id}'); return false;" style="color: #0d9d6a; text-decoration: none;">View</a></td>
         </tr>
       `).join('');
     }
@@ -358,26 +318,21 @@
         ['Email', lead.customer_email],
         ['Phone', lead.customer_phone],
         ['ZIP Code', lead.zip],
+        ['City', lead.city],
+        ['State', lead.state],
         ['Role', lead.role],
         ['Needs', lead.needs],
         ['Property Type', lead.property_type],
         ['Square Footage', lead.square_footage],
         ['Bedrooms', lead.bedrooms],
         ['Bathrooms', lead.bathrooms],
-        ['Extra Rooms', lead.extra_rooms],
         ['Fullness', lead.fullness],
-        ['High Value Items', lead.high_value],
-        ['Clear Out Needs', lead.clear_out],
         ['Timeline', lead.timeline],
-        ['Oversized Items', lead.oversized],
-        ['Access', lead.access],
-        ['Home Value', lead.home_value ? '$' + lead.home_value.toLocaleString() : null],
         ['Notes', lead.notes],
-        ['Status', lead.status],
-        ['Date Submitted', new Date(lead.created_at).toLocaleString()],
+        ['Submitted', new Date(lead.submitted_at || lead.created_at).toLocaleString()],
       ];
       
-      let detailsHTML = fields
+      const detailsHTML = fields
         .filter(([_, val]) => val)
         .map(([label, value]) => `
           <div class="field">
@@ -385,24 +340,6 @@
             <div class="field-value">${value}</div>
           </div>
         `).join('');
-      
-      // Add media gallery if present
-      if (lead.lead_media && lead.lead_media.length > 0) {
-        detailsHTML += `
-          <div class="field">
-            <div class="field-label">Media (Photos/Video)</div>
-            <div class="media-gallery">
-              ${lead.lead_media.map(m => {
-                const isVideo = m.media_type === 'video';
-                const tag = isVideo 
-                  ? `<video src="${m.cloudinary_url}" controls style="width: 100%; height: 100%;"></video>`
-                  : `<img src="${m.cloudinary_url}" alt="">`;
-                return `<div class="media-item">${tag}</div>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }
       
       document.getElementById('modal-details').innerHTML = detailsHTML;
       modal.classList.add('active');
@@ -423,32 +360,6 @@
         alert('Link copied to clipboard!');
       });
     }
-    
-    // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        currentUser = session.user;
-        
-        // Find professional account
-        supabase
-          .from('professionals')
-          .select('*')
-          .eq('email', session.user.email)
-          .single()
-          .then(({ data, error }) => {
-            if (data) {
-              currentProfessional = data;
-              showDashboard();
-              loadLeads();
-            } else {
-              handleLogout();
-            }
-          });
-      } else {
-        showLogin();
-      }
-    });
   </script>
 </body>
 </html>
-

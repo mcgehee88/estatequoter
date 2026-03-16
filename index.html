@@ -581,6 +581,7 @@
     color:#0f172a;
     font-weight:700;
     cursor:pointer;
+    white-space:nowrap;
   }
 
   /* Pointers on primary interactive elements */
@@ -1112,6 +1113,41 @@
   <div class="btn-row">
     <button id="back-btn">Back</button>
     <button id="main-btn">Next</button>
+  </div>
+</div>
+
+<!-- Location Confirmation Modal -->
+<div class="modal" id="location-modal">
+  <div class="modal-content" style="max-width:420px;">
+    <div style="text-align:center; margin-bottom:16px;">
+      <div style="width:56px; height:56px; background:linear-gradient(135deg,var(--g),#05672d); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto;">
+        <i class="fas fa-location-dot" style="color:#fff; font-size:24px;"></i>
+      </div>
+    </div>
+    <h2 style="color:var(--g); margin-bottom:8px; text-align:center; font-size:22px;">
+      We found you in <span id="detected-city">your area</span>
+    </h2>
+    <p style="font-size:15px; color:#475569; text-align:center; margin:12px 0;">
+      We have estate professionals ready to help with <strong id="detected-zip-display"></strong>.
+    </p>
+    <div style="background:#f0fdf4; border-radius:12px; padding:16px; margin:16px 0;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <i class="fas fa-check-circle" style="color:var(--g);"></i>
+        <span style="font-size:14px; font-weight:600;">Free quotes</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <i class="fas fa-check-circle" style="color:var(--g);"></i>
+        <span style="font-size:14px; font-weight:600;">Local professionals</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-check-circle" style="color:var(--g);"></i>
+        <span style="font-size:14px; font-weight:600;">No pressure</span>
+      </div>
+    </div>
+    <button style="margin-top:8px; width:100%;" onclick="closeLocationModal()">Continue</button>
+    <p style="font-size:12px; color:#94a3b8; text-align:center; margin-top:12px;">
+      Wrong location? <a href="#" onclick="editZip(); return false;" style="color:var(--p);">Change ZIP</a>
+    </p>
   </div>
 </div>
 
@@ -1678,230 +1714,121 @@ function renderReview(data) {
   `).join('');
 }
 
-/* ZIP submit */
-document.getElementById('zip-submit').onclick = () => {
+/* ZIP submit with location confirmation */
+document.getElementById('zip-submit').onclick = async () => {
   const zip = document.getElementById('zip').value.trim();
   if (!/^\d{5}$/.test(zip)) {
     alert('Please enter a valid 5 digit ZIP code.');
     return;
   }
+  
+  // Check for Hampton Roads first
   if (hamptonRoadsZips.has(zip)) {
     document.getElementById('hr-modal').classList.add('active');
+    // Still look up location for HR area
+    const location = await lookupZipCode(zip);
+    if (location) {
+      document.getElementById('city').value = location.city;
+      document.getElementById('state').value = location.state;
+    }
+    // HR modal Continue button will trigger location modal
+    return;
   }
+  
+  // For non-HR ZIPs, look up location and show confirmation
+  const location = await lookupZipCode(zip);
+  if (location) {
+    document.getElementById('city').value = location.city;
+    document.getElementById('state').value = location.state;
+    showLocationModal(zip, location);
+  } else {
+    // If lookup fails, just proceed to form
+    document.getElementById('zip-section').style.display = 'none';
+    document.getElementById('main-form').style.display = 'block';
+    document.body.classList.add('form-active');
+    ctaBar.style.display = 'block';
+    showStep(0, true);
+  }
+};
+
+/* ZIP Code to City/State Lookup */
+async function lookupZipCode(zip) {
+  if (!zip || zip.length !== 5) return null;
+  try {
+    const response = await fetch(`https://api.zippopotam.us/us/${zip}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.places && data.places[0]) {
+        return {
+          city: data.places[0]['place name'],
+          state: data.places[0]['state abbreviation']
+        };
+      }
+    }
+  } catch (e) {
+    console.log('ZIP lookup error:', e);
+  }
+  return null;
+}
+
+/* Auto-lookup when ZIP is entered */
+document.addEventListener('DOMContentLoaded', function() {
+  const zipInput = document.getElementById('zip');
+  if (zipInput) {
+    zipInput.addEventListener('blur', async function() {
+      const zip = this.value.trim();
+      if (zip.length === 5) {
+        const location = await lookupZipCode(zip);
+        if (location) {
+          document.getElementById('city').value = location.city;
+          document.getElementById('state').value = location.state;
+        }
+      }
+    });
+  }
+});
+
+/* Location confirmation modal */
+let pendingZip = null;
+let pendingLocation = null;
+
+function showLocationModal(zip, location) {
+  pendingZip = zip;
+  pendingLocation = location;
+  
+  const citySpan = document.getElementById('detected-city');
+  const zipDisplay = document.getElementById('detected-zip-display');
+  
+  if (citySpan && location) {
+    citySpan.textContent = location.city + ', ' + location.state;
+  } else if (citySpan) {
+    citySpan.textContent = 'your area';
+  }
+  
+  if (zipDisplay) {
+    zipDisplay.textContent = zip;
+  }
+  
+  document.getElementById('location-modal').classList.add('active');
+}
+
+function closeLocationModal() {
+  document.getElementById('location-modal').classList.remove('active');
+  
+  // Now proceed to form
   document.getElementById('zip-section').style.display = 'none';
   document.getElementById('main-form').style.display = 'block';
   document.body.classList.add('form-active');
   ctaBar.style.display = 'block';
-
-  // start intake at step 0 and push first history state
   showStep(0, true);
-};
-
-function closeHRModal() {
-  document.getElementById('hr-modal').classList.remove('active');
-}
-function closeCompleteModal() {
-  document.getElementById('complete-modal').classList.remove('active');
-  document.getElementById('review').style.display = 'block';
-}
-function openContactModal() {
-  document.getElementById('contact-modal').classList.add('active');
-}
-function closeContactModal() {
-  document.getElementById('contact-modal').classList.remove('active');
 }
 
-window.closeHRModal = closeHRModal;
-window.closeCompleteModal = closeCompleteModal;
-window.closeContactModal = closeContactModal;
-
-/* Chips behavior */
-document.querySelectorAll('.chips').forEach(group => {
-  const multi = group.getAttribute('data-multi') === 'true';
-  group.addEventListener('click', e => {
-    const chip = e.target.closest('.chip');
-    if (!chip) return;
-
-    if (multi) {
-      chip.classList.toggle('active');
-
-      const noneValues = ["None", "None of these", "None or not sure"];
-      if (noneValues.includes(chip.dataset.val)) {
-        if (chip.classList.contains('active')) {
-          group.querySelectorAll('.chip').forEach(c => {
-            if (c !== chip) c.classList.remove('active');
-          });
-        }
-      } else {
-        group.querySelectorAll('.chip').forEach(c => {
-          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
-        });
-      }
-    } else {
-      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-    }
-
-    const parentStep = group.parentElement.getAttribute('data-step');
-    if (parentStep === '9') {
-      const otherInput = document.getElementById('access-other');
-      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
-      if (anyOtherActive) {
-        otherInput.style.display = 'block';
-      } else {
-        otherInput.style.display = 'none';
-        otherInput.value = '';
-      }
-    }
-  });
-});
-
-/* Range sliders + editable bubbles */
-function formatRange(slider, bubble) {
-  const val = parseInt(slider.value, 10);
-  const type = bubble.getAttribute('data-type');
-
-  if (type === 'sqft') {
-    bubble.textContent = val.toLocaleString() + ' sq ft';
-  } else if (type === 'value') {
-    bubble.textContent = '$' + val.toLocaleString();
-  } else if (type === 'fullness') {
-    let label = 'Medium';
-    if (val === 1) label = 'Light';
-    if (val === 2) label = 'Medium';
-    if (val === 3) label = 'Full';
-    if (val === 4) label = 'Really full';
-    bubble.textContent = label;
-  }
-
-  const min = parseInt(slider.min, 10);
-  const max = parseInt(slider.max, 10);
-  const percent = (val - min) / (max - min) * 100;
-  bubble.style.left = percent + '%';
+function editZip() {
+  document.getElementById('location-modal').classList.remove('active');
+  // Keep zip-section visible for editing
 }
 
-document.querySelectorAll('.range-wrap').forEach(wrap => {
-  const slider = wrap.querySelector('input[type=range]');
-  const bubble = wrap.querySelector('.range-value');
-  if (!slider || !bubble) return;
-
-  formatRange(slider, bubble);
-  slider.addEventListener('input', () => formatRange(slider, bubble));
-
-  bubble.addEventListener('blur', () => {
-    const raw = bubble.textContent;
-    const digits = raw.replace(/[^\d]/g, '');
-    if (!digits) {
-      formatRange(slider, bubble);
-      return;
-    }
-    let val = parseInt(digits, 10);
-    const min = parseInt(slider.min, 10);
-    const max = parseInt(slider.max, 10);
-    if (val < min) val = min;
-    if (val > max) val = max;
-    slider.value = val;
-    formatRange(slider, bubble);
-  });
-
-  bubble.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      bubble.blur();
-    }
-  });
-});
-
-/* Media upload (photos / video) – limits + consent UI */
-const mediaInput = document.getElementById('media-upload');
-const mediaBox = document.getElementById('media-box');
-const mediaSummary = document.getElementById('media-summary');
-const mediaGrid = document.getElementById('media-preview-grid');
-const tcLabel = document.getElementById('tc-label');
-const tcCheck = document.getElementById('tc-check');
-
-if (mediaInput) {
-  mediaInput.addEventListener('change', e => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length) {
-      mediaBox.classList.remove('ready');
-      mediaSummary.textContent = "No photos or video added yet.";
-      mediaGrid.innerHTML = "";
-      tcLabel.classList.remove('required');
-      tcLabel.style.display = 'none';
-      tcCheck.checked = false;
-      return;
-    }
-
-    if (files.length > MAX_MEDIA_FILES) {
-      alert(`Please limit uploads to ${MAX_MEDIA_FILES} files so everything stays fast and reliable.`);
-      e.target.value = '';
-      mediaBox.classList.remove('ready');
-      mediaSummary.textContent = "No photos or video added yet.";
-      mediaGrid.innerHTML = "";
-      tcLabel.classList.remove('required');
-      tcLabel.style.display = 'none';
-      tcCheck.checked = false;
-      return;
-    }
-
-    for (const file of files) {
-      if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) {
-        alert('Please only upload photos or video files.');
-        e.target.value = '';
-        mediaBox.classList.remove('ready');
-        mediaSummary.textContent = "No photos or video added yet.";
-        mediaGrid.innerHTML = "";
-        tcLabel.classList.remove('required');
-        tcLabel.style.display = 'none';
-        tcCheck.checked = false;
-        return;
-      }
-      const maxBytes = MAX_MEDIA_MB_PER_FILE * 1024 * 1024;
-      if (file.size > maxBytes) {
-        alert(`Each file should be under ${MAX_MEDIA_MB_PER_FILE} MB so uploads stay smooth on most phones.`);
-        e.target.value = '';
-        mediaBox.classList.remove('ready');
-        mediaSummary.textContent = "No photos or video added yet.";
-        mediaGrid.innerHTML = "";
-        tcLabel.classList.remove('required');
-        tcLabel.style.display = 'none';
-        tcCheck.checked = false;
-        return;
-      }
-    }
-
-    // At this point: valid media list
-    mediaBox.classList.add('ready');
-    const imageFiles = files.filter(f => f.type.startsWith('image/'));
-    const videoFiles = files.filter(f => f.type.startsWith('video/'));
-
-    const parts = [];
-    if (imageFiles.length) parts.push(`${imageFiles.length} photo${imageFiles.length === 1 ? '' : 's'}`);
-    if (videoFiles.length) parts.push(`${videoFiles.length} video${videoFiles.length === 1 ? '' : 's'}`);
-
-    mediaSummary.textContent = parts.join(' and ');
-
-    mediaGrid.innerHTML = "";
-    imageFiles.slice(0, 8).forEach(file => {
-      const url = URL.createObjectURL(file);
-      const img = document.createElement('img');
-      img.className = 'media-thumb';
-      img.src = url;
-      mediaGrid.appendChild(img);
-    });
-    if (videoFiles.length) {
-      const pill = document.createElement('div');
-      pill.className = 'media-pill';
-      pill.textContent = `${videoFiles.length} video${videoFiles.length === 1 ? '' : 's'} added`;
-      mediaGrid.appendChild(pill);
-    }
-
-    tcLabel.classList.add('required');
-    tcLabel.style.display = 'block';
-    tcCheck.checked = false;
-  });
-}
+window.closeLocationModal = closeLocationModal;
 
 /* Navigation buttons (Next / Back) */
 mainBtn.onclick = () => {
@@ -1917,7 +1844,94 @@ mainBtn.onclick = () => {
       console.warn('Unable to store last lead', e);
     }
 
-    sendLeadToMake(data);
+    /* Send lead to backend - uses Netlify function for optimal data consistency */
+    /* Send to Make.com AND zo.space API – JSON only, no file upload */
+    async function sendLeadToMake(leadData) {
+      const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
+      const apiURL = "https://freetrials.zo.space/api/estatequoter/leads";
+
+      // Track how many leads this browser has sent
+      let leadCount = 0;
+      try {
+        leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
+      } catch (e) {
+        leadCount = 0;
+      }
+      leadCount += 1;
+
+      // Save back to localStorage
+      try {
+        localStorage.setItem('eqLeadCount', String(leadCount));
+      } catch (e) {
+        console.warn("Unable to store lead count", e);
+      }
+
+      // Build payload for APIs
+      const payload = {
+        lead_number: leadCount,
+        zip: leadData.zip || '',
+        city: leadData.city || '',
+        state: leadData.state || '',
+        customer_name: leadData.name || '',
+        customer_email: leadData.email || '',
+        customer_phone: leadData.phone || '',
+        role: leadData.role || '',
+        role_other: leadData.roleOther || '',
+        needs: leadData.needs || '',
+        needs_other: leadData.needsOther || '',
+        property_type: leadData.propertyType || 'Not specified',
+        bedrooms: leadData.bedrooms,
+        bathrooms: leadData.bathrooms,
+        square_footage: leadData.squareFootage || null,
+        fullness: leadData.fullness || '',
+        clear_out: leadData.clearOut || '',
+        timeline: leadData.timeline || '',
+        high_value: leadData.highValue || '',
+        high_value_other: leadData.highValueOther || '',
+        oversized: leadData.oversized || '',
+        oversized_other: leadData.oversizedOther || '',
+        extra_rooms: leadData.extraRooms || '',
+        extra_rooms_other: leadData.extraRoomsOther || '',
+        access: leadData.access || '',
+        access_other: leadData.accessOther || '',
+        home_value: leadData.homeValue ? parseInt(leadData.homeValue, 10) : null,
+        notes: leadData.notes,
+        device: leadData.device || '',
+        referrer: leadData.referrer || '',
+        page_url: leadData.pageUrl || '',
+        pro_slug: leadData.proSlug || '',
+        submitted_at: new Date().toISOString()
+      };
+
+      // Fire both requests in parallel
+      const promises = [];
+
+      // Make.com webhook
+      promises.push(
+        fetch(webhookURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(err => console.log('Make webhook error (non-critical):', err))
+      );
+
+      // zo.space API
+      promises.push(
+        fetch(apiURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(err => console.log('API error (non-critical):', err))
+      );
+
+      try {
+        await Promise.all(promises);
+        console.log('Lead submitted successfully');
+      } catch (err) {
+        console.error('Lead submission error:', err);
+      }
+    }
+
     renderReview(data);
     document.getElementById('main-form').style.display = 'none';
     ctaBar.style.display = 'none';
@@ -1980,94 +1994,6 @@ window.addEventListener('popstate', (event) => {
     window.scrollTo(0,0);
   }
 });
-
-/* Send to Make.com AND zo.space API – JSON only, no file upload */
-async function sendLeadToMake(leadData) {
-  const webhookURL = "https://hook.us2.make.com/yp7lklk38381i0lubdj2v02v1v4es9s3";
-  const apiURL = "https://freetrials.zo.space/api/estatequoter/leads";
-
-  // Track how many leads this browser has sent
-  let leadCount = 0;
-  try {
-    leadCount = parseInt(localStorage.getItem('eqLeadCount') || '0', 10);
-  } catch (e) {
-    leadCount = 0;
-  }
-  leadCount += 1;
-
-  // Save back to localStorage
-  try {
-    localStorage.setItem('eqLeadCount', String(leadCount));
-  } catch (e) {
-    console.warn("Unable to store lead count", e);
-  }
-
-  // Give this lead an ID + timestamp so we can manage it later
-  const leadId = "EQ-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
-  leadData.leadId = leadId;
-  leadData.createdAt = new Date().toISOString();
-  leadData.leadNumber = leadCount;
-  leadData.submittedFrom = window.location.href;
-
-  // Map form data to API format for zo.space
-  const apiPayload = {
-    id: leadId,
-    customer_name: leadData.name || '',
-    customer_email: leadData.email || '',
-    customer_phone: leadData.phone || '',
-    zip: leadData.zip || '',
-    city: leadData.city || '',
-    region: leadData.region || '',
-    country: leadData.country || '',
-    property_type: leadData.propertyType || 'Not specified',
-    bedrooms: leadData.bedrooms,
-    bathrooms: leadData.bathrooms,
-    square_footage: leadData.squareFootage || '',
-    fullness: leadData.fullness || '',
-    clear_out: leadData.clearOut || '',
-    timeline: leadData.timeline || '',
-    role: leadData.role || '',
-    needs: leadData.needs || '',
-    high_value: leadData.highValue || '',
-    oversized: leadData.oversized || '',
-    extra_rooms: leadData.extraRooms || '',
-    has_media: leadData.hasMedia || false,
-    media_count: leadData.mediaCount || 0,
-    media_urls: (window.cloudinaryFiles || []).map(f => f.secure_url).join(', '),
-    home_value: leadData.homeValue,
-    notes: leadData.notes,
-    device: leadData.device || '',
-    user_agent: leadData.userAgent || '',
-    ip: leadData.ip || '',
-    referrer: leadData.referrer || '',
-    page_url: leadData.pageUrl || '',
-    status: 'open',
-    submitted_at: new Date().toISOString()
-  };
-
-  // Save to localStorage backup (in case both fail)
-  try {
-    const existingLeads = JSON.parse(localStorage.getItem('eqAllLeads') || '[]');
-    existingLeads.push(leadData);
-    localStorage.setItem('eqAllLeads', JSON.stringify(existingLeads));
-  } catch (e) {
-    console.warn('Unable to save to localStorage', e);
-  }
-
-  // Send to Make.com (fire and forget)
-  fetch(webhookURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(leadData)
-  }).catch(err => console.warn("Make.com webhook failed (non-blocking):", err));
-
-  // Send to zo.space API (also fire and forget - don't block UX)
-  fetch(apiURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(apiPayload)
-  }).catch(err => console.warn("zo.space API failed (non-blocking):", err));
-}
 
 /* Collect all form data into a single object */
 function collectData() {
@@ -2631,6 +2557,7 @@ function deleteLead(leadId) {
         document.getElementById('cta-bar').style.display = 'none';
         document.getElementById('review').style.display = 'block';
         document.body.classList.add('form-active');
+        showStep(0, true);
         manageModal.classList.remove('active');
         history.pushState({ eqStep: 'review' }, "", "#review");
         window.scrollTo(0, 0);
@@ -2701,57 +2628,6 @@ function deleteLead(leadId) {
   }  
 });
 </script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Read ?pro=todd or ?pro=todd-osborne, etc.
-  const params = new URLSearchParams(window.location.search);
-  const rawPro = params.get('pro');
-  if (!rawPro) return;
-
-  const slug = rawPro.trim();
-  if (!slug) return;
-
-  // Push into hidden input so it goes to Make.com
-  const proInput = document.getElementById('proSlug');
-  if (proInput) {
-    proInput.value = slug;
-  }
-
-  // Optional: body tag hook for future styling
-  document.body.classList.add('pro-mode');
-
-  // Simple mapping so copy looks human, not like "todd-osborne-va"
-  const PRO_CONFIG = {
-    "todd": {
-      displayName: "Todd Osborne",
-      heroH1: "Get an estate quote<br><span>from Todd.</span>",
-      heroSub: "You are filling this out for <strong>Todd Osborne</strong>. Answer a few quick questions so he can review the property and send a clear, no-pressure quote."
-    }
-    // You can add more later:
-    // "acme-estates": { displayName: "Acme Estate Services", heroH1: "...", heroSub: "..." }
-  };
-
-  // Resolve config or fall back to generic
-  const proCfg = PRO_CONFIG[slug.toLowerCase()] || {
-    displayName: slug,
-    heroH1: "Get an estate quote<br><span>from your local pro.</span>",
-    heroSub: "You are filling this out for <strong>" + slug + "</strong>. Answer a few quick questions so they can review the property and send a clear, no-pressure quote."
-  };
-
-  // Update hero heading + sub copy
-  const heroH1 = document.querySelector('.page h1');
-  if (heroH1) {
-    heroH1.innerHTML = proCfg.heroH1;
-  }
-
-  const heroSub = document.querySelector('.page .sub');
-  if (heroSub) {
-    heroSub.innerHTML = proCfg.heroSub;
-  }
-});
-</script>
-
 
 <script>
 // Cloudinary media upload + consent handling (desktop + mobile)
@@ -2886,48 +2762,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-</body>
-</html>
-
-<script>
-/* ZIP Code to City/State Lookup */
-async function lookupZipCode(zip) {
-  if (!zip || zip.length !== 5) return null;
-  try {
-    const response = await fetch(`https://api.zippopotam.us/us/${zip}`);
-    if (response.ok) {
-      const data = await response.json();
-      if (data.places && data.places[0]) {
-        return {
-          city: data.places[0]['place name'],
-          state: data.places[0]['state abbreviation']
-        };
-      }
-    }
-  } catch (e) {
-    console.log('ZIP lookup error:', e);
-  }
-  return null;
-}
-
-/* Auto-lookup when ZIP is entered */
-document.addEventListener('DOMContentLoaded', function() {
-  const zipInput = document.getElementById('zip');
-  if (zipInput) {
-    zipInput.addEventListener('blur', async function() {
-      const zip = this.value.trim();
-      if (zip.length === 5) {
-        const location = await lookupZipCode(zip);
-        if (location) {
-          document.getElementById('city').value = location.city;
-          document.getElementById('state').value = location.state;
-        }
-      }
-    });
-  }
-});
-</script>
-
 <script>
 /* Jump to specific step for editing from review */
 function jumpToStep(stepIndex) {
@@ -2938,4 +2772,27 @@ function jumpToStep(stepIndex) {
   showStep(stepIndex, true);
   window.scrollTo(0, 0);
 }
+</script>
+
+<script>
+function closeHRModal() {
+  document.getElementById('hr-modal').classList.remove('active');
+  // Show location confirmation for HR area too
+  const zip = document.getElementById('zip').value.trim();
+  const city = document.getElementById('city').value;
+  const state = document.getElementById('state').value;
+  if (zip && city && state) {
+    showLocationModal(zip, { city, state });
+  } else {
+    // Fallback: proceed directly to form
+    document.getElementById('zip-section').style.display = 'none';
+    document.getElementById('main-form').style.display = 'block';
+    document.body.classList.add('form-active');
+    ctaBar.style.display = 'block';
+    showStep(0, true);
+  }
+}
+
+window.closeHRModal = closeHRModal;
+window.closeLocationModal = closeLocationModal;
 </script>

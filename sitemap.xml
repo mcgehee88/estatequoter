@@ -6,22 +6,22 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/pro.html</loc>
+    <loc>https://estatequoter.com/pro</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/our-team.html</loc>
+    <loc>https://estatequoter.com/our-team</loc>
     <changefreq>yearly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/privacy.html</loc>
+    <loc>https://estatequoter.com/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/terms.html</loc>
+    <loc>https://estatequoter.com/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,30 +31,28 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/blog/how-to-liquidate-estate.html</loc>
+    <loc>https://estatequoter.com/blog/how-to-liquidate-estate</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/blog/estate-sale-vs-liquidation.html</loc>
+    <loc>https://estatequoter.com/blog/estate-sale-vs-liquidation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/blog/estate-cleanout-cost.html</loc>
+    <loc>https://estatequoter.com/blog/estate-cleanout-cost</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/blog/executor-checklist.html</loc>
+    <loc>https://estatequoter.com/blog/executor-checklist</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://estatequoter.com/blog/downsizing-parents-guide.html</loc>
+    <loc>https://estatequoter.com/blog/downsizing-parents-guide</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 </urlset>
-
-

@@ -1,21 +1,11 @@
-const { createClient } = require('@supabase/supabase-js');
+const { readFile, writeFile, mkdir } = require('node:fs/promises');
+const path = require('node:path');
+const crypto = require('node:crypto');
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const DATA_FILE = path.join(DATA_DIR, 'leads.json');
 
 exports.handler = async (event) => {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY;
-  
-  // Validate env vars
-  if (!supabaseUrl || !supabaseKey) {
-    console.error('Missing Supabase credentials:', { url: !!supabaseUrl, key: !!supabaseKey });
-    return {
-      statusCode: 500,
-      headers: { 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Missing Supabase configuration' }),
-    };
-  }
-  
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -29,7 +19,11 @@ exports.handler = async (event) => {
   }
 
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
+    return {
+      statusCode: 405,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
+    };
   }
 
   try {
@@ -47,92 +41,39 @@ exports.handler = async (event) => {
       }
     }
 
-    // Step 1: Look up professional by slug if pro param provided
-    let professionalId = null;
-    if (body.pro_slug) {
-      const { data: professional, error: proError } = await supabase
-        .from('professionals')
-        .select('id')
-        .eq('slug', body.pro_slug.toLowerCase().trim())
-        .single();
-
-      if (professional) {
-        professionalId = professional.id;
-      }
-      // If slug not found, continue anyway (lead still created, just unrouted)
+    // Ensure data directory exists
+    try {
+      await mkdir(DATA_DIR, { recursive: true });
+    } catch (e) {
+      // Directory already exists or error
     }
 
-    // Step 2: Create lead record with ONLY valid database columns
-    // Filter to only include columns that exist in leads table
-    const validColumns = [
-      'customer_name', 'customer_email', 'customer_phone', 'zip', 'city', 'postal',
-      'latitude', 'longitude', 'country', 'region', 'property_type', 'bedrooms',
-      'bathrooms', 'square_footage', 'fullness', 'clear_out', 'access', 'timeline',
-      'role', 'needs', 'high_value', 'oversized', 'extra_rooms', 'has_media',
-      'media_count', 'notes', 'device', 'user_agent', 'ip', 'isp', 'likes_vpn',
-      'referrer', 'page_url', 'secure_url', 'professional_id'
-    ];
-    
-    const leadData = {};
-    validColumns.forEach(col => {
-      if (body[col] !== undefined) {
-        leadData[col] = body[col];
-      }
-    });
-    
-    // Ensure required defaults
-    leadData.property_type = leadData.property_type || 'Not specified';
-
-    const { data: lead, error: dbError } = await supabase
-      .from('leads')
-      .insert([leadData])
-      .select()
-      .single();
-
-    if (dbError) {
-      console.error('DB error details:', {
-        message: dbError.message,
-        code: dbError.code,
-        hint: dbError.hint,
-        details: dbError.details
-      });
-      return {
-        statusCode: 500,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: 'Failed to save lead', details: dbError.message }),
-      };
+    // Read existing leads
+    let leads = [];
+    try {
+      const data = await readFile(DATA_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      leads = parsed.leads || [];
+    } catch (e) {
+      // File doesn't exist yet
+      leads = [];
     }
 
-    // Step 3: Save media records if provided
-    if (body.media && Array.isArray(body.media) && body.media.length > 0) {
-      const mediaRecords = body.media.map((m) => ({
-        lead_id: lead.id,
-        cloudinary_url: m.secure_url || m.url,
-        cloudinary_public_id: m.public_id,
-        media_type: m.resource_type === 'video' ? 'video' : 'image',
-      }));
+    // Create new lead
+    const newLead = {
+      id: crypto.randomUUID(),
+      ...body,
+      status: 'open',
+      archived: false,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
 
-      const { error: mediaError } = await supabase
-        .from('lead_media')
-        .insert(mediaRecords);
+    // Add to leads array
+    leads.push(newLead);
 
-      if (mediaError) {
-        console.error('Media save error:', mediaError);
-        // Don't fail the lead submission if media fails
-      }
-    }
-
-    // Step 4: Log activity
-    await supabase.from('activity_log').insert({
-      entity_type: 'lead',
-      entity_id: lead.id,
-      action: 'created',
-      details: {
-        professional_id: professionalId,
-        pro_slug: body.pro_slug,
-        has_media: body.has_media,
-      },
-    });
+    // Write back to file
+    await writeFile(DATA_FILE, JSON.stringify({ leads }, null, 2));
 
     return {
       statusCode: 201,
@@ -142,8 +83,7 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         success: true,
-        lead_id: lead.id,
-        professional_id: professionalId,
+        lead_id: newLead.id,
         message: 'Lead submitted successfully',
       }),
     };
@@ -156,11 +96,3 @@ exports.handler = async (event) => {
     };
   }
 };
-
-
-
-
-
-
-
-

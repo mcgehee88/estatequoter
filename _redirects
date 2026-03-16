@@ -1,2 +1,21 @@
-/virginia-beach-estate-liquidation    /index.html    200
-/admin    /admin.html    200
+# Clean URL redirects for EstateQuoter
+# Format: from-path    to-path    status-code
+
+# Main pages
+/pro                /pro.html               200
+/our-team           /our-team.html          200
+/privacy            /privacy.html           200
+/terms              /terms.html             200
+/admin              /admin.html             200
+/pro-dashboard      /pro-dashboard.html     200
+/garage             /garage.html            200
+
+# Blog posts
+/blog/how-to-liquidate-estate       /blog/how-to-liquidate-estate.html      200
+/blog/estate-sale-vs-liquidation    /blog/estate-sale-vs-liquidation.html   200
+/blog/estate-cleanout-cost          /blog/estate-cleanout-cost.html         200
+/blog/executor-checklist            /blog/executor-checklist.html           200
+/blog/downsizing-parents-guide     /blog/downsizing-parents-guide.html     200
+
+# Legacy Virginia Beach redirect
+/virginia-beach-estate-liquidation  /index.html    301

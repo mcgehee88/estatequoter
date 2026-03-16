@@ -1,10 +1,11 @@
-const { createClient } = require('@supabase/supabase-js');
+const { readFile, writeFile, mkdir } = require('node:fs/promises');
+const path = require('node:path');
+const crypto = require('node:crypto');
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const PROS_FILE = path.join(DATA_DIR, 'professionals.json');
 
 exports.handler = async (event) => {
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_SECRET_KEY;
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -18,7 +19,11 @@ exports.handler = async (event) => {
   }
 
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) };
+    return {
+      statusCode: 405,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: JSON.stringify({ error: 'Method Not Allowed' }),
+    };
   }
 
   try {
@@ -36,7 +41,7 @@ exports.handler = async (event) => {
       }
     }
 
-    // Validate slug format (alphanumeric + dashes, lowercase)
+    // Validate slug format
     const slug = body.slug.toLowerCase().trim();
     if (!/^[a-z0-9-]+$/.test(slug)) {
       return {
@@ -48,13 +53,25 @@ exports.handler = async (event) => {
       };
     }
 
-    // Check if slug already exists
-    const { data: existing, error: checkError } = await supabase
-      .from('professionals')
-      .select('id')
-      .eq('slug', slug)
-      .single();
+    // Ensure data directory exists
+    try {
+      await mkdir(DATA_DIR, { recursive: true });
+    } catch (e) {
+      // Directory already exists
+    }
 
+    // Read existing professionals
+    let professionals = [];
+    try {
+      const data = await readFile(PROS_FILE, 'utf8');
+      const parsed = JSON.parse(data);
+      professionals = parsed.professionals || [];
+    } catch (e) {
+      professionals = [];
+    }
+
+    // Check if slug already exists
+    const existing = professionals.find(p => p.slug === slug);
     if (existing) {
       return {
         statusCode: 409,
@@ -65,44 +82,24 @@ exports.handler = async (event) => {
       };
     }
 
-    // Create professional record
-    const { data: professional, error: createError } = await supabase
-      .from('professionals')
-      .insert({
-        slug: slug,
-        company_name: body.company,
-        contact_name: body.contactName,
-        email: body.email,
-        phone: body.phone,
-        service_area: body.serviceArea,
-        status: 'active',
-      })
-      .select()
-      .single();
+    // Create new professional
+    const newPro = {
+      id: crypto.randomUUID(),
+      slug: slug,
+      company_name: body.company,
+      contact_name: body.contactName,
+      email: body.email,
+      phone: body.phone,
+      service_area: body.serviceArea,
+      status: 'active',
+      created_at: new Date().toISOString(),
+    };
 
-    if (createError) {
-      console.error('DB error:', createError);
-      return {
-        statusCode: 500,
-        headers: { 'Access-Control-Allow-Origin': '*' },
-        body: JSON.stringify({ error: 'Failed to create professional account' }),
-      };
-    }
+    professionals.push(newPro);
+    await writeFile(PROS_FILE, JSON.stringify({ professionals }, null, 2));
 
     // Generate pro link
     const proLink = `https://estatequoter.com/?pro=${slug}`;
-
-    // Log to activity
-    await supabase.from('activity_log').insert({
-      entity_type: 'professional',
-      entity_id: professional.id,
-      action: 'registered',
-      details: {
-        company: body.company,
-        email: body.email,
-        slug: slug,
-      },
-    });
 
     return {
       statusCode: 201,
@@ -112,10 +109,10 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         success: true,
-        professional_id: professional.id,
+        professional_id: newPro.id,
         slug: slug,
         link: proLink,
-        message: `Your EstateQuoter Pro link is ready to share!`,
+        message: 'Your EstateQuoter Pro link is ready to share!',
       }),
     };
   } catch (error) {
@@ -127,4 +124,3 @@ exports.handler = async (event) => {
     };
   }
 };
-
