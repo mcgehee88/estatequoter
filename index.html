@@ -2848,42 +2848,6 @@ window.editZip = editZip;
 window.closeLocationModal = closeLocationModal;
 
 /* Chips behavior - makes chips clickable */
-document.querySelectorAll('.chips').forEach(group => {
-  const multi = group.getAttribute('data-multi') === 'true';
-  group.addEventListener('click', e => {
-    const chip = e.target.closest('.chip');
-    if (!chip) return;
-
-    if (multi) {
-      chip.classList.toggle('active');
-
-      const noneValues = ["None", "None of these", "None or not sure"];
-      if (noneValues.includes(chip.dataset.val)) {
-        if (chip.classList.contains('active')) {
-          group.querySelectorAll('.chip').forEach(c => {
-            if (c !== chip) c.classList.remove('active');
-          });
-        }
-      } else {
-        group.querySelectorAll('.chip').forEach(c => {
-          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
-        });
-      }
-    } else {
-      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-    }
-
-    const parentStep = chip.closest('.q');
-    if (parentStep && parentStep.getAttribute('data-step') === '9') {
-      const otherInput = document.getElementById('access-other');
-      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
-      if (anyOtherActive) {
-        otherInput.style.display = 'block';
-      } else {
-        otherInput.style.display = 'none';
-        otherInput.value = '';
-      }
     }
   });
 });
