@@ -841,7 +841,7 @@
     <div class="encourager" id="step-helper">You are on your way. This only takes a minute.</div>
 
     <!-- 0. Your role (multi) -->
-    <div class="q active" data-required="true">
+    <div class="q active" data-step="0" data-required="true">
       <label>Your role in this process</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Child or family member helping">Child or family member helping</div>
@@ -856,7 +856,7 @@
     </div>
 
     <!-- 1. What you need (multi) -->
-    <div class="q" data-required="true">
+    <div class="q" data-step="1" data-required="true">
       <label>What do you need help with most?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Full estate sale / tag sale">Full estate sale / tag sale</div>
@@ -871,7 +871,7 @@
  
 
     <!-- 2. Property Type (single) -->
-    <div class="q" data-step="0" data-required="true">
+    <div class="q" data-step="2" data-required="true">
       <label>What type of property is it?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="House">House</div>
@@ -883,7 +883,7 @@
     </div>
 
     <!-- 3. Square Footage -->
-    <div class="q" data-step="1" data-required="true">
+    <div class="q" data-step="3" data-required="true">
       <label>Square footage (estimate is fine)</label>
       <div class="range-wrap">
         <input type="range" id="sqft-range" min="400" max="6000" step="100" value="2500">
@@ -893,7 +893,7 @@
     </div>
 
     <!-- 4. Beds & Baths -->
-    <div class="q" data-step="2" data-required="true">
+    <div class="q" data-step="4" data-required="true">
       <label>Bedrooms</label>
       <select id="beds">
         <option value="">Select</option>
@@ -907,7 +907,7 @@
     </div>
 
     <!-- 5. Extra Rooms -->
-    <div class="q" data-step="3" data-required="true">
+    <div class="q" data-step="5" data-required="true">
       <label>Any of these spaces?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Attic">Attic</div>
@@ -921,7 +921,7 @@
     </div>
 
     <!-- 6. Fullness Level -->
-    <div class="q" data-step="4" data-required="true">
+    <div class="q" data-step="6" data-required="true">
       <label>How full is the property?</label>
       <div class="range-wrap">
         <input type="range" id="fullness-range" min="1" max="4" value="2">
@@ -933,7 +933,7 @@
     </div>
 
     <!-- 7. High-Value Items -->
-    <div class="q" data-step="5" data-required="true">
+    <div class="q" data-step="7" data-required="true">
       <label>Any high value or specialty items?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Antiques">Antiques</div>
@@ -948,7 +948,7 @@
     </div>
 
     <!-- 8. Clear-out Needs (single) -->
-    <div class="q" data-step="6" data-required="true">
+    <div class="q" data-step="8" data-required="true">
       <label>Do you want it cleared & cleaned?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="no clear-out">No Thanks</div>
@@ -960,7 +960,7 @@
     </div>
 
     <!-- 9. Timeline (single) -->
-    <div class="q" data-step="7" data-required="true">
+    <div class="q" data-step="9" data-required="true">
       <label>How urgent is the timeline?</label>
       <div class="chips" data-multi="false">
         <div class="chip active" data-val="Flexible (30-90 days)">Flexible (about 30-90 days)</div>
@@ -971,7 +971,7 @@
     </div>
 
     <!-- 10. Oversized / Hazardous -->
-    <div class="q" data-step="8" data-required="true">
+    <div class="q" data-step="10" data-required="true">
       <label>Oversized or difficult items?</label>
       <div class="chips" data-multi="true">
         <div class="chip" data-val="Grand piano">Grand piano</div>
@@ -984,7 +984,7 @@
     </div>
 
     <!-- 11. Access Difficulty (multi + other) -->
-    <div class="q" data-step="9" data-required="true">
+    <div class="q" data-step="11" data-required="true">
       <label>How easy is access for trucks and crews?</label>
       <div class="chips" data-multi="true">
         <div class="chip active" data-val="Easy ground-level access">Easy ground level access</div>
@@ -998,7 +998,7 @@
     </div>
 
       <!-- 12. Optional media – CLOUDINARY (FREE & WORKING) -->
-  <div class="q" data-step="10" data-required="false">
+  <div class="q" data-step="12" data-required="false">
     <label>Optional photos or a quick video</label>
     <p class="helper">This is optional but helps liquidators give the most accurate quote. You can add up to 20 photos and/or a short video.</p>
     
@@ -1022,7 +1022,7 @@
   </div>
 
     <!-- 13. Estimated Home Value -->
-    <div class="q" data-step="11" data-required="true">
+    <div class="q" data-step="13" data-required="true">
       <label>Estimated current home value (as-is, ballpark is fine)</label>
       <div class="range-wrap">
         <input type="range" id="value-range" min="50000" max="1500000" step="25000" value="400000">
@@ -1032,7 +1032,7 @@
     </div>
 
     <!-- 14. Contact Info (final step) -->
-    <div class="q" data-step="12" data-required="true">
+    <div class="q" data-step="14" data-required="true">
       <label>Your name</label>
       <input type="text" id="name" placeholder="First and last name" required maxlength="120">
       <label style="margin-top:16px">Email</label>
@@ -1127,7 +1127,7 @@
     <h2 style="color:var(--g); margin-bottom:8px; text-align:center; font-size:22px;">
       We found you in <span id="detected-city">your area</span>
     </h2>
-    <p style="font-size:15px; color:#475569; text-align:center; margin:12px 0;">
+    <p style="font-size:15px; margin:12px 0; color:#64748b; text-align:center;">
       We have estate professionals ready to help with <strong id="detected-zip-display"></strong>.
     </p>
     <div style="background:#f0fdf4; border-radius:12px; padding:16px; margin:16px 0;">
@@ -1828,7 +1828,50 @@ function editZip() {
   // Keep zip-section visible for editing
 }
 
+window.editZip = editZip;
 window.closeLocationModal = closeLocationModal;
+
+/* Chips behavior - makes chips clickable */
+document.querySelectorAll('.chips').forEach(group => {
+  const multi = group.getAttribute('data-multi') === 'true';
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+
+    if (multi) {
+      chip.classList.toggle('active');
+
+      const noneValues = ["None", "None of these", "None or not sure"];
+      if (noneValues.includes(chip.dataset.val)) {
+        if (chip.classList.contains('active')) {
+          group.querySelectorAll('.chip').forEach(c => {
+            if (c !== chip) c.classList.remove('active');
+          });
+        }
+      } else {
+        group.querySelectorAll('.chip').forEach(c => {
+          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
+        });
+      }
+    } else {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
+    const parentStep = chip.closest('.q');
+    if (parentStep && parentStep.getAttribute('data-step') === '9') {
+      const otherInput = document.getElementById('access-other');
+      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
+      if (anyOtherActive) {
+        otherInput.style.display = 'block';
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.value = '';
+      }
+    }
+  });
+});
+
 
 /* Navigation buttons (Next / Back) */
 mainBtn.onclick = () => {
@@ -2319,10 +2362,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalLeads = 0;
     try {
       const raw = localStorage.getItem('eqAllLeads');
-      if (raw) {
-        const arr = JSON.parse(raw) || [];
-        totalLeads = arr.length;
-      }
+      if (!raw) return;
+      const arr = JSON.parse(raw) || [];
+      // make sure each has an ID
+      arr.forEach((lead, idx) => {
+        if (!lead.leadId) {
+          lead.leadId = 'EQ-legacy-' + idx + '-' + (lead.createdAt || '');
+        }
+      });
+      // write back any added IDs
+      localStorage.setItem('eqAllLeads', JSON.stringify(arr));
+      totalLeads = arr.length;
     } catch (e) {
       totalLeads = 0;
     }
@@ -2794,5 +2844,48 @@ function closeHRModal() {
 }
 
 window.closeHRModal = closeHRModal;
+window.editZip = editZip;
 window.closeLocationModal = closeLocationModal;
+
+/* Chips behavior - makes chips clickable */
+document.querySelectorAll('.chips').forEach(group => {
+  const multi = group.getAttribute('data-multi') === 'true';
+  group.addEventListener('click', e => {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+
+    if (multi) {
+      chip.classList.toggle('active');
+
+      const noneValues = ["None", "None of these", "None or not sure"];
+      if (noneValues.includes(chip.dataset.val)) {
+        if (chip.classList.contains('active')) {
+          group.querySelectorAll('.chip').forEach(c => {
+            if (c !== chip) c.classList.remove('active');
+          });
+        }
+      } else {
+        group.querySelectorAll('.chip').forEach(c => {
+          if (noneValues.includes(c.dataset.val)) c.classList.remove('active');
+        });
+      }
+    } else {
+      group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    }
+
+    const parentStep = chip.closest('.q');
+    if (parentStep && parentStep.getAttribute('data-step') === '9') {
+      const otherInput = document.getElementById('access-other');
+      const anyOtherActive = group.querySelector('.chip.active[data-val="Other"]');
+      if (anyOtherActive) {
+        otherInput.style.display = 'block';
+      } else {
+        otherInput.style.display = 'none';
+        otherInput.value = '';
+      }
+    }
+  });
+});
+
 </script>
