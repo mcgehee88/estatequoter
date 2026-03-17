@@ -1873,6 +1873,50 @@ document.querySelectorAll('.chips').forEach(group => {
 });
 
 
+/* Range slider handlers */
+const sqftSlider = document.getElementById('sqft-range');
+const sqftBubble = document.querySelector('.range-value[data-type="sqft"]');
+if (sqftSlider && sqftBubble) {
+  sqftSlider.addEventListener('input', () => {
+    const val = parseInt(sqftSlider.value, 10);
+    sqftBubble.textContent = val.toLocaleString() + ' sq ft';
+  });
+  sqftBubble.addEventListener('blur', () => {
+    let val = parseInt(sqftBubble.textContent.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(val)) val = 2500;
+    val = Math.max(400, Math.min(6000, val));
+    sqftSlider.value = val;
+    sqftBubble.textContent = val.toLocaleString() + ' sq ft';
+  });
+}
+
+const fullnessSlider = document.getElementById('fullness-range');
+const fullnessText = document.getElementById('fullness-text');
+const fullnessLabels = ['', 'Light', 'Medium', 'Full', 'Really full'];
+if (fullnessSlider && fullnessText) {
+  fullnessSlider.addEventListener('input', () => {
+    const val = parseInt(fullnessSlider.value, 10);
+    fullnessText.textContent = fullnessLabels[val] || 'Medium';
+  });
+}
+
+const valueSlider = document.getElementById('value-range');
+const valueBubble = document.getElementById('value-bubble');
+if (valueSlider && valueBubble) {
+  valueSlider.addEventListener('input', () => {
+    const val = parseInt(valueSlider.value, 10);
+    valueBubble.textContent = '$' + val.toLocaleString();
+  });
+  valueBubble.addEventListener('blur', () => {
+    let val = parseInt(valueBubble.textContent.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(val)) val = 400000;
+    val = Math.max(50000, Math.min(1500000, Math.round(val / 25000) * 25000));
+    valueSlider.value = val;
+    valueBubble.textContent = '$' + val.toLocaleString();
+  });
+}
+
+
 /* Navigation buttons (Next / Back) */
 mainBtn.onclick = () => {
   if (!validateStep(currentStep)) return;
